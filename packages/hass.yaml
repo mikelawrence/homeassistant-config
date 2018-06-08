@@ -1,0 +1,60 @@
+################################################################
+## Packages / Hass
+##   Startup initiaization and general.
+################################################################
+
+################################################################
+## Automation
+################################################################
+automation:
+  # Update Home Assistant after startup
+  - id: update_hass_after_startup
+    alias: Initialize HASS after startup
+    initial_state: 'on'
+    trigger:
+      platform: homeassistant
+      event: start
+    action:
+      - delay: '00:00:05'
+      - service: homeassistant.turn_on
+        entity_id: script.initialize_hass
+
+  # Home Assistant Update available notification
+  - id: ha_update_notifications
+    alias: HASS update notifications
+    trigger:
+      - platform: state
+        entity_id: updater.updater
+    action:
+      - service: notify.ios_mike_iphone_ios
+        data:
+          message: 'There is a new Home Assistant release available.'
+
+################################################################
+## Script
+################################################################
+script:
+  # Intialize Home Assistant
+  initialize_hass:
+    alias: 'Initialize HASS after startup'
+    sequence:
+      - service: script.update_tracker
+        data_template:
+          entityid: 'device_tracker.mike_meta'
+          fromstate: 'away'
+          tostate: 'home'
+      - service: script.update_tracker
+        data_template:
+          entityid: 'device_tracker.clara_meta'
+          fromstate: 'away'
+          tostate: 'home'
+      - service: script.update_tracker
+        data_template:
+          entityid: 'device_tracker.mikey_meta'
+          fromstate: 'away'
+          tostate: 'home'
+      - service: script.update_tracker
+        data_template:
+          entityid: 'device_tracker.bryan_meta'
+          fromstate: 'away'
+          tostate: 'home'

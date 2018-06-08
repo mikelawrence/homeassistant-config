@@ -1,0 +1,273 @@
+################################################################
+## Packages / Outside
+##   Roof Lights, Front Gate, Septic Controller
+################################################################
+
+################################################################
+## Customize
+################################################################
+homeassistant:
+  customize:
+    ################################################
+    ## Cover
+    ################################################
+    cover.front_gate:
+      friendly_name: "Front Gate"
+      device_class: garage
+
+    ################################################
+    ## Switch
+    ################################################
+    switch.floodlights__backyard:
+      friendly_name: "Backyard Floodlights"
+      icon: mdi:lightbulb
+    switch.porch_lights__backyard:
+      friendly_name: "Backyard Porch Lights"
+      icon: mdi:lightbulb
+    switch.backyard_lights:
+      friendly_name: "All Backyard Lights"
+      icon: mdi:lightbulb
+      homebridge_visible: true
+      homebridge_name: "Backyard Lights"
+
+################################################################
+## Group
+################################################################
+group:
+  # Backyard ISY-994 group
+  backyard_lights:
+    name: Backyard Lights
+    control: hidden
+    entities:
+      - switch.backyard_lights
+      - switch.porch_lights__studio
+      - switch.floodlights__backyard
+
+  # Roof RGB Floodlights
+  roof_floodlights:
+    name: Roof Floodlights
+    control: hidden
+    entities:
+      - input_number.roof_lights_transition_time
+      - light.roof_lights
+      - light.house_roof_light
+      - light.studio_roof_light
+      - sensor.house_roof_light_temperature
+      - sensor.studio_roof_light_temperature
+      - sensor.house_roof_light_rssi
+      - sensor.studio_roof_light_rssi
+      
+  # Front Gate
+  front_gate:
+    name: Front Gate
+    control: hidden
+    entities:
+      - cover.front_gate
+      - sensor.front_gate_status
+      - sensor.front_gate_rssi
+      - sensor.front_gate_temperature
+
+  # Septic Controller
+  septic:
+    name: Septic
+    control: hidden
+    entities:
+      - sensor.septic_status
+      - binary_sensor.septic_pump
+      - binary_sensor.septic_alarm
+      - sensor.septic_minutes_yesterday
+      - sensor.septic_usage_yesterday
+      - sensor.septic_rssi
+      - sensor.septic_temperature
+
+##################################################
+## input_number
+##################################################
+input_number:
+  roof_lights_transition_time:
+    name: "Roof Lights Transition Time"
+    initial: 120
+    min: 1
+    max: 300
+    step: 1
+
+################################################################
+## Sensor
+################################################################
+sensor:
+  # accumulates the time the effluent pump is on in hours
+  # time is offset to better match the pumping schedule
+  - platform: history_stats
+    name: "Septic Pump Hours Yesterday"
+    entity_id: binary_sensor.septic_pump
+    state: 'on'
+    type: time
+    # 3AM yesterday to 3AM this morning.
+    end: '{{ now().replace(hour=3).replace(minute=0).replace(second=0) }}'
+    duration:
+      hours: 24
+
+  - platform: template
+    sensors:
+      # converts the Septic Hours Yesterday minutes
+      septic_minutes_yesterday:
+        friendly_name: "Septic Pump Time Yesterday"
+        entity_id: sensor.septic_pump_hours_yesterday
+        unit_of_measurement: "m"
+        value_template: '{{ states.sensor.septic_pump_hours_yesterday.state | multiply(60.0) | round(2) }}'
+
+      # Given that it takes 27 minutes to pump out a full tank this sensor
+      # provides an idea of septic usage in percent of maximum pump time
+      septic_usage_yesterday:
+        friendly_name: "Septic Usage Yesterday"
+        entity_id: sensor.septic_pump_hours_yesterday
+        unit_of_measurement: "%"
+        # multiply by 60 * 100.0 / 27.0
+        value_template: '{{ states.sensor.septic_pump_hours_yesterday.state | multiply(222.222222222) | round(0) }}'
+
+################################################################
+## Binary Sensor
+################################################################
+binary_sensor:
+  - platform: template
+    sensors:
+      # Turns on when Front Gate has been open too long
+      front_gate_open_too_long:
+        friendly_name: "Front Gate has open too long"
+        delay_on: '00:04:00'
+        value_template: "{{ is_state('cover.front_gate', 'open') }}"
+
+      # Turns on when Front Gate state hasn't changed in 24 hours
+      front_gate_no_change:
+        friendly_name: "Front Gate has not changed in 24 hours"
+        delay_on: '00:04:00'
+        value_template: "{{ (as_timestamp(now())-as_timestamp(states.cover.front_gate.last_updated)) > 1*60*60 }}"
+
+################################################################
+## Automation
+################################################################
+automation:
+  - id: roof_lights_transition_time
+    alias: "Roof Lights Transition Time Send MQTT"
+    trigger:
+      - platform: state
+        entity_id: input_number.roof_lights_transition_time
+    action:
+      - service: mqtt.publish
+        data_template:
+          topic: "hass/light/roof-lights/rgblight/set"
+          payload: '{"transition": {{ trigger.to_state.state | int }}}'
+
+################################################################
+## Alert
+################################################################
+alert:
+  # Front Gate open too long Alert
+  front_gate_open_too_long:
+    name: Front Gate is open too long!
+    entity_id: binary_sensor.front_gate_open_too_long
+    repeat:
+      - 5
+      - 10
+      - 15
+      - 30
+      - 60
+      - 1440
+    notifiers:
+      - ios_mike_iphone_ios
+      - ios_clara_iphone_ios
+
+  # Front Gate Reset Hardware occurred
+  front_gate_reset_hardware_occurred:
+    name: 'Front Gate Reset Hardware occurred!'
+    entity_id: sensor.front_gate_status
+    repeat: 1440
+    state: 'Reset Hardware'
+    notifiers:
+      - ios_mike_iphone_ios
+
+  # Front Gate Reset WiFi occurred
+  front_gate_reset_wifi_occurred:
+    name: 'Front Gate Reset WiFi occurred!'
+    entity_id: sensor.front_gate_status
+    repeat: 1440
+    state: 'Reset WiFi Connect'
+    notifiers:
+      - ios_mike_iphone_ios
+
+  # Septic Controller Reset Hardware occurred
+  septic_reset_hardware_occurred:
+    name: 'Septic Reset Hardware occurred!'
+    entity_id: sensor.septic_status
+    repeat: 1440
+    state: 'Reset Hardware'
+    notifiers:
+      - ios_mike_iphone_ios
+
+  # Septic Controller Reset WiFi occurred
+  septic_reset_wifi_occurred:
+    name: 'Septic Reset WiFi occurred!'
+    entity_id: sensor.septic_status
+    repeat: 1440
+    state: 'Reset WiFi Connect'
+    notifiers:
+      - ios_mike_iphone_ios
+
+  # Septic Controller override float
+  septic_override_pump_occurred:
+    name: 'Septic Override Pump On!'
+    entity_id: sensor.septic_status
+    state: 'Override Pump On'
+    repeat:
+      - 5
+    notifiers:
+      - ios_mike_iphone_ios
+
+  # Septic Controller has an Over Temperature Alarm Alert
+  septic_overtemp_alarm_occurred:
+    name: 'Septic Alarm: SSR Overtemp!'
+    entity_id: sensor.septic_status
+    state: 'Overtemp Alarm On'
+    repeat:
+      - 15
+      - 30
+      - 60
+      - 1440
+    notifiers:
+      - ios_mike_iphone_ios
+
+  # Septic Controller has a Tank Overfull Alarm Alert
+  septic_overfull_alarm_occurred:
+    name: 'Septic Alarm: Tank Overfull!'
+    entity_id: sensor.septic_status
+    state: 'Tank High Alarm On'
+    repeat:
+      - 15
+      - 30
+      - 60
+      - 1440
+    notifiers:
+      - ios_mike_iphone_ios
+
+  # Septic Controller produced an Air Pump Alarm Alert
+  septic_airpump_alarm_occurred:
+    name: 'Septic Alarm: Air Pump Pressure Fail!'
+    entity_id: sensor.septic_status
+    state: 'Air Pump Alarm On'
+    repeat:
+      - 15
+      - 30
+      - 60
+      - 1440
+    notifiers:
+      - ios_mike_iphone_ios
+
+  # Septic Controller produced a Bleach Level Alarm
+  septic_bleach_alarm_occurred:
+    name: 'Septic Alarm: Bleach Level Low!'
+    entity_id: sensor.septic_status
+    state: 'Bleach Alarm On'
+    repeat:
+      - 1440
+    notifiers:
+      - ios_mike_iphone_ios

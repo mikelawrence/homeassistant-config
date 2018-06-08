@@ -1,0 +1,76 @@
+################################################################
+## Packages / Sonos
+################################################################
+
+################################################################
+## Script
+################################################################
+script:
+  # Sonos TTS
+  sonos_say:
+    alias: "Sonos TTS script"
+    sequence:
+      - service: media_player.sonos_snapshot
+        data_template:
+          entity_id: "{{ sonos_entity }}"
+      - service: media_player.media_pause
+        data_template:
+          entity_id: "{{ sonos_entity }}"
+      - service: media_player.volume_set
+        data_template:
+          entity_id: "{{ sonos_entity }}"
+          volume_level: "{{ volume|default(0.5) }}"
+      - service: tts.google_say
+        data_template:
+          entity_id: "{{ sonos_entity }}"
+          message: "{{ message }}"
+      - delay: "{{ delay|default('00:00:05') }}"
+      - service: media_player.sonos_restore
+        data_template:
+          entity_id: "{{ sonos_entity }}"
+
+  # Sonos Studio TTS
+  sonos_studio_say:
+    alias: "Studio Sonos TTS script"
+    sequence:
+      - service: media_player.sonos_snapshot
+        data:
+          entity_id: media_player.sonos_studio
+      - service: media_player.media_pause
+        data:
+          entity_id: media_player.sonos_studio
+      - service: media_player.volume_set
+        data_template:
+          entity_id: media_player.sonos_studio
+          volume_level: "{{ volume|default(0.5) }}"
+      - service: tts.google_say
+        data_template:
+          entity_id: media_player.sonos_studio
+          message: "{{ message }}"
+      - delay: "{{ delay|default('00:00:05') }}"
+      - service: media_player.sonos_restore
+        data:
+          entity_id: media_player.sonos_studio
+
+  # Sonos Family Room TTS
+  sonos_family_room_say:
+    alias: "Studio Sonos TTS script"
+    sequence:
+      - service: media_player.sonos_snapshot
+        data:
+          entity_id: media_player.sonos_family_room
+      - service: media_player.media_pause
+        data:
+          entity_id: media_player.sonos_family_room
+      - service: media_player.volume_set
+        data_template:
+          entity_id: media_player.sonos_family_room
+          volume_level: "{{ volume|default(0.5) }}"
+      - service: tts.google_say
+        data_template:
+          entity_id: media_player.sonos_family_room
+          message: "{{ message }}"
+      - delay: "{{ delay|default('00:00:05') }}"
+      - service: media_player.sonos_restore
+        data:
+          entity_id: media_player.sonos_family_room

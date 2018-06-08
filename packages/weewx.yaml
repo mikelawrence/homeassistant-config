@@ -1,0 +1,207 @@
+################################################################
+#  Packages / weeWX
+#  Davis Weather Station sensors via weeWX
+################################################################
+
+################################################
+#  Customize
+################################################
+homeassistant:
+  customize:
+    ################################################
+    #  Group
+    ################################################
+    group.weewx:
+      friendly_name: "Davis Weather Station"
+      icon: mdi:weather-lightning
+
+    ################################################
+    #  Sensor
+    ################################################
+    sensor.weewx_temperature:
+      friendly_name: "Temperature"
+      icon: mdi:thermometer
+
+    sensor.weewx_dewpoint:
+      friendly_name: "Dewpoint"
+      icon: mdi:thermometer
+
+    sensor.weewx_heat_index:
+      friendly_name: "Heat Index"
+      icon: mdi:thermometer
+
+    sensor.weewx_humidex:
+      friendly_name: "Humidex"
+      icon: mdi:thermometer
+
+    sensor.weewx_windchill:
+      friendly_name: "Windchill"
+      icon: mdi:thermometer
+
+    sensor.weewx_humidity:
+      friendly_name: "Humidity"
+      icon: mdi:water-percent
+
+    sensor.weewx_barometer:
+      friendly_name: "Barometer"
+      icon: mdi:gauge
+
+    sensor.weewx_wind:
+      friendly_name: "Wind"
+      icon: mdi:weather-windy
+
+    sensor.weewx_wind_dir:
+      friendly_name: "Dir"
+      icon: mdi:crosshairs
+
+    sensor.weewx_gust:
+      friendly_name: "Gust"
+      icon: mdi:weather-windy
+
+    sensor.weewx_gust_dir:
+      friendly_name: "Gust Dir"
+      icon: mdi:crosshairs
+
+    sensor.weewx_rain:
+      friendly_name: "Rainfall"
+      icon: mdi:water
+
+    sensor.weewx_rain_rate:
+      friendly_name: "Rainfall Rate"
+      icon: mdi:water
+
+    sensor.weewx_rain_storm:
+      friendly_name: "Storm Rain"
+      icon: mdi:water
+
+    sensor.weewx_rain_month:
+      friendly_name: "Monthly Rainfall"
+      icon: mdi:water
+
+    sensor.weewx_rain_year:
+      friendly_name: "Yearly Rainfall"
+      icon: mdi:water
+
+################################################
+#  Group
+################################################
+group:
+  weewx:
+   entities:
+     - sensor.weewx_temperature
+     - sensor.weewx_dewpoint
+     - sensor.weewx_heat_index
+     - sensor.weewx_humidex
+     - sensor.weewx_windchill
+     - sensor.weewx_humidity
+     - sensor.weewx_barometer
+     - sensor.weewx_wind
+     - sensor.weewx_wind_dir
+     - sensor.weewx_gust
+     - sensor.weewx_gust_dir
+     - sensor.weewx_rain
+     - sensor.weewx_rain_rate
+     - sensor.weewx_rain_storm
+     - sensor.weewx_rain_month
+     - sensor.weewx_rain_year
+
+
+################################################
+#  Sensor
+################################################
+sensor:
+  - platform: mqtt
+    name: weewx_temperature
+    state_topic: "weather/loop"
+    unit_of_measurement: '°F'
+    value_template: "{{ value_json.outTemp | round(1) }}"
+
+  - platform: mqtt
+    name: weewx_dewpoint
+    state_topic: "weather/loop"
+    unit_of_measurement: '°F'
+    value_template: "{{ value_json.dewpoint | round(1) }}"
+
+  - platform: mqtt
+    name: weewx_heat_index
+    state_topic: "weather/loop"
+    unit_of_measurement: '°F'
+    value_template: "{{ value_json.heatindex | round(1) }}"
+
+  - platform: mqtt
+    name: weewx_humidex
+    state_topic: "weather/loop"
+    unit_of_measurement: '°F'
+    value_template: "{{ value_json.humidex | round(1) }}"
+
+  - platform: mqtt
+    name: weewx_windchill
+    state_topic: "weather/loop"
+    unit_of_measurement: '°F'
+    value_template: "{{ value_json.windchill | round(1) }}"
+
+  - platform: mqtt
+    name: weewx_humidity
+    state_topic: "weather/loop"
+    unit_of_measurement: '%'
+    value_template: "{{ value_json.outHumidity | round(1) }}"
+
+  - platform: mqtt
+    name: weewx_barometer
+    state_topic: "weather/loop"
+    unit_of_measurement: 'in'
+    value_template: "{{ value_json.barometer | round(2) }}"
+
+  - platform: mqtt
+    name: weewx_wind
+    state_topic: "weather/loop"
+    unit_of_measurement: 'mph'
+    value_template: "{{ value_json.windSpeed | round(0) }}"
+
+  - platform: mqtt
+    name: weewx_wind_dir
+    state_topic: "weather/loop"
+    unit_of_measurement: '°'
+    value_template: "{{ value_json.windDir | round(0) }}"
+
+  - platform: mqtt
+    name: weewx_gust
+    state_topic: "weather/loop"
+    unit_of_measurement: 'mph'
+    value_template: "{{ value_json.windGust | round(0) }}"
+
+  - platform: mqtt
+    name: weewx_gust_dir
+    state_topic: "weather/loop"
+    unit_of_measurement: '°'
+    value_template: "{{ value_json.windGustDir | round(0) }}"
+
+  - platform: mqtt
+    name: weewx_rain
+    state_topic: "weather/loop"
+    unit_of_measurement: 'in'
+    value_template: "{{ value_json.dayRain | round(2) }}"
+
+  - platform: mqtt
+    name: weewx_rain_rate
+    state_topic: "weather/loop"
+    unit_of_measurement: 'in/hr'
+    value_template: "{{ value_json.rainRate | round(2) }}"
+
+  - platform: mqtt
+    name: weewx_rain_storm
+    state_topic: "weather/loop"
+    unit_of_measurement: 'in'
+    value_template: "{{ value_json.stormRain | round(2) }}"
+
+  - platform: mqtt
+    name: weewx_rain_month
+    state_topic: "weather/loop"
+    unit_of_measurement: 'in'
+    value_template: "{{ value_json.monthRain | round(2) }}"
+
+  - platform: mqtt
+    name: weewx_rain_year
+    state_topic: "weather/loop"
+    unit_of_measurement: 'in'
+    value_template: "{{ value_json.yearRain | round(2) }}"

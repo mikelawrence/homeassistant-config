@@ -1,0 +1,68 @@
+################################################################
+#  Packages / Zones
+################################################################
+
+################################################
+#  Customize
+################################################
+
+homeassistant:
+  customize:
+    ################################################
+    #  Customize Zone
+    ################################################
+    zone.home:
+      friendly_name: "Home"
+      beacon:
+        uuid: 6BF590A5-0757-4F8D-8E13-E07AF46D3442
+        major: 1
+        minor: 1
+
+    # zone.gate:
+    #   friendly_name: "Gate"
+    #   icon: mdi:gate
+    #   beacon:
+    #     uuid: E5EE2030-8E73-4A81-809E-B723CF9A6004
+    #     major: 1
+    #     minor: 1
+    #
+    zone.spec:
+      friendly_name: "SPEC"
+      icon: mdi:city
+
+    zone.ths:
+      friendly_name: "THS"
+      icon: mdi:school
+
+    # zone.sfasu:
+    #   friendly_name: "SFASU"
+    #   icon: mdi:school
+
+################################################
+# Zone
+################################################
+zone:
+  - name: Home
+    latitude: !secret latitude
+    longitude: !secret longitude
+    radius: 125
+
+  # - name: Gate
+  #   latitude: !secret gate_latitude
+  #   longitude: !secret gate_longitude
+  #   radius: 30
+
+  - name: SPEC
+    latitude: !secret work_latitude
+    longitude: !secret work_longitude
+    radius: 50
+
+  - name: THS
+    latitude: 30.5482113
+    longitude: -97.4333068
+    radius: 150
+
+  # - name: SFASU
+  #   latitude: 31.619719
+  #   longitude: -94.6522174
+  #   radius: 500

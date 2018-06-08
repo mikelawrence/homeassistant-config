@@ -1,0 +1,53 @@
+################################################################
+## Packages / Cameras
+################################################################
+
+################################################################
+## Camera
+################################################################
+camera:
+  # enable Unifi Video cameras
+  - platform: uvc
+    nvr: 192.168.1.200
+    password: !secret uvc_password
+    key: !secret uvc_api_key
+
+################################################################
+## Axis
+################################################################
+axis:
+  weather:
+    host: 192.168.1.204
+    username: !secret axis_username
+    password: !secret axis_password
+    include:
+      - camera
+
+################################################################
+## Group
+################################################################
+group:
+  camera_front_road:
+    entities:
+      - camera.front_road
+  camera_house_driveway:
+    entities:
+      - camera.house_driveway
+  camera_garage_driveway:
+    entities:
+      - camera.garage_driveway
+  camera_studio_front:
+    entities:
+      - camera.studio_front
+  camera_studio_back:
+    entities:
+      - camera.studio_back
+  camera_garage_inside_left:
+    entities:
+      - camera.garage_inside_left
+  camera_garage_inside_right:
+    entities:
+      - camera.garage_inside_right
+  camera_weather:
+    entities:
+      - camera.weather

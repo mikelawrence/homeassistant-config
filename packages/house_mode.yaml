@@ -1,0 +1,227 @@
+################################################################
+## Packages / House Mode
+## House State control
+################################################################
+
+################################################################
+## Customize
+################################################################
+homeassistant:
+  customize:
+    ################################################
+    ## Group
+    ################################################
+    group.house_mode:
+      friendly_name: "House Mode"
+      icon: mdi:home-variant
+
+    ################################################
+    ## Input Boolean
+    ################################################
+    input_boolean.guest_mode:
+      friendly_name: "Guest Mode"
+      icon: mdi:account
+
+    input_boolean.vacation_mode:
+      friendly_name: "Vacation Mode"
+      icon: mdi:beach
+
+    ################################################
+    ## Switch
+    ################################################
+    # ISY-994 program switch "HA.switch/studio state"
+    # 'on' = Home, 'off' = Away
+    switch.house_state:
+      friendly_name: "House Home"
+      icon: mdi:home
+      homebridge_name: "House"
+      homebridge_visible: true
+
+    ################################################
+    ## Binary Sensor
+    ################################################
+    binary_sensor.guest_active:
+      friendly_name: "Guest Mode Active"
+    binary_sensor.vacation_active:
+      friendly_name: "Vacation Mode Active"
+
+    ################################################
+    ## Sensor
+    ################################################
+    sensor.house_mode:
+      friendly_name: "House Mode"
+
+################################################################
+## Group
+################################################################
+group:
+  house_mode:
+    control: hidden
+    entities:
+      - switch.house_state
+      - input_boolean.guest_mode
+      - input_boolean.vacation_mode
+      - sensor.house_mode
+      - binary_sensor.house_back_door_sensor
+      - binary_sensor.house_front_door_sensor
+      - binary_sensor.people_home
+
+################################################################
+## Input Boolean
+################################################################
+input_boolean:
+  guest_mode:
+
+  vacation_mode:
+
+  house_home:
+
+################################################################
+## Binary Sensor
+################################################################
+binary_sensor:
+  - platform: 'template'
+    sensors:
+      # this sensor is on when guest mode is enabled
+      guest_active:
+        value_template: >-
+          {{ is_state('input_boolean.guest_mode', 'on') }}
+
+      # this sensor is on when in vacation mode
+      #   guest_mode must be off
+      vacation_active:
+        value_template: >-
+          {{ is_state('binary_sensor.guest_active', 'off') and
+             is_state('input_boolean.vacation_mode', 'on') }}
+
+################################################################
+## Sensor
+################################################################
+sensor:
+  - platform: template
+    sensors:
+      house_mode:
+        entity_id:
+          - switch.house_state
+          - binary_sensor.guest_active
+          - binary_sensor.vacation_active
+        value_template: >-
+          {% if is_state('binary_sensor.guest_active', 'on') %}
+            Guest
+          {% elif is_state('switch.house_state', 'on') %}
+            Home
+          {% elif is_state('binary_sensor.vacation_active', 'on') %}
+            Vacation
+          {% else %}
+            Away
+          {% endif %}
+        icon_template: >-
+          {% if is_state('binary_sensor.guest_active', 'on') %}
+            mdi:account
+          {% elif is_state('switch.house_state', 'on') %}
+            mdi:home
+          {% elif is_state('binary_sensor.vacation_active', 'on') %}
+            mdi:beach
+          {% else %}
+            mdi:home-outline
+          {% endif %}
+
+################################################################
+## Automation
+################################################################
+automation:
+  # Device Tracking switched to Somebody Home or Vacation Mode was
+  #   deactivated so switch House to Home Mode
+  - id: house_auto_home
+    alias: House Auto Home when Somebody comes Home
+    trigger:
+      # Somebody home switched on
+      - platform: state
+        entity_id: binary_sensor.people_home
+        from: 'off'
+        to: 'on'
+      # Switched out of Vacation Mode
+      - platform: state
+        entity_id: input_boolean.vacation_mode
+        from: 'on'
+        to: 'off'
+    # Auto Away Mode does not happen in Guest Mode
+    condition:
+      - condition: template
+        value_template: "{{ not is_state('switch.house_state', 'on') }}"
+    action:
+      - service: switch.turn_on
+        entity_id: switch.house_state
+      - service: logbook.log
+        data_template:
+          name: House
+          message: automatically switched to Home Mode
+
+  # Device Tracking switched to Nobody Home or Vacation Mode was activated
+  #   Switch House to Away Mode if not in Guest Mode
+  - id: house_auto_away
+    alias: House Auto Away when Nobody is Home
+    trigger:
+      # Nobody home
+      - platform: state
+        entity_id: binary_sensor.people_away
+        from: 'off'
+        to: 'on'
+        for: '00:10:00'
+      # Switched to Vacation Mode
+      - platform: state
+        entity_id: input_boolean.vacation_mode
+        from: 'off'
+        to: 'on'
+    # Auto Away Mode does not happen in Guest Mode
+    condition:
+      condition: state
+      entity_id: binary_sensor.guest_active
+      state: 'off'
+    action:
+      - service: switch.turn_off
+        entity_id: switch.house_state
+      - service: logbook.log
+        data_template:
+          name: House
+          message: automatically switched to Away Mode
+
+  # House manually switched to Away Mode
+  #   Either by HASS switch or KeypadLinc switch
+  - id: house_switched_to_away
+    alias: House switched to Away
+    trigger:
+      platform: state
+      entity_id: switch.house_state
+      from: 'on'
+      to: 'off'
+    action:
+      - service: logbook.log
+        data_template:
+          name: House
+          message: manually switched to Away Mode
+      - service: script.sonos_family_room_say
+        data:
+          volume: 0.5
+          delay: '00:00:02'
+          message: 'Goodbye.'
+
+  # House manually switched to Home Mode
+  #   Either by HASS switch or KeypadLinc switch
+  - id: house_switched_to_home
+    alias: House switched to Home
+    trigger:
+      platform: state
+      entity_id: switch.house_state
+      from: 'off'
+      to: 'on'
+    action:
+      - service: logbook.log
+        data_template:
+          name: House
+          message: manually switched to Home Mode
+      - service: script.sonos_family_room_say
+        data:
+          volume: 0.5
+          delay: '00:00:02'
+          message: 'Hello.'

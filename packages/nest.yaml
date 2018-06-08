@@ -1,0 +1,386 @@
+################################################################
+## Packages / Nest
+## Nest Control
+################################################################
+
+################################################################
+## Customize
+################################################################
+homeassistant:
+  customize:
+    ################################################
+    ## Climate
+    ################################################
+    climate.studio:
+      friendly_name: "Studio Thermostat"
+    climate.downstairs:
+      friendly_name: "Downstairs Thermostat"
+    climate.upstairs:
+      friendly_name: "Upstairs Thermostat"
+
+    ################################################
+    ## Sensor
+    ################################################
+    sensor.studio_thermostat_temperature:
+      friendly_name: "Studio Temp"
+    sensor.studio_thermostat_hvac_state:
+      friendly_name: "Studio Thermostat State"
+    sensor.studio_thermostat_operation_mode:
+      friendly_name: "Studio Thermostat Mode"
+    sensor.downstairs_thermostat_temperature:
+      friendly_name: "Downstairs Temp"
+    sensor.downstairs_thermostat_hvac_state:
+      friendly_name: "Downstairs Thermostat State"
+    sensor.downstairs_thermostat_operation_mode:
+      friendly_name: "Downstairs Thermostat Mode"
+    sensor.upstairs_thermostat_temperature:
+      friendly_name: "Upstairs Temp"
+    sensor.upstairs_thermostat_hvac_state:
+      friendly_name: "Upstairs Thermostat State"
+    sensor.upstairs_thermostat_operation_mode:
+      friendly_name: "Upstairs Thermostat Mode"
+
+################################################################
+## Automation
+################################################################
+automation:
+  # Studio was switched to Away Mode
+  - id: nest_studio_switched_away
+    alias: "Studio Nest thermostat switched to Away Mode"
+    initial_state: 'on'
+    trigger:
+      platform: state
+      entity_id: switch.studio_state
+      from: 'on'
+      to: 'off'
+    condition:
+      condition: and
+      conditions:
+        - condition: state
+          entity_id: binary_sensor.guest_active
+          state: 'off'
+        - condition: state
+          entity_id: binary_sensor.vacation_active
+          state: 'off'
+    action:
+      service: script.nest_studio_thermostat_set_away
+
+  # House was switched to Away Mode
+  - id: nest_house_switched_away
+    alias: "House Nest thermostats switched to Away Mode"
+    initial_state: 'on'
+    trigger:
+      platform: state
+      entity_id: switch.house_state
+      from: 'on'
+      to: 'off'
+    condition:
+      condition: and
+      conditions:
+        - condition: state
+          entity_id: binary_sensor.guest_active
+          state: 'off'
+        - condition: state
+          entity_id: binary_sensor.vacation_active
+          state: 'off'
+    action:
+      - service: script.nest_downstairs_thermostat_set_away
+      - service: script.nest_upstairs_thermostat_set_away
+
+  # Studio was switched to Home Mode
+  - id: nest_studio_switched_home
+    alias: "Studio Nest thermostat switched to Home Mode"
+    initial_state: 'on'
+    trigger:
+      platform: state
+      entity_id: switch.studio_state
+      from: 'off'
+      to: 'on'
+    condition:
+      condition: and
+      conditions:
+        - condition: state
+          entity_id: binary_sensor.guest_active
+          state: 'off'
+        - condition: state
+          entity_id: binary_sensor.vacation_active
+          state: 'off'
+    action:
+      service: script.nest_studio_thermostat_set_home
+
+  # House was switched to Home Mode
+  - id: nest_house_switched_home
+    alias: "House Nest thermostats switched to Home Mode"
+    initial_state: 'on'
+    trigger:
+      platform: state
+      entity_id: switch.house_state
+      from: 'off'
+      to: 'on'
+    condition:
+      condition: and
+      conditions:
+        - condition: state
+          entity_id: binary_sensor.guest_active
+          state: 'off'
+        - condition: state
+          entity_id: binary_sensor.vacation_active
+          state: 'off'
+    action:
+      - service: script.nest_downstairs_thermostat_set_home
+      - service: script.nest_upstairs_thermostat_set_home
+
+  # Keep Studio Nest Thermostat in Auto mode when Guest Mode is enabled
+  - id: nest_studio_guest_mode
+    alias: "Studio Nest thermostat is in Guest Mode"
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: sensor.studio_thermostat_operation_mode
+        from: 'auto'
+      - platform: template
+        value_template: >-
+          {{ not is_state_attr('climate.studio', 'operation_mode', 'auto') }}
+      # - platform: template
+      #   value_template: >-
+      #     {{ not is_state('sensor.studio_thermostat_operation_mode', 'auto') }}
+      - platform: state
+        entity_id: binary_sensor.guest_active
+        from: 'off'
+        to: 'on'
+    condition:
+      condition: state
+      entity_id: binary_sensor.guest_active
+      state: 'on'
+    action:
+      - service: script.nest_studio_thermostat_set_home
+      - service: logbook.log
+        data_template:
+          name: Studio Nest Thermostat
+          message: forced back to Auto Mode because Guest Mode is enabled
+
+  # Keep Downstairs Nest Thermostat in Auto mode when Guest Mode is enabled or somebody is home
+  - id: nest_downstairs_auto_mode
+    alias: "Downstairs Nest thermostat stay in Auto Mode"
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: sensor.downstairs_thermostat_operation_mode
+        from: 'auto'
+      - platform: template
+        value_template: >-
+          {{ not is_state_attr('climate.downstairs', 'operation_mode', 'auto') }}
+      - platform: state
+        entity_id: binary_sensor.guest_active
+        from: 'off'
+        to: 'on'
+    condition:
+      condition: or
+      conditions:
+        - condition: state
+          entity_id: binary_sensor.guest_active
+          state: 'on'
+        - condition: state
+          entity_id: binary_sensor.people_home
+          state: 'on'
+    action:
+      - service: script.nest_downstairs_thermostat_set_home
+      - service: logbook.log
+        data_template:
+          name: Downstairs Nest Thermostat
+          message: forced back to Auto Mode because Guest Mode is enabled or somebody is home
+
+  # Keep Upstairs Nest Thermostat in Auto mode when Guest Mode is enabled or somebody is home
+  - id: nest_upstairs_guest_mode
+    alias: "Upstairs Nest thermostat stay in Auto Mode"
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: sensor.studio_thermostat_operation_mode
+        from: 'auto'
+      - platform: template
+        value_template: >-
+          {{ not is_state_attr('climate.upstairs', 'operation_mode', 'auto') }}
+      - platform: state
+        entity_id: binary_sensor.guest_active
+        from: 'off'
+        to: 'on'
+    condition:
+      condition: or
+      conditions:
+        - condition: state
+          entity_id: binary_sensor.guest_active
+          state: 'on'
+        - condition: state
+          entity_id: binary_sensor.people_home
+          state: 'on'
+    action:
+      - service: script.nest_upstairs_thermostat_set_home
+      - service: logbook.log
+        data_template:
+          name: Upstairs Nest Thermostat
+          message: forced back to Auto Mode because Guest Mode is enabled or somebody is home
+
+  # Automatically set Studio thermostat to Eco mode at night
+  - id: nest_studio_auto_away_night
+    alias: "Studio Nest thermostat Auto Away Night"
+    initial_state: 'on'
+    trigger:
+      platform: time
+      at: '22:00:00'
+    condition:
+      condition: and
+      conditions:
+        - condition: state
+          entity_id: binary_sensor.guest_active
+          state: 'off'
+        - condition: state
+          entity_id: binary_sensor.vacation_active
+          state: 'off'
+    action:
+      service: script.nest_studio_thermostat_set_away
+
+################################################################
+## Script
+################################################################
+script:
+  # Set Studio Nest thermostat to Away mode
+  nest_studio_thermostat_set_away:
+    alias: "Set Studio Nest Thermostat to Away Mode"
+    sequence:
+      - service: script.turn_off
+        data:
+          entity_id: script.nest_studio_thermostat_set_home
+      - delay: "00:05:00"
+      - service: climate.set_away_mode
+        data_template:
+          entity_id: climate.studio
+          away_mode: 'true'
+      - service: climate.set_operation_mode
+        data_template:
+          entity_id: climate.studio
+          operation_mode: 'eco'
+      - service: logbook.log
+        data_template:
+          name: "Studio Nest Thermostat"
+          message: "set to Away Mode"
+
+  # Set Studio Nest thermostat to Home mode
+  nest_studio_thermostat_set_home:
+    alias: "Set Studio Nest Thermostat to Home Mode"
+    sequence:
+      - service: script.turn_off
+        data:
+          entity_id: script.nest_studio_thermostat_set_away
+      - delay: "00:01:00"
+      - service: climate.set_away_mode
+        data_template:
+          entity_id: climate.studio
+          away_mode: 'false'
+      - service: climate.set_operation_mode
+        data_template:
+          entity_id: climate.studio
+          operation_mode: 'auto'
+      - service: climate.set_temperature
+        data_template:
+          entity_id: climate.studio
+          target_temp_high: 75
+          target_temp_low: 68
+      - service: logbook.log
+        data_template:
+          name: "Studio Nest Thermostat"
+          message: "set to Home Mode"
+
+  # Set Downstairs Nest thermostat to Away mode
+  nest_downstairs_thermostat_set_away:
+    alias: "Set Downstairs Nest Thermostat to Away Mode"
+    sequence:
+      - service: script.turn_off
+        data:
+          entity_id: script.nest_downstairs_thermostat_set_home
+      - delay: "00:05:00"
+      - service: climate.set_away_mode
+        data_template:
+          entity_id: climate.downstairs
+          away_mode: 'true'
+      - service: climate.set_operation_mode
+        data_template:
+          entity_id: climate.downstairs
+          operation_mode: 'eco'
+      - service: logbook.log
+        data_template:
+          name: "Downstairs Nest Thermostat"
+          message: "set to Away Mode"
+
+  # Set Downstairs Nest thermostat to Home mode
+  nest_downstairs_thermostat_set_home:
+    alias: "Set Downstairs Nest Thermostat to Home Mode"
+    sequence:
+      - service: script.turn_off
+        data:
+          entity_id: script.nest_downstairs_thermostat_set_away
+      - delay: "00:01:00"
+      - service: climate.set_away_mode
+        data_template:
+          entity_id: climate.downstairs
+          away_mode: 'false'
+      - service: climate.set_operation_mode
+        data_template:
+          entity_id: climate.downstairs
+          operation_mode: 'auto'
+      - service: climate.set_temperature
+        data_template:
+          entity_id: climate.downstairs
+          target_temp_high: 75
+          target_temp_low: 68
+      - service: logbook.log
+        data_template:
+          name: "Downstairs Nest Thermostat"
+          message: "set to Home Mode"
+
+  # Set Upstairs Nest thermostat to Away mode
+  nest_upstairs_thermostat_set_away:
+    alias: "Set Upstairs Nest Thermostat to Away Mode"
+    sequence:
+      - service: script.turn_off
+        data:
+          entity_id: script.nest_studio_thermostat_set_home
+      - delay: "00:05:00"
+      - service: climate.set_away_mode
+        data_template:
+          entity_id: climate.studio
+          away_mode: 'true'
+      - service: climate.set_operation_mode
+        data_template:
+          entity_id: climate.studio
+          operation_mode: 'eco'
+      - service: logbook.log
+        data_template:
+          name: "Upstairs Nest Thermostat"
+          message: "set to Away Mode"
+
+  # Set Upstairs Nest thermostat to Home mode
+  nest_upstairs_thermostat_set_home:
+    alias: "Set Upstairs Nest Thermostat to Home Mode"
+    sequence:
+      - service: script.turn_off
+        data:
+          entity_id: script.nest_upstairs_thermostat_set_away
+      - delay: "00:01:00"
+      - service: climate.set_away_mode
+        data_template:
+          entity_id: climate.upstairs
+          away_mode: 'false'
+      - service: climate.set_operation_mode
+        data_template:
+          entity_id: climate.upstairs
+          operation_mode: 'auto'
+      - service: climate.set_temperature
+        data_template:
+          entity_id: climate.upstairs
+          target_temp_high: 75
+          target_temp_low: 68
+      - service: logbook.log
+        data_template:
+          name: "Upstairs Nest Thermostat"
+          message: "set to Home Mode"

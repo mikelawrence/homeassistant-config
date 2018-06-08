@@ -1,0 +1,223 @@
+################################################################
+## Packages / Motion
+##   Handles all motion detectors
+#################################################################
+
+################################################################
+## Customize
+################################################################
+homeassistant:
+  customize:
+    ################################################
+    ## Binary Sensor
+    ################################################
+    binary_sensor.kitchen_motion_sensor_lb:
+      friendly_name: "Kitchen Motion Sensor Low Battery"
+      device_class: battery
+    binary_sensor.comp_room_motion_sensor_lb:
+      friendly_name: "Computer Room Motion Sensor Low Battery"
+      device_class: battery
+    binary_sensor.master_bath_motion_sensor_lb:
+      friendly_name: "Master Bathroom Motion Sensor Low Battery"
+      device_class: battery
+    binary_sensor.up_bath_motion_sensor_lb:
+      friendly_name: "Upstairs Bathroom Motion Sensor Low Battery"
+      device_class: battery
+    binary_sensor.up_sm_bed_motion_sensor_lb:
+      friendly_name: "Upstairs Small Bedroom Motion Sensor Low Battery"
+      device_class: battery
+    binary_sensor.up_lg_bed_motion_sensor_lb:
+      friendly_name: "Upstairs Large Bedroom Motion Sensor Low Battery"
+      device_class: battery
+    binary_sensor.studio_motion_sensor_lb:
+      friendly_name: "Studio Motion Sensor Low Battery"
+      device_class: battery
+    binary_sensor.studio_bath_motion_sensor_lb:
+      friendly_name: "Studio Bathroom Motion Sensor Low Battery"
+      device_class: battery
+    binary_sensor.garage_motion_sensor_lb:
+      friendly_name: "Garage Motion Sensor Low Battery"
+      device_class: battery
+    binary_sensor.test_motion_sensor_lb:
+      friendly_name: "Spare Motion Sensor Low Battery"
+      device_class: battery
+
+################################################################
+## Binary Sensor
+################################################################
+binary_sensor:
+  - platform: 'template'
+    sensors:
+      # Any motion
+      any_motion:
+        friendly_name: "Any Motion"
+        device_class: motion
+        value_template: >-
+          {{ is_state('binary_sensor.any_house_motion', 'on')
+             or is_state('binary_sensor.any_studio_motion', 'on')
+             or is_state('binary_sensor.garage_motion', 'on') }}
+      # Any motion in the house
+      any_house_motion:
+        friendly_name: "Any House Motion"
+        device_class: motion
+        value_template: >-
+          {{ is_state('binary_sensor.kitchen_motion', 'on')
+             or is_state('binary_sensor.comp_room_motion', 'on')
+             or is_state('binary_sensor.master_bath_motion', 'on')
+             or is_state('binary_sensor.up_bath_motion', 'on')
+             or is_state('binary_sensor.up_sm_bed_motion', 'on')
+             or is_state('binary_sensor.up_lg_bed_motion', 'on') }}
+      # Any motion in the studio
+      any_studio_motion:
+        friendly_name: "Any Studio Motion"
+        device_class: motion
+        value_template: >-
+          {{ is_state('binary_sensor.studio_motion', 'on')
+             or is_state('binary_sensor.studio_bath_motion', 'on') }}
+      # Kitchen motion
+      kitchen_motion:
+        friendly_name: "Kitchen Motion"
+        device_class: motion
+        delay_off: "00:14:00"
+        value_template: >-
+          {{ is_state('binary_sensor.kitchen_motion_sensor', 'on') }}
+      # Computer Room motion
+      comp_room_motion:
+        friendly_name: "Computer Room Motion"
+        device_class: motion
+        delay_off: "00:14:00"
+        value_template: >-
+          {{ is_state('binary_sensor.comp_room_motion_sensor', 'on') }}
+      # Master Bathroom motion
+      master_bath_motion:
+        friendly_name: "Master Bathroom Motion"
+        device_class: motion
+        delay_off: "00:14:00"
+        value_template: >-
+          {{ is_state('binary_sensor.master_bath_motion_sensor', 'on') }}
+      # Upstairs Bathroom motion
+      up_bath_motion:
+        friendly_name: "Upstairs Bathroom Motion"
+        device_class: motion
+        delay_off: "00:14:00"
+        value_template: >-
+          {{ is_state('binary_sensor.up_bath_motion_sensor', 'on') }}
+      # Upstairs Small Bedroom motion
+      up_sm_bed_motion:
+        friendly_name: "Upstairs Small Bedroom Motion"
+        device_class: motion
+        delay_off: "00:14:00"
+        value_template: >-
+          {{ is_state('binary_sensor.up_sm_bed_motion_sensor', 'on') }}
+      # Upstairs Large Bedroom motion
+      up_lg_bed_motion:
+        friendly_name: "Upstairs Large Bedroom Motion"
+        device_class: motion
+        delay_off: "00:14:00"
+        value_template: >-
+          {{ is_state('binary_sensor.up_lg_bed_motion_sensor', 'on') }}
+      # Studio motion
+      studio_motion:
+        friendly_name: "Studio Motion"
+        device_class: motion
+        delay_off: "00:14:00"
+        value_template: >-
+          {{ is_state('binary_sensor.studio_motion_sensor', 'on') }}
+      # Studio Bathroom motion
+      studio_bath_motion:
+        friendly_name: "Studio Bathroom Motion"
+        device_class: motion
+        delay_off: "00:14:00"
+        value_template: >-
+          {{ is_state('binary_sensor.studio_bath_motion_sensor', 'on') }}
+      # Garage motion
+      garage_motion:
+        friendly_name: "Garage Motion"
+        device_class: motion
+        delay_off: "00:14:00"
+        value_template: >-
+          {{ is_state('binary_sensor.garage_motion_sensor', 'on') }}
+      # Spare motion
+      spare_motion:
+        friendly_name: "Spare Motion"
+        device_class: motion
+        delay_off: "00:14:00"
+        value_template: >-
+          {{ is_state('binary_sensor.spare_motion_sensor', 'on') }}
+
+################################################################
+## Group
+################################################################
+group:
+  motion:
+    name: Motion Sensors
+    control: hidden
+    entities:
+      - binary_sensor.any_motion
+      - binary_sensor.any_house_motion
+      - binary_sensor.any_studio_motion
+      - binary_sensor.kitchen_motion
+      - binary_sensor.comp_room_motion
+      - binary_sensor.master_bath_motion
+      - binary_sensor.up_bath_motion
+      - binary_sensor.up_sm_bed_motion
+      - binary_sensor.up_lg_bed_motion
+      - binary_sensor.studio_motion
+      - binary_sensor.studio_bath_motion
+      - binary_sensor.garage_motion
+      - binary_sensor.spare_motion
+      - binary_sensor.kitchen_motion_sensor_lb
+      - binary_sensor.comp_room_motion_sensor_lb
+      - binary_sensor.master_bath_motion_sensor_lb
+      - binary_sensor.up_bath_motion_sensor_lb
+      - binary_sensor.up_sm_bed_motion_sensor_lb
+      - binary_sensor.up_lg_bed_motion_sensor_lb
+      - binary_sensor.studio_motion_sensor_lb
+      - binary_sensor.studio_bath_motion_sensor_lb
+      - binary_sensor.garage_motion_sensor_lb
+      - binary_sensor.spare_motion_sensor_lb
+
+################################################################
+## Automation
+################################################################
+automation:
+  # Motion Sensor low battery alert
+  - id: motion_sensor_low_battery
+    alias: "Motion Sensor Low Battery"
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.kitchen_motion_sensor_lb
+        to: 'on'
+      - platform: state
+        entity_id: binary_sensor.comp_room_motion_sensor_lb
+        to: 'on'
+      - platform: state
+        entity_id: binary_sensor.master_bath_motion_sensor_lb
+        to: 'on'
+      - platform: state
+        entity_id: binary_sensor.up_bath_motion_sensor_lb
+        to: 'on'
+      - platform: state
+        entity_id: binary_sensor.up_sm_bed_motion_sensor_lb
+        to: 'on'
+      - platform: state
+        entity_id: binary_sensor.up_lg_bed_motion_sensor_lb
+        to: 'on'
+      - platform: state
+        entity_id: binary_sensor.studio_motion_sensor_lb
+        to: 'on'
+      - platform: state
+        entity_id: binary_sensor.studio_bath_motion_sensor_lb
+        to: 'on'
+      - platform: state
+        entity_id: binary_sensor.garage_motion_sensor_lb
+        to: 'on'
+      - platform: state
+        entity_id: binary_sensor.spare_motion_sensor_lb
+        to: 'on'
+    action:
+      - service: persistent_notification.create
+        data_template:
+          message: 'Time to replace battery in {{trigger.to_state.name}}.'
+          title: "Low Battery Detected"

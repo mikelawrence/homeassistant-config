@@ -1,0 +1,69 @@
+################################################################
+## Packages / Garage
+##   Garage ISY-994 lights, switches, and scenes
+##   Garage Groups
+################################################################
+
+################################################################
+## Customize
+################################################################
+homeassistant:
+  customize:
+    ################################################
+    ## Cover
+    ################################################
+    cover.garage_door_1:
+      friendly_name: "Garage Door 1"
+      device_class: garage
+      assumed_state: true
+    cover.garage_door_2:
+      friendly_name: "Garage Door 2"
+      device_class: garage
+    cover.garage_door_3:
+      friendly_name: "Garage Door 3"
+      device_class: garage
+
+    ################################################
+    ## Switch
+    ################################################
+    switch.garage_light_door:
+      friendly_name: "Garage Light"
+      icon: mdi:lightbulb
+    switch.garage_light:
+      friendly_name: "Garage Light"
+      icon: mdi:lightbulb
+
+    ################################################
+    ## Binary Sensor
+    ################################################
+    binary_sensor.garage_door_sensor:
+      friendly_name: "Garage Door"
+      device_class: door
+
+################################################################
+## Group
+################################################################
+group:
+  garage:
+    name: Garage
+    control: hidden
+    entities:
+      - switch.garage_light
+      - binary_sensor.garage_door_sensor
+      - cover.garage_door_1
+      - cover.garage_door_2
+      - cover.garage_door_3
+
+################################################################
+## Scene
+################################################################
+# scene:
+#   - name: Garage Door 1 Button
+#     entities:
+#       switch.garage_door_1: on
+#   - name: Garage Door 2 Button
+#     entities:
+#       switch.garage_door_2: on
+#   - name: Garage Door 3 Button
+#     entities:
+#       switch.garage_door_3: on

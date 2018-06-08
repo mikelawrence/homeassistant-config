@@ -1,0 +1,157 @@
+################################################################
+## Packages / Studio Mode
+##   Studio State Control
+################################################################
+
+################################################################
+## Customize
+################################################################
+homeassistant:
+  customize:
+    ################################################
+    ## Group
+    ################################################
+    group.studio_mode:
+      friendly_name: "Studio Mode"
+      icon: mdi:home-variant
+
+    ################################################
+    ## Sensor
+    ################################################
+    sensor.studio_mode:
+      friendly_name: "Studio Mode"
+
+    ################################################
+    ## Switch
+    ################################################
+    # ISY-994 program switch "HA.switch/studio state"
+    # 'on' = Home, 'off' = Away
+    switch.studio_state:
+      friendly_name: "Studio Home"
+      icon: mdi:home
+      homebridge_name: "Studio"
+      homebridge_visible: true
+
+################################################################
+## Group
+################################################################
+group:
+  studio_mode:
+    control: hidden
+    entities:
+      - switch.studio_state
+      - input_boolean.guest_mode
+      - input_boolean.vacation_mode
+      - sensor.studio_mode
+      - binary_sensor.studio_front_door_sensor
+      - binary_sensor.people_home
+
+################################################################
+## Sensor
+################################################################
+sensor:
+  - platform: template
+    sensors:
+      studio_mode:
+        entity_id:
+          - switch.studio_state
+          - binary_sensor.guest_active
+          - binary_sensor.vacation_active
+        value_template: >-
+          {% if is_state('binary_sensor.guest_active', 'on') %}
+            Guest
+          {% elif is_state('switch.studio_state', 'on') %}
+            Home
+          {% elif is_state('binary_sensor.vacation_active', 'on') %}
+            Vacation
+          {% else %}
+            Away
+          {% endif %}
+        icon_template: >-
+          {% if is_state('binary_sensor.guest_active', 'on') %}
+            mdi:account
+          {% elif is_state('switch.studio_state', 'on') %}
+            mdi:home
+          {% elif is_state('binary_sensor.vacation_active', 'on') %}
+            mdi:beach
+          {% else %}
+            mdi:home-outline
+          {% endif %}
+
+################################################################
+## Automation
+################################################################
+automation:
+  # Device Tracking switched to Nobody Home or Vacation Mode was activated
+  #   Switch Studio to Away Mode if not in Guest Mode
+  - id: studio_auto_away
+    alias: Studio Auto Away when Nobody is Home
+    trigger:
+      # Nobody home
+      - platform: state
+        entity_id: binary_sensor.people_away
+        from: 'off'
+        to: 'on'
+        for: '00:15:00'
+      # Switched to Vacation Mode
+      - platform: state
+        entity_id: input_boolean.vacation_mode
+        from: 'off'
+        to: 'on'
+    # Auto Away Mode does not happen in Guest Mode
+    condition:
+      condition: state
+      entity_id: binary_sensor.guest_active
+      state: 'off'
+    action:
+      - service: switch.turn_off
+        entity_id: switch.studio_state
+      - service: logbook.log
+        data_template:
+          name: Studio
+          message: automatically switched to Away Mode
+
+  # Studio manually switched to Away Mode
+  #   Either by HASS switch or KeypadLinc switch
+  - id: studio_switched_to_away
+    alias: Studio switched to Away
+    trigger:
+      platform: state
+      entity_id: switch.studio_state
+      from: 'on'
+      to: 'off'
+    action:
+      - service: logbook.log
+        data_template:
+          name: Studio
+          message: manually switched to Away Mode
+      - service: script.sonos_studio_say
+        data:
+          volume: 0.5
+          delay: '00:00:02'
+          message: 'Goodbye.'
+      # turn off Studio TV
+      - service: remote.turn_off
+        data:
+          entity_id: remote.studio
+          activity: PowerOff
+
+  # Studio manually switched to Home Mode
+  #   Either by HASS switch or KeypadLinc switch
+  - id: studio_switched_to_home
+    alias: Studio switched to Home
+    trigger:
+      platform: state
+      entity_id: switch.studio_state
+      from: 'off'
+      to: 'on'
+    action:
+      - service: logbook.log
+        data_template:
+          name: Studio
+          message: manually switched to Home Mode
+      - service: script.sonos_studio_say
+        data:
+          volume: 0.5
+          delay: '00:00:02'
+          message: 'Hello.'

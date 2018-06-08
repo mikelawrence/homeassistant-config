@@ -1,0 +1,287 @@
+################################################################
+## Packages / House
+##   House ISY-994 lights, switches, and scenes
+##   House Media Players
+##   House Groups
+################################################################
+
+################################################################
+## Customize
+################################################################
+homeassistant:
+  customize:
+    ################################################
+    ## Media Player
+    ################################################
+    media_player.family_room:
+      friendly_name: "DirecTV Family Room"
+    media_player.apple_tv_family_room:
+      friendly_name: "Apple TV Family Room"
+    media_player.sonos_family_room:
+      friendly_name: "Sonos Family Room"
+
+    ################################################
+    ## Binary Sensor
+    ################################################
+    binary_sensor.house_back_door_sensor:
+      friendly_name: "Back Door"
+      device_class: door
+    binary_sensor.house_front_door_sensor:
+      friendly_name: "Front Door"
+      device_class: door
+
+    ################################################
+    ## Light
+    ################################################
+    light.kitchen_light_backdoor:
+      friendly_name: "Kitchen Light"
+    light.kitchen_cabinet_light_sink:
+      friendly_name: "Kitchen Cabinet Lights"
+    light.down_bath_light:
+      friendly_name: "Downstairs Bathroom Light"
+    light.family_room_fan_light:
+      friendly_name: "Family Room Light"
+    light.down_hall_light_kitchen:
+      friendly_name: "Hallway Light"
+    light.stairs_light_downstairs:
+      friendly_name: "Stairs Light"
+    light.master_bed_fan_light:
+      friendly_name: "Master Bedroom Light"
+    light.master_bed_lamp_mike:
+      friendly_name: "Master Bedroom Mike's Lamp"
+    light.master_bed_lamp_clara:
+      friendly_name: "Master Bedroom Clara's Lamp"
+    light.master_closet_light_door:
+      friendly_name: "Master Closet Light"
+    light.master_bath_light_door:
+      friendly_name: "Master Bathroom Light"
+    light.utility_room_light_backdoor:
+      friendly_name: "Utility Room Light"
+    light.up_bath_light_door:
+      friendly_name: "Upstairs Bathroom Light"
+    light.up_sm_bed_fan_light:
+      friendly_name: "Mikey Bedroom Light"
+    light.up_lg_bed_fan_light:
+      friendly_name: "Bryan Bedroom Light"
+
+    ################################################
+    ## Switch
+    ################################################
+    switch.kitchen_lights:
+      friendly_name: "Kitchen Lights"
+      icon: mdi:fan
+      homebridge_visible: true
+      homebridge_name: "Kitchen Lights"
+    switch.kitchen_fan:
+      friendly_name: "Kitchen Fan"
+      icon: mdi:fan
+      homebridge_visible: true
+      homebridge_name: "Kitchen Fan"
+    switch.computer_room_light:
+      friendly_name: "Computer Room Light"
+      icon: mdi:lightbulb
+      homebridge_visible: true
+      homebridge_name: "Computer Room Light"
+    switch.family_room_light:
+      friendly_name: "Family Room Light"
+      icon: mdi:lightbulb
+      homebridge_visible: true
+      homebridge_name: "Master Bedroom Light"
+    switch.master_bed_light:
+      friendly_name: "Master Bedroom Light"
+      icon: mdi:lightbulb
+      homebridge_visible: true
+      homebridge_name: "Master Bedroom Light"
+    switch.master_closet_light:
+      friendly_name: "Master Closet Light"
+      icon: mdi:lightbulb
+    switch.master_bath_light:
+      friendly_name: "Master Bathroom Light"
+      icon: mdi:lightbulb
+    switch.master_bath_vent_fan:
+      friendly_name: "Master Bathroom Fan"
+      icon: mdi:fan
+    switch.master_bed_porch_light:
+      friendly_name: "Back Porch Light"
+      icon: mdi:lightbulb
+
+    ################################################
+    ## Fan
+    ################################################
+    fan.family_room_fan:
+      friendly_name: "Family Room Fan"
+      homebridge_visible: true
+      homebridge_name: "Family Room Fan"
+    fan.computer_room_fan:
+      friendly_name: "Computer Room Fan"
+      homebridge_visible: true
+      homebridge_name: "Computer Room Fan"
+    fan.master_bed_fan:
+      friendly_name: "Master Bedroom Fan"
+      homebridge_visible: true
+      homebridge_name: "Master Bedroom Fan"
+    fan.up_lg_bed_fan:
+      friendly_name: "Bryan Bedroom Fan"
+      homebridge_visible: true
+      homebridge_name: "Bryan Bedroom Fan"
+    fan.up_sm_bed_fan:
+      friendly_name: "Mikey Bedroom Fan"
+      homebridge_visible: true
+      homebridge_name: "Mikey Bedroom Fan"
+
+    ################################################
+    ## Scene
+    ################################################
+    scene.kitchen_morning:
+      friendly_name: "Kitchen Morning"
+      homebridge_visible: true
+      #homebridge_name: "Morning"
+
+    scene.master_bedroom_all_off:
+      friendly_name: "Master Bedroom All Off"
+      homebridge_visible: true
+      #homebridge_name: "Morning"
+
+    ################################################
+    ## Remote
+    ################################################
+    remote.family_room:
+      friendly_name: "Family Room Harmony Remote"
+
+################################################################
+## Group
+################################################################
+group:
+  # House Kitchen
+  kitchen:
+    name: Kitchen
+    control: hidden
+    entities:
+      - switch.kitchen_lights
+      - switch.kitchen_fan
+      - scene.kitchen_morning
+      - scene.kitchen_all_off
+
+  # House Family Room
+  family_room:
+    name: Family Room
+    control: hidden
+    entities:
+      - switch.family_room_light
+      - fan.family_room_fan
+      - scene.family_room_all_off
+
+  # House Computer Room
+  computer_room:
+    name: Computer Room
+    control: hidden
+    entities:
+      - switch.computer_room_light
+      - fan.computer_room_fan
+      - scene.computer_room_all_off
+
+  # House Master Bedroom
+  master_bed_room:
+    name: Master Bedroom
+    control: hidden
+    entities:
+      - switch.master_bed_light
+      - fan.master_bed_fan
+      - switch.master_closet_light
+      - switch.master_bath_light
+
+  # House Media Players
+  family_room_media:
+    name: Family Room Media
+    control: hidden
+    entities:
+      - media_player.sonos_family_room
+      - media_player.family_room
+      - media_player.apple_tv_family_room
+
+  # House Utility Room
+  utility_room:
+    name: Utility Room
+    control: hidden
+    entities:
+      - light.utility_room_light_backdoor
+
+  # House Climate group
+  house_climate:
+    name: House Climate
+    control: hidden
+    entities:
+      - climate.downstairs
+      - climate.upstairs
+      - sensor.downstairs_cool_hours_yesterday
+      - sensor.upstairs_cool_hours_yesterday
+      - sensor.downstairs_heat_hours_yesterday
+      - sensor.upstairs_heat_hours_yesterday
+
+################################################################
+## Scene
+################################################################
+scene:
+  - name: Kitchen Morning
+    entities:
+      switch.kitchen_morning: on
+  - name: Kitchen All Off
+    entities:
+      switch.kitchen_all_off: on
+  - name: Family Room All Off
+    entities:
+      switch.family_room_all_off: on
+  - name: Computer Room All Off
+    entities:
+      switch.computer_room_all_off: on
+  - name: Master Bedroom All Off
+    entities:
+      switch.kitchen_all_off: on
+
+################################################################
+## Sensor
+################################################################
+sensor:
+  # accumulates the time the Downstairs AC has been cooling yesterday
+  - platform: history_stats
+    name: Downstairs Cool Hours Yesterday
+    entity_id: sensor.downstairs_thermostat_hvac_state
+    state: 'cooling'
+    type: time
+    # all of yesterday
+    end: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    duration:
+      hours: 24
+
+  # accumulates the time the Downstairs AC has been heating yesterday
+  - platform: history_stats
+    name: Downstairs Heat Hours Yesterday
+    entity_id: sensor.downstairs_thermostat_hvac_state
+    state: 'heating'
+    type: time
+    # all of yesterday
+    end: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    duration:
+      hours: 24
+
+  # accumulates the time the Upstairs AC has been cooling yesterday
+  - platform: history_stats
+    name: Upstairs Cool Hours Yesterday
+    entity_id: sensor.upstairs_thermostat_hvac_state
+    state: 'cooling'
+    type: time
+    # all of yesterday
+    end: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    duration:
+      hours: 24
+
+  # accumulates the time the Upstairs AC has been heating yesterday
+  - platform: history_stats
+    name: Upstairs Heat Hours Yesterday
+    entity_id: sensor.upstairs_thermostat_hvac_state
+    state: 'heating'
+    type: time
+    # all of yesterday
+    end: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    duration:
+      hours: 24

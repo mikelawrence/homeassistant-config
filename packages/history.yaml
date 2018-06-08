@@ -1,0 +1,51 @@
+##################################################
+##  history
+##################################################
+history:
+  use_include_order: True
+  include:
+    entities:
+      - sensor.house_mode
+      - sensor.studio_mode
+      - binary_sensor.people_home
+      - device_tracker.mike_meta
+      - device_tracker.mike_iphone
+      - device_tracker.mike_iphone_ios
+      - device_tracker.clara_meta
+      - device_tracker.clara_iphone
+      - device_tracker.clara_iphone_ios
+      - device_tracker.mikey_meta
+      - device_tracker.mikey_iphone
+      - device_tracker.bryan_meta
+      - device_tracker.bryan_iphone
+      - binary_sensor.any_motion
+      - binary_sensor.any_house_motion
+      - binary_sensor.any_studio_motion
+      - binary_sensor.comp_room_motion
+      - binary_sensor.kitchen_motion
+      - binary_sensor.master_bath_motion
+      - binary_sensor.up_bath_motion
+      - binary_sensor.up_sm_bed_motion
+      - binary_sensor.up_lg_bed_motion
+      - binary_sensor.studio_motion
+      - binary_sensor.studio_bath_motion
+      - binary_sensor.garage_motion
+      - sensor.front_gate_status
+      - sensor.septic_status
+      - binary_sensor.septic_pump
+      - sensor.upstairs_thermostat_operation_mode
+      - sensor.upstairs_thermostat_hvac_state
+      - sensor.downstairs_thermostat_operation_mode
+      - sensor.downstairs_thermostat_hvac_state
+      - sensor.studio_thermostat_operation_mode
+      - sensor.studio_thermostat_hvac_state
+      - sensor.downstairs_thermostat_temperature
+      - sensor.upstairs_thermostat_temperature
+      - sensor.studio_thermostat_temperature
+      - sensor.front_gate_temperature
+      - sensor.septic_temperature
+      - sensor.weewx_temperature
+      - sensor.front_gate_rssi
+      - sensor.septic_rssi
+      - sensor.house_roof_light_rssi
+      - sensor.studio_roof_light_rssi

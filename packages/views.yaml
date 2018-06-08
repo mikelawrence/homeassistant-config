@@ -1,0 +1,136 @@
+################################################################
+#  Packages / Views
+################################################################
+
+################################################
+#  Customize
+################################################
+homeassistant:
+  customize:
+    ################################################
+    #  Customize Group
+    ################################################
+    group.default_view:
+      friendly_name: "House"
+
+    group.studio_view:
+      friendly_name: "Studio"
+
+    group.outside_view:
+      friendly_name: "Outside"
+
+    group.weather_view:
+      friendly_name: "Weather"
+      icon: mdi:weather-lightning
+
+    group.camera_view:
+      friendly_name: "Cameras"
+      icon: mdi:cctv
+
+    group.household_view:
+      friendly_name: "Household View"
+      icon: mdi:human-greeting
+
+    group.lights_view:
+      friendly_name: "Everything"
+      icon: mdi:lightbulb
+
+################################################
+## Group
+################################################
+group:
+  default_view:
+    view: yes
+    entities:
+      - device_tracker.mike_meta
+      - device_tracker.clara_meta
+      - device_tracker.mikey_meta
+      - device_tracker.bryan_meta
+      - sensor.downstairs_thermostat_temperature
+      - sensor.upstairs_thermostat_temperature
+      - group.house_mode
+      - group.kitchen
+      - group.family_room
+      - group.computer_room
+      - group.computer_room
+      - group.master_bed_room
+      - group.house_climate
+      - group.family_room_media
+
+  studio_view:
+    view: yes
+    entities:
+      - device_tracker.mike_meta
+      - device_tracker.clara_meta
+      - device_tracker.mikey_meta
+      - device_tracker.bryan_meta
+      - sensor.studio_thermostat_temperature
+      - group.studio_mode
+      - group.studio
+      - group.backyard
+      - group.studio_bed
+      - group.studio_kitchen
+      - group.studio_loft
+      - group.studio_climate
+      - group.studio_media
+
+  outside_view:
+    view: yes
+    entities:
+      - device_tracker.mike_meta
+      - device_tracker.clara_meta
+      - device_tracker.mikey_meta
+      - device_tracker.bryan_meta
+      - sensor.weewx_temperature
+      - group.front_gate
+      - group.garage
+      - group.backyard_lights
+      - group.roof_floodlights
+      - group.septic
+
+  weather_view:
+    view: yes
+    entities:
+      - device_tracker.mike_meta
+      - device_tracker.clara_meta
+      - device_tracker.mikey_meta
+      - device_tracker.bryan_meta
+      - weather.yweather
+      - group.weewx
+
+  camera_view:
+    view: yes
+    entities:
+      - group.camera_front_road
+      - group.camera_house_driveway
+      - group.camera_garage_driveway
+      - group.camera_studio_front
+      - group.camera_studio_back
+      - group.camera_garage_inside_left
+      - group.camera_garage_inside_right
+      - group.camera_weather
+
+  household_view:
+    view: yes
+    entities:
+      - device_tracker.mike_meta
+      - device_tracker.clara_meta
+      - device_tracker.mikey_meta
+      - device_tracker.bryan_meta
+      - binary_sensor.people_home
+      - binary_sensor.people_away
+      - group.household
+      - group.guests
+
+  lights_view:
+    view: yes
+    entities:
+      - group.motion
+      - group.all_scripts
+      - group.all_automations
+      - group.all_scenes
+      - group.all_lights
+      - group.all_switches
+      - group.all_fans
+      - group.all_covers
+      - group.all_devices
