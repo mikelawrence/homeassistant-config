@@ -6,7 +6,7 @@
 ## Camera
 ################################################################
 camera:
-  # enable Unifi Video cameras
+  # enable Unifi Video Cameras
   - platform: uvc
     nvr: 192.168.1.200
     password: !secret uvc_password
