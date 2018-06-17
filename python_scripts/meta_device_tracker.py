@@ -19,10 +19,10 @@ BryanTrackers = ['device_tracker.bryan_iphone']
 triggeredEntity = data.get('entity_id')
 
 # if the triggering entity is the meta device tracker then we need to
-#   use most recent tracker for tht person
+#   use most recent tracker for that person
 if triggeredEntity == 'device_tracker.mike_meta':
     bestEntity = MikeTrackers[0]
-    last_changed = datetime.min
+    last_changed = hass.states.get(bestEntity).last_changed
     for entity in MikeTrackers:
         state = hass.states.get(entity)
         if state != None:
@@ -31,7 +31,7 @@ if triggeredEntity == 'device_tracker.mike_meta':
                 last_changed = state.last_changed
 elif triggeredEntity == 'device_tracker.clara_meta':
     bestEntity = ClaraTrackers[0]
-    last_changed = datetime.min
+    last_changed = hass.states.get(bestEntity).last_changed
     for entity in ClaraTrackers:
         state = hass.states.get(entity)
         if state != None:
@@ -40,7 +40,7 @@ elif triggeredEntity == 'device_tracker.clara_meta':
                 last_changed = state.last_changed
 elif triggeredEntity == 'device_tracker.mikey_meta':
     bestEntity = MikeyTrackers[0]
-    last_changed = datetime.min
+    last_changed = hass.states.get(bestEntity).last_changed
     for entity in MikeyTrackers:
         state = hass.states.get(entity)
         if state != None:
@@ -49,7 +49,7 @@ elif triggeredEntity == 'device_tracker.mikey_meta':
                 last_changed = state.last_changed
 elif triggeredEntity == 'device_tracker.bryan_meta':
     bestEntity = BryanTrackers[0]
-    last_changed = datetime.min
+    last_changed = hass.states.get(bestEntity).last_changed
     for entity in BryanTrackers:
         state = hass.states.get(entity)
         if state != None:
