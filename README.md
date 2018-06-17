@@ -43,4 +43,4 @@ senseme:
 ### Problems
 * TomFaulkner's SenseMe library has a bug that periodically causes exceptions when getting the status of common attributes like fan speed or light brightness.
 * TomFaulkner's SenseMe library doesn't immediately update attributes when they are set by the same library. This means when you turn the fan on it may take upwards of 30 seconds before the correct status is shown in Home Assistant.
-* I have modified TomFaulkner's library to work with HA and have opened [two issues](https://github.com/TomFaulkner/SenseMe/issues) and offered a pull request to see if TomFaulkner will pick them and update his library.
+* I have modified TomFaulkner's library to work with HA and have opened [two issues](https://github.com/TomFaulkner/SenseMe/issues) and offered a pull request to see if TomFaulkner will pick them and update his library. Until this happens you can replace the senseme file installed in your configuration folder under deps/lib/python?.?/site-packages/senseme with this [senseme.py](https://github.com/mikelawrence/SenseMe/blob/master/senseme/senseme.py) file.

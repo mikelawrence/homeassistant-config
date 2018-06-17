@@ -24,6 +24,7 @@ secrets.yaml
 .cloud
 appdaemon
 deps
-homebridge
 tts
 www
+*.db-shm
+*.db-wal

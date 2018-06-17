@@ -102,8 +102,7 @@ class HaikuSenseMeFan(FanEntity):
     def set_speed(self, speed: str) -> None:
         """Set the speed of the fan."""
         if speed == None:
-            # do nothing for no speed selected
-            return
+            speed = 4
         else:
             speed = int(speed)
         self._hub.speed = speed
