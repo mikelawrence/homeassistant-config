@@ -15,7 +15,6 @@ homeassistant:
   # Packages directory
   packages: !include_dir_named packages
 
-
 # Show links to resources in log and frontend
 #introduction:
 
@@ -73,6 +72,15 @@ weather:
 # climate
 climate:
   platform: nest
+
+# enable Haiku with SenseMe ceiling fans
+senseme:
+  max_number_fans: 2
+  # include:
+  #   - "Studio Vault Fan"
+  #   - "Studio Beam Fan"
+  exclude:
+    - "Studio Beam Fan"
 
 # nest
 nest:

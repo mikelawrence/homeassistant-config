@@ -29,8 +29,6 @@ homeassistant:
     switch.studio_state:
       friendly_name: "Studio Home"
       icon: mdi:home
-      homebridge_name: "Studio"
-      homebridge_visible: true
 
 ################################################################
 ## Group

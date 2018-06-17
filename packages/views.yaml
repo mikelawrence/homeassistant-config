@@ -54,6 +54,8 @@ group:
       - group.computer_room
       - group.computer_room
       - group.master_bed_room
+      - group.mikey_bed_room
+      - group.bryan_bed_room
       - group.house_climate
       - group.family_room_media
 

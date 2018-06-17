@@ -27,8 +27,6 @@ homeassistant:
     switch.backyard_lights:
       friendly_name: "All Backyard Lights"
       icon: mdi:lightbulb
-      homebridge_visible: true
-      homebridge_name: "Backyard Lights"
 
 ################################################################
 ## Group
@@ -56,7 +54,7 @@ group:
       - sensor.studio_roof_light_temperature
       - sensor.house_roof_light_rssi
       - sensor.studio_roof_light_rssi
-      
+
   # Front Gate
   front_gate:
     name: Front Gate

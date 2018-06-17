@@ -1,0 +1,31 @@
+################################################################
+## Packages / homekit
+##   Handles Homekit setup
+#################################################################
+homekit:
+  filter:
+    include_entities:
+      - switch.backyard_lights
+      - switch.studio_state
+      - switch.studio_chandeliers
+      - switch.studio_shoplights
+      - media_player.sonos_studio
+
+
+
+
+  entity_config:
+    switch.backyard_lights:
+      name: "Backyard Lights"
+
+    switch.studio_state:
+      name: "Studio"
+    switch.studio_chandeliers:
+      name: "Studio Lights"
+    switch.studio_shoplights:
+      name: "Studio Shoplights"
+    media_player.sonos_studio:
+      name: "Studio Sonos"
+      feature_list:
+        - feature: on_off
+        - feature: play_pause

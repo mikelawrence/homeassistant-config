@@ -61,6 +61,8 @@ homeassistant:
       friendly_name: "Upstairs Bathroom Light"
     light.up_sm_bed_fan_light:
       friendly_name: "Mikey Bedroom Light"
+    light.up_sm_bed_closet_light:
+      friendly_name: "Mikey Closet Light"
     light.up_lg_bed_fan_light:
       friendly_name: "Bryan Bedroom Light"
 
@@ -103,6 +105,12 @@ homeassistant:
       icon: mdi:fan
     switch.master_bed_porch_light:
       friendly_name: "Back Porch Light"
+      icon: mdi:lightbulb
+    switch.up_sm_bed_light:
+      friendly_name: "Mikey Bedroom Light"
+      icon: mdi:lightbulblight
+    switch.up_lg_bed_light:
+      friendly_name: "Bryan Bedroom Light"
       icon: mdi:lightbulb
 
     ################################################
@@ -190,6 +198,30 @@ group:
       - switch.master_closet_light
       - switch.master_bath_light
 
+  # Mikey's Bedroom
+  mikey_bed_room:
+    name: Mikey's Bedroom
+    control: hidden
+    entities:
+      - switch.up_sm_bed_light
+      - light.up_sm_bed_closet_light
+      - fan.up_sm_bed_fan
+
+  # Bryan's Bedroom
+  bryan_bed_room:
+    name: Bryan's Bedroom
+    control: hidden
+    entities:
+      - switch.up_lg_bed_light
+      - fan.up_lg_bed_fan
+
+  # House Utility Room
+  utility_room:
+    name: Utility Room
+    control: hidden
+    entities:
+      - light.utility_room_light_backdoor
+
   # House Media Players
   family_room_media:
     name: Family Room Media
@@ -198,13 +230,6 @@ group:
       - media_player.sonos_family_room
       - media_player.family_room
       - media_player.apple_tv_family_room
-
-  # House Utility Room
-  utility_room:
-    name: Utility Room
-    control: hidden
-    entities:
-      - light.utility_room_light_backdoor
 
   # House Climate group
   house_climate:

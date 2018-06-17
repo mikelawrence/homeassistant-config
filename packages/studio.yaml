@@ -35,10 +35,8 @@ homeassistant:
       icon: mdi:ceiling-light
     light.studio_bed_fan_light:
       friendly_name: "Studio Bedroom Light"
-      icon: mdi:lightbulb
     light.studio_bath_light_door:
       friendly_name: "Studio Bathroom Light"
-      icon: mdi:lightbulb
     light.studio_kitchen_chandelier:
       friendly_name: "Studio Kitchen Chandelier"
       icon: mdi:ceiling-light
@@ -47,21 +45,26 @@ homeassistant:
       icon: mdi:ceiling-light
     light.studio_kitchen_cabinet_lights:
       friendly_name: "Studio Kitchen Cabinet Lights"
-      icon: mdi:lightbulb
+    light.studio_beam_fan_light:
+      friendly_name: "Studio Beam Fan Light"
+      icon: mdi:ceiling-light
+    light.studio:
+      friendly_name: "Studio Fan Light"
+      icon: mdi:ceiling-light
+    light.studio_vault_fan_light:
+      friendly_name: "Studio Vault Fan Light"
+      icon: mdi:ceiling-light
 
     ################################################
     ## Switch
     ################################################
+    # scene
     switch.studio_chandeliers:
       friendly_name: "Studio Chandeliers"
       icon: mdi:ceiling-light
-      homebridge_visible: true
-      homebridge_name: "Studio Lights"
     switch.studio_shoplights:
       friendly_name: "Studio Shoplights"
       icon: mdi:spotlight-beam
-      homebridge_visible: true
-      homebridge_name: "Studio Shoplights"
     switch.studio_shoplight_a:
       friendly_name: "Studio Shoplight A"
       icon: mdi:spotlight-beam
@@ -93,6 +96,12 @@ homeassistant:
     ################################################
     ## Fan
     ################################################
+    fan.studio:
+      friendly_name: "Studio Fan"
+    fan.studio_vault_fan:
+      friendly_name: "Studio Vault Fan"
+    fan.studio_beam_fan:
+      friendly_name: "Studio Beam Fan"
     fan.studio_bed_fan:
       friendly_name: "Studio Bedroom Fan"
     fan.studio_loft_fan:
@@ -113,12 +122,17 @@ group:
     name: Studio
     control: hidden
     entities:
-      - switch.studio_chandeliers
+      - light.studio_chandeliers_door
+      - light.studio_kitchen_chandelier
       - switch.studio_shoplights
       - switch.studio_shoplight_a
       - switch.studio_shoplight_b
       - switch.studio_shoplight_c
       - switch.studio_shoplight_d
+      - fan.studio_vault_fan
+      - light.studio_vault_fan_light
+      - fan.studio_beam_fan
+      - light.studio_beam_fan_light
 
   # Studio Kitchen ISY-994 group
   studio_kitchen:
