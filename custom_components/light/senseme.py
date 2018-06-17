@@ -24,7 +24,7 @@ def setup_platform(hass, config, add_devices_callback, discovery_info=None):
     lights = []
     for hub in hass.data[DATA_HUBS]:
         # add the light only if one is installed in the fan
-        if hub.get_attribute(SENSEME_LIGHT_PRESENT) == 'PRESENT'
+        if hub.get_attribute(SENSEME_LIGHT_PRESENT) == 'PRESENT':
             lights.append(HaikuSenseMeLight(hass, hub))
     add_devices_callback(lights)
 
