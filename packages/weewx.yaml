@@ -158,11 +158,15 @@ sensor:
     unit_of_measurement: 'mph'
     value_template: "{{ value_json.windSpeed | round(0) }}"
 
+  # when wind is 0 windDir will not be defined
   - platform: mqtt
     name: weewx_wind_dir
     state_topic: "weather/loop"
     unit_of_measurement: '°'
-    value_template: "{{ value_json.windDir | round(0) }}"
+    value_template: >
+      {% if value_json.windDir %}
+        {{ value_json.windDir | round(0) }}
+      {% endif %}
 
   - platform: mqtt
     name: weewx_gust
@@ -170,11 +174,15 @@ sensor:
     unit_of_measurement: 'mph'
     value_template: "{{ value_json.windGust | round(0) }}"
 
+  # when gust is 0 windGustDir will not be defined
   - platform: mqtt
     name: weewx_gust_dir
     state_topic: "weather/loop"
     unit_of_measurement: '°'
-    value_template: "{{ value_json.windGustDir | round(0) }}"
+    value_template: >
+      {% if value_json.windGustDir %}
+        {{ value_json.windGustDir | round(0) }}
+      {% endif %}
 
   - platform: mqtt
     name: weewx_rain
