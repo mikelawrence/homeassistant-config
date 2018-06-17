@@ -20,9 +20,6 @@ Here's my [Home Assistant](https://home-assistant.io/) configuration. I am using
   * Raspberry Pi RGBW LED Controller HAT for controlling a high power RGB LED Floodlight.
     * KiCAD board design and software is available on [GitHub](https://github.com/mikelawrence/RPi-HAT-RGBW-LED-Controller).
 * Custom Haiku with SenseME fan component
-  * Uses TomFaulkner's [SenseMe](https://github.com/TomFaulkner/SenseMe) Python Library to communicate with the fan.
-    * I have modified the library to work with HA and have opened [two issues](https://github.com/TomFaulkner/SenseMe/issues) to see if the TomFaulkner will pick them and update his library.
-  * Supports fan on, speed, and whoosh (oscillate in HA) and light on and brightness.
 
 ## Custom Haiku with SenseME fan components
 The Haiku with SenseME fan is a WiFi connected fan and installable light. This custom component uses TomFaulkner's [SenseMe](https://github.com/TomFaulkner/SenseMe) Python Library to communicate with the fan.
