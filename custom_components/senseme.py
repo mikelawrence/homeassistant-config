@@ -16,10 +16,12 @@ from homeassistant.helpers.discovery import load_platform
 # SenseMe Python library by Tom Faulkner
 REQUIREMENTS = ['SenseMe==0.1.1']
 
+# delay between status updates (in seconds)
+UPDATE_DELAY = 30.0
+
 DOMAIN = 'senseme'
 
 DATA_HUBS = 'fans'
-MONITOR_FREQUENCY = 15
 
 CONF_MAX_NUMBER_FANS = 'max_number_fans'
 
@@ -48,36 +50,31 @@ def async_setup(hass, config):
     hubs = []
     include_list = config[DOMAIN].get(CONF_INCLUDE)
     exclude_list = config[DOMAIN].get(CONF_EXCLUDE)
-    # _LOGGER.warning("SenseME: include_list='%s', len=%d." %
-    #    (include_list, len(include_list)))
-    # _LOGGER.warning("SenseME: exclude_list='%s', len=%d." %
-    #    (exclude_list, len(exclude_list)))
-    if (len(include_list) > 0):
+    if len(include_list) > 0:
         # add only included
         for device in devices:
             if device.name in include_list:
-                hubs.append(device)
-                device.monitor_frequency = MONITOR_FREQUENCY
-                device.start_monitor()
-                # _LOGGER.warning("SenseME: Added included fan '%s'." %
+                hubs.append(SenseMe(ip=device.ip, name=device.name,
+                                    monitor_frequency=UPDATE_DELAY,
+                                    monitor=True))
+                # _LOGGER.debug("SenseMe: Added included fan '%s'." %
                 #                 device.name)
     else:
         # add only included and not excluded fans unless all
         for device in devices:
-            # _LOGGER.warning("SenseME: Discovered fan '%s'." % device.name)
-            if (device.name not in exclude_list):
-                # we should add this fan to the list
-                hubs.append(device)
-                device.monitor_frequency = MONITOR_FREQUENCY
-                device.start_monitor()
-                # _LOGGER.warning("SenseME: Added discovered fan '%s'." %
+            # add only if NOT excluded
+            if device.name not in exclude_list:
+                hubs.append(SenseMe(ip=device.ip, name=device.name,
+                                    monitor_frequency=UPDATE_DELAY,
+                                    monitor=True))
+                # _LOGGER.debug("SenseMe: Added discovered fan '%s'." %
                 #                 repr(device.name))
 
     # make sure included fans exist
     if len(include_list) > 0:
         for hub in hubs:
             if hub.name not in include_list:
-                _LOGGER.warning("SenseME: Included fan '%s' not found." %
+                _LOGGER.warning("SenseMe: Included fan '%s' not found." %
                                 hub.name)
 
     # start the first update of all parameters

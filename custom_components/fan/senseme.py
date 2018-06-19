@@ -36,8 +36,9 @@ class HaikuSenseMeFan(FanEntity):
         self.hass = hass
         self._hub = hub
         self._name = hub.name
+        self._last_speed = None
         self._supported_features = SUPPORT_SET_SPEED | SUPPORT_OSCILLATE
-        # _LOGGER.warning("SenseME Fan: Added fan '%s'." % self._name)
+        # _LOGGER.debug("SenseME Fan: Added fan '%s'." % self._name)
 
 
     @property
@@ -55,7 +56,7 @@ class HaikuSenseMeFan(FanEntity):
     @property
     def speed(self) -> str:
         speed = str(self._hub.get_attribute(SENSEME_FAN_SPEED))
-        # _LOGGER.warning("%s: Speed:%s" % (self._name, speed))
+        # _LOGGER.debug("%s: Speed:%s" % (self._name, speed))
         return speed
 
 
@@ -69,7 +70,7 @@ class HaikuSenseMeFan(FanEntity):
     def is_on(self) -> bool:
         """Return true if the fan is on."""
         state = self._hub.get_attribute(SENSEME_FAN_POWER) == 'ON'
-        # _LOGGER.warning("%s: Is on:%s" % (self._name, state))
+        # _LOGGER.debug("%s: Is on:%s" % (self._name, state))
         return state
 
 
@@ -77,7 +78,7 @@ class HaikuSenseMeFan(FanEntity):
     def oscillating(self):
         """Return the oscillation state."""
         state = self._hub.get_attribute(SENSEME_FAN_WHOOSH) == 'ON'
-        # _LOGGER.warning("%s: Oscillating:%s" % (self._name, state))
+        # _LOGGER.debug("%s: Oscillating:%s" % (self._name, state))
         return state
 
 
@@ -89,12 +90,18 @@ class HaikuSenseMeFan(FanEntity):
 
     def turn_on(self, speed: str = None, **kwargs) -> None:
         """Turn on the fan."""
+        if speed == None:
+            # speed undefined, use last speed if available
+            if self._last_speed:
+                speed = self._last_speed
         self.set_speed(speed)
         # _LOGGER.debug("%s: Turn fan on, speed:%s" % (self._name, speed))
 
 
     def turn_off(self, **kwargs) -> None:
         """Turn off the fan."""
+        # use to default speed when turning on again
+        self._last_speed = self._hub.speed
         self._hub.fan_powered_on = False
         # _LOGGER.debug("%s: Turn fan off" % self._name)
 

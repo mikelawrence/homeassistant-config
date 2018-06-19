@@ -36,8 +36,9 @@ class HaikuSenseMeLight(Light):
         self.hass = hass
         self._hub = hub
         self._name = hub.name + " Light"
+        self._last_brightness = None
         self._supported_features = SUPPORT_BRIGHTNESS
-        # _LOGGER.warning("SenseME Light: Added light '%s'." % self._name)
+        # _LOGGER.debug("SenseME Light: Added light '%s'." % self._name)
 
 
     @property
@@ -59,6 +60,7 @@ class HaikuSenseMeLight(Light):
         brightness = fan_brightness * 16
         if brightness > 255:
             brightness = 255
+        # _LOGGER.debug("%s: Brightness:%s" % (self._name, brightness))
         return brightness
 
 
@@ -66,6 +68,7 @@ class HaikuSenseMeLight(Light):
     def is_on(self) -> bool:
         """Return true if light is on."""
         state = self._hub.get_attribute(SENSEME_LIGHT_POWER) == 'ON'
+        # _LOGGER.debug("%s: Is on:%s" % (self._name, state))
         return state
 
 
@@ -77,27 +80,26 @@ class HaikuSenseMeLight(Light):
 
     def turn_on(self, **kwargs) -> None:
         """Turn on the light."""
-        brightness = kwargs.get(ATTR_BRIGHTNESS, 255)
-        if brightness >= 255:
-            brightness = 16
+        brightness = kwargs.get(ATTR_BRIGHTNESS)
+        if brightness == None:
+            # brightness undefined, use last brightness if available
+            if self._last_brightness:
+                brightness = self._last_brightness
+            else:
+                brightness = 16
         else:
-            brightness = int(brightness / 16)
+            if brightness >= 255:
+                brightness = 16
+            else:
+                brightness = int(brightness / 16)
         self._hub.brightness = brightness
-        # _LOGGER.warning("%s: Turn light on. Brightness: %d->%d" %
+        # _LOGGER.debug("%s: Turn light on. Brightness: %d->%d" %
         #     (self._name, kwargs.get(ATTR_BRIGHTNESS, 255), brightness))
 
 
     def turn_off(self, **kwargs) -> None:
         """Turn off the light."""
+        # use to default brightness when turning on again
+        self._last_brightness = self._hub.brightness
         self._hub.light_powered_on = False
-        # _LOGGER.warning("%s: Turn light off." % self._name)
-
-
-    # def update(self) -> None:
-    #     """Fetch new state data for this light.
-    #
-    #     This is the only method that should fetch new data for Home Assistant.
-    #     """
-    #     self._light.update()
-    #     self._state = self._light.is_on()
-    #     self._brightness = self._light.brightness
+        # _LOGGER.debug("%s: Turn light off." % self._name)
