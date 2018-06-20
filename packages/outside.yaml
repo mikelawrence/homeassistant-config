@@ -156,6 +156,44 @@ automation:
           topic: "hass/light/roof-lights/rgblight/set"
           payload: '{"transition": {{ trigger.to_state.state | int }}}'
 
+  # Front Gate Opened
+  - id: front_gate_opened
+    alias: Front Gate Opened
+    trigger:
+      platform: state
+      entity_id: cover.front_gate
+      to: 'open'
+    action:
+      - service: script.sonos_family_room_say
+        data:
+          volume: 0.7
+          delay: '00:00:03'
+          message: 'Front Gate Open.'
+      - service: script.sonos_studio_say
+        data:
+          volume: 0.7
+          delay: '00:00:03'
+          message: 'Front Gate Open.'
+
+  # Front Gate Open too long
+  - id: front_gate_open_too_long
+    alias: Front Gate Open too long
+    trigger:
+      platform: state
+      entity_id: binary_sensor.front_gate_open_too_long
+      to: 'on'
+    action:
+      - service: script.sonos_family_room_say
+        data:
+          volume: 0.7
+          delay: '00:00:03'
+          message: 'Front Gate Open Too Long.'
+      - service: script.sonos_studio_say
+        data:
+          volume: 0.7
+          delay: '00:00:03'
+          message: 'Front Gate Open Too Long.'
+
 ################################################################
 ## Alert
 ################################################################
