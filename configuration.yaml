@@ -45,6 +45,7 @@ discovery:
    - samsung_tv
    - directv
    - plex_mediaserver
+   - google_cast
 
 # Enable ios app
 ios:
