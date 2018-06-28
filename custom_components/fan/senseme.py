@@ -4,8 +4,9 @@ Support for Haiku with SenseME ceiling fan.
 For more details about this platform, please refer to the documentation
 ?????
 """
-from datetime import timedelta
 import logging
+import socket
+from datetime import timedelta
 
 from homeassistant.components.fan import (FanEntity, DOMAIN, SPEED_OFF,
                                           SUPPORT_SET_SPEED, SUPPORT_OSCILLATE)
@@ -23,10 +24,10 @@ SENSEME_FAN_WHOOSH = 'FAN;WHOOSH;STATUS'
 # pylint: disable=unused-argument
 def setup_platform(hass, config, add_devices_callback, discovery_info=None):
     """Set up the Haiku with SenseME ceiling fan platform."""
-    hubs = []
+    fans = []
     for hub in hass.data[DATA_HUBS]:
-        hubs.append(HaikuSenseMeFan(hass, hub))
-    add_devices_callback(hubs)
+        fans.append(HaikuSenseMeFan(hass, hub))
+    add_devices_callback(fans)
 
 
 class HaikuSenseMeFan(FanEntity):
@@ -38,7 +39,7 @@ class HaikuSenseMeFan(FanEntity):
         self._name = hub.name
         self._last_speed = None
         self._supported_features = SUPPORT_SET_SPEED | SUPPORT_OSCILLATE
-        # _LOGGER.debug("SenseME Fan: Added fan '%s'." % self._name)
+        _LOGGER.debug("%s: Created HaikuSenseMeFan" % self.name)
 
 
     @property
@@ -55,8 +56,10 @@ class HaikuSenseMeFan(FanEntity):
 
     @property
     def speed(self) -> str:
-        speed = str(self._hub.get_attribute(SENSEME_FAN_SPEED))
-        # _LOGGER.debug("%s: Speed:%s" % (self._name, speed))
+        try:
+            speed = self._hub.get_attribute(SENSEME_FAN_SPEED)
+        except KeyError:
+            speed = None
         return speed
 
 
@@ -69,17 +72,21 @@ class HaikuSenseMeFan(FanEntity):
     @property
     def is_on(self) -> bool:
         """Return true if the fan is on."""
-        state = self._hub.get_attribute(SENSEME_FAN_POWER) == 'ON'
-        # _LOGGER.debug("%s: Is on:%s" % (self._name, state))
+        try:
+            state = self._hub.get_attribute(SENSEME_FAN_POWER) == 'ON'
+        except KeyError:
+            state = None
         return state
 
 
     @property
     def oscillating(self):
         """Return the oscillation state."""
-        state = self._hub.get_attribute(SENSEME_FAN_WHOOSH) == 'ON'
-        # _LOGGER.debug("%s: Oscillating:%s" % (self._name, state))
-        return state
+        try:
+            oscillating = self._hub.get_attribute(SENSEME_FAN_WHOOSH) == 'ON'
+        except KeyError:
+            oscillating = None
+        return oscillating
 
 
     @property
@@ -91,31 +98,67 @@ class HaikuSenseMeFan(FanEntity):
     def turn_on(self, speed: str = None, **kwargs) -> None:
         """Turn on the fan."""
         if speed == None:
-            # speed undefined, use last speed if available
-            if self._last_speed:
-                speed = self._last_speed
-        self.set_speed(speed)
-        # _LOGGER.debug("%s: Turn fan on, speed:%s" % (self._name, speed))
+            if self._last_speed:    # use last speed
+                speed = int(self._last_speed)
+            else:                   # use default speed
+                speed = 4
+        else:                       # speed needs to be an integer
+            speed = int(speed)
+        retryCount = 2
+        while retryCount != 0:
+            try:
+                self._hub.speed = speed
+                break
+            except socket.error as e:
+                retryCount -= 1
+                if retryCount == 0:
+                    raise
+        _LOGGER.debug("%s: Turn fan on, speed: %s" % (self._name, speed))
 
 
     def turn_off(self, **kwargs) -> None:
         """Turn off the fan."""
         # use to default speed when turning on again
-        self._last_speed = self._hub.speed
-        self._hub.fan_powered_on = False
-        # _LOGGER.debug("%s: Turn fan off" % self._name)
+        self._last_speed = self.speed
+        retryCount = 2
+        while retryCount != 0:
+            try:
+                self._hub.fan_powered_on = False
+                break
+            except socket.error as e:
+                retryCount -= 1
+                if retryCount == 0:
+                    raise
+        _LOGGER.debug("%s: Turn fan off" % self._name)
 
 
     def set_speed(self, speed: str) -> None:
         """Set the speed of the fan."""
-        if speed == None:
+        if speed == None:           # use default speed
             speed = 4
-        else:
+        else:                       # speed needs to be an integer
             speed = int(speed)
-        self._hub.speed = speed
-        #_LOGGER.debug("%s: Set fan speed: %d" % (self._name, speed))
+        retryCount = 2
+        while retryCount != 0:
+            try:
+                self._hub.speed = speed
+                break
+            except socket.error as e:
+                retryCount -= 1
+                if retryCount == 0:
+                    raise
+        _LOGGER.debug("%s: Set fan speed: %s" % (self._name, speed))
 
 
     def oscillate(self, oscillating: bool) -> None:
         """Set oscillation."""
-        self._hub.whoosh = oscillating
+        retryCount = 2
+        while retryCount != 0:
+            try:
+                self._hub.whoosh = oscillating
+                break
+            except socket.error as e:
+                retryCount -= 1
+                if retryCount == 0:
+                    raise
+        _LOGGER.debug("%s: Turn Whoosh On:%s" % (self._name, oscillating))

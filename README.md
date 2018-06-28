@@ -21,8 +21,8 @@ Here's my [Home Assistant](https://home-assistant.io/) configuration. I am using
     * KiCAD board design and software is available on [GitHub](https://github.com/mikelawrence/RPi-HAT-RGBW-LED-Controller).
 * Custom Haiku with SenseME fan component
 
-## Custom Haiku with SenseME fan components
-The Haiku with SenseME fan is a WiFi connected fan and installable light. This custom component uses TomFaulkner's [SenseMe](https://github.com/TomFaulkner/SenseMe) Python Library to communicate with the fan.
+## Custom Haiku with SenseME fan component
+The Haiku with SenseME fan is a WiFi connected fan and installable light. This custom component uses TomFaulkner's [SenseMe](https://github.com/TomFaulkner/SenseMe) library to communicate with the fan.
 
 ### Installation
 There are three senseme.py files that must be installed in the config/custom_components directory. Note the location of the three senseme.py files in their respective folders (fan/ and light/) is important.
@@ -33,14 +33,15 @@ The Haiku with SenseME fan component will automatically discover and create a fa
 # enable Haiku with SenseMe ceiling fans
 senseme:
   max_number_fans: 2
+  # used to include specific fan
   include:
     - "Studio Vault Fan"
     - "Studio Beam Fan"
+  # or used exclude specific fan
   exclude:
     - "Studio Beam Fan"
 ```
 
 ### Problems
-* TomFaulkner's SenseMe library has a bug that periodically causes exceptions when getting the status of common attributes like fan speed or light brightness.
-* TomFaulkner's SenseMe library doesn't immediately update attributes when they are set by the same library. This means when you turn the fan on it may take upwards of 30 seconds before the correct status is shown in Home Assistant.
-* I have modified TomFaulkner's library to work with HA and have opened [two issues](https://github.com/TomFaulkner/SenseMe/issues) and offered a pull request to see if TomFaulkner will pick them and update his library. Until this happens you can replace the senseme file installed in your configuration folder under deps/lib/python?.?/site-packages/senseme with this [senseme.py](https://github.com/mikelawrence/SenseMe/blob/master/senseme/senseme.py) file.
+* Configuration takes a little more than 10 seconds and HA complains about it in the log.
+* Occasionally changes to the fan state fail to connect to fan and make the change, usually as a network (python socket) error. Same thing is true for the SenseMe background task which gets the complete fan state every minute.

@@ -5,6 +5,7 @@ For more details about this platform, please refer to the documentation
 ?????
 """
 import logging
+import socket
 
 from homeassistant.components.light import (Light, ATTR_BRIGHTNESS,
                                             SUPPORT_BRIGHTNESS)
@@ -24,7 +25,7 @@ def setup_platform(hass, config, add_devices_callback, discovery_info=None):
     lights = []
     for hub in hass.data[DATA_HUBS]:
         # add the light only if one is installed in the fan
-        if hub.get_attribute(SENSEME_LIGHT_PRESENT) == 'PRESENT':
+        if hub._query('<%s;DEVICE;LIGHT;GET>' % hub.name) == 'PRESENT':
             lights.append(HaikuSenseMeLight(hass, hub))
     add_devices_callback(lights)
 
@@ -38,7 +39,7 @@ class HaikuSenseMeLight(Light):
         self._name = hub.name + " Light"
         self._last_brightness = None
         self._supported_features = SUPPORT_BRIGHTNESS
-        # _LOGGER.debug("SenseME Light: Added light '%s'." % self._name)
+        _LOGGER.debug("%s: Created HaikuSenseMeLight" % self.name)
 
 
     @property
@@ -54,21 +55,23 @@ class HaikuSenseMeLight(Light):
 
 
     @property
-    def brightness(self) -> int:
+    def brightness(self) -> str:
         """Return the brightness of the light."""
-        fan_brightness = int(self._hub.get_attribute(SENSEME_LIGHT_BRIGHTNESS))
-        brightness = fan_brightness * 16
-        if brightness > 255:
-            brightness = 255
-        # _LOGGER.debug("%s: Brightness:%s" % (self._name, brightness))
-        return brightness
+        try:
+            fan_brightness = int(self._hub.get_attribute(SENSEME_LIGHT_BRIGHTNESS))
+            brightness = fan_brightness * 16
+        except KeyError:
+            brightness = None
+        return str(brightness)
 
 
     @property
     def is_on(self) -> bool:
         """Return true if light is on."""
-        state = self._hub.get_attribute(SENSEME_LIGHT_POWER) == 'ON'
-        # _LOGGER.debug("%s: Is on:%s" % (self._name, state))
+        try:
+            state = self._hub.get_attribute(SENSEME_LIGHT_POWER) == 'ON'
+        except KeyError:
+            state = None
         return state
 
 
@@ -88,18 +91,31 @@ class HaikuSenseMeLight(Light):
             else:
                 brightness = 16
         else:
-            if brightness >= 255:
-                brightness = 16
-            else:
-                brightness = int(brightness / 16)
-        self._hub.brightness = brightness
-        # _LOGGER.debug("%s: Turn light on. Brightness: %d->%d" %
-        #     (self._name, kwargs.get(ATTR_BRIGHTNESS, 255), brightness))
+            brightness = int(brightness / 16)
+        retryCount = 2
+        while retryCount != 0:
+            try:
+                self._hub.brightness = brightness
+                break
+            except socket.error as e:
+                retryCount -= 1
+                if retryCount == 0:
+                    raise
+        _LOGGER.debug("%s: Turn light on. Brightness: %d" %
+            (self._name, brightness))
 
 
     def turn_off(self, **kwargs) -> None:
         """Turn off the light."""
         # use to default brightness when turning on again
-        self._last_brightness = self._hub.brightness
-        self._hub.light_powered_on = False
-        # _LOGGER.debug("%s: Turn light off." % self._name)
+        self._last_brightness = self.brightness
+        retryCount = 2
+        while retryCount != 0:
+            try:
+                self._hub.light_powered_on = False
+                break
+            except socket.error as e:
+                retryCount -= 1
+                if retryCount == 0:
+                    raise
+        _LOGGER.debug("%s: Turn light off." % self._name)

@@ -4,8 +4,6 @@ Support for Haiku with SenseME ceiling fan and lights.
 For more details about this platform, please refer to the documentation
 ?????
 """
-import asyncio
-
 import logging
 import voluptuous as vol
 
@@ -14,7 +12,7 @@ from homeassistant.helpers import config_validation as cv
 from homeassistant.helpers.discovery import load_platform
 
 # SenseMe Python library by Tom Faulkner
-REQUIREMENTS = ['SenseMe==0.1.1']
+REQUIREMENTS = ['SenseMe==0.1.2']
 
 # delay between status updates (in seconds)
 UPDATE_DELAY = 30.0
@@ -39,9 +37,7 @@ CONFIG_SCHEMA = vol.Schema({
 _LOGGER = logging.getLogger(__name__)
 
 
-
-@asyncio.coroutine
-def async_setup(hass, config):
+def setup(hass, config):
     """Set up the Haiku SenseME platform."""
     from senseme import discover
     from senseme import SenseMe
@@ -51,36 +47,31 @@ def async_setup(hass, config):
     include_list = config[DOMAIN].get(CONF_INCLUDE)
     exclude_list = config[DOMAIN].get(CONF_EXCLUDE)
     if len(include_list) > 0:
-        # add only included
+        # add only included fans
         for device in devices:
             if device.name in include_list:
                 hubs.append(SenseMe(ip=device.ip, name=device.name,
                                     monitor_frequency=UPDATE_DELAY,
                                     monitor=True))
-                # _LOGGER.debug("SenseMe: Added included fan '%s'." %
-                #                 device.name)
+                _LOGGER.debug("Added included fan '%s'." % device.name)
+        # make sure all included fans exist
+        for hub in hubs:
+            if hub.name not in include_list:
+                _LOGGER.warning("Included fan '%s' not found." % hub.name)
     else:
-        # add only included and not excluded fans unless all
+        # add only not excluded fans
         for device in devices:
             # add only if NOT excluded
             if device.name not in exclude_list:
                 hubs.append(SenseMe(ip=device.ip, name=device.name,
                                     monitor_frequency=UPDATE_DELAY,
                                     monitor=True))
-                # _LOGGER.debug("SenseMe: Added discovered fan '%s'." %
-                #                 repr(device.name))
+                _LOGGER.debug("Added discovered fan '%s'." % device.name)
 
-    # make sure included fans exist
-    if len(include_list) > 0:
-        for hub in hubs:
-            if hub.name not in include_list:
-                _LOGGER.warning("SenseMe: Included fan '%s' not found." %
-                                hub.name)
-
-    # start the first update of all parameters
-    for hub in hubs:
-        # this will take upwards of 10 seconds
-        hub._get_all()
+    # # start the first update of all parameters
+    # for hub in hubs:
+    #     # this will take upwards of 10 seconds
+    #     hub._get_all()
 
     # SenseME fan and light platforms use hub to communicate with the fan
     hass.data[DATA_HUBS] = hubs

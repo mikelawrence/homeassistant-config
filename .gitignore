@@ -28,3 +28,4 @@ tts
 www
 *.db-shm
 *.db-wal
+.config_entries.json

@@ -70,10 +70,6 @@ python_script:
 weather:
   - platform: yweather
 
-# climate
-climate:
-  platform: nest
-
 # enable Haiku with SenseMe ceiling fans
 senseme:
   max_number_fans: 2
@@ -82,6 +78,10 @@ senseme:
   #   - "Studio Beam Fan"
   exclude:
     - "Studio Beam Fan"
+
+# climate
+climate:
+  platform: nest
 
 # nest
 nest:
