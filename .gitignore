@@ -22,6 +22,7 @@ entity_registry.yaml
 secrets.yaml
 
 .cloud
+.storage
 appdaemon
 deps
 tts
