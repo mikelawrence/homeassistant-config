@@ -6,13 +6,21 @@ For more details about this platform, please refer to the documentation
 """
 import logging
 import socket
+from datetime import timedelta
 
+from homeassistant.const import (STATE_ON, STATE_OFF, STATE_UNKNOWN)
 from homeassistant.components.fan import (FanEntity, DOMAIN, SPEED_OFF,
-                                          SUPPORT_SET_SPEED, SUPPORT_OSCILLATE)
+                                          SUPPORT_SET_SPEED, SUPPORT_OSCILLATE,
+                                          SUPPORT_DIRECTION, DIRECTION_FORWARD,
+                                          DIRECTION_REVERSE)
 from custom_components.senseme import (DATA_HUBS)
+
+SCAN_INTERVAL = timedelta(seconds=15)
 
 _LOGGER = logging.getLogger(__name__)
 
+_VALID_SPEEDS = ['off', '1', '2', '3', '4', '5', '6', '7']
+_VALID_DIRECTIONS = [DIRECTION_FORWARD, DIRECTION_REVERSE]
 
 
 # pylint: disable=unused-argument
@@ -31,7 +39,7 @@ class HaikuSenseMeFan(FanEntity):
         self.hass = hass
         self._hub = hub
         self._name = hub.name
-        self._supported_features = SUPPORT_SET_SPEED | SUPPORT_OSCILLATE
+        self._supported_features = SUPPORT_SET_SPEED | SUPPORT_OSCILLATE | SUPPORT_DIRECTION
         _LOGGER.debug("%s: Created HaikuSenseMeFan" % self.name)
 
 
@@ -55,7 +63,7 @@ class HaikuSenseMeFan(FanEntity):
     @property
     def speed_list(self) -> list:
         """Get the list of available speeds."""
-        return ['0', '1', '2', '3', '4', '5', '6', '7']
+        return _VALID_SPEEDS
 
 
     @property
@@ -71,6 +79,12 @@ class HaikuSenseMeFan(FanEntity):
 
 
     @property
+    def direction(self) -> str:
+        """Return the fan direction."""
+        return self._hub.fan_direction
+
+
+    @property
     def supported_features(self) -> int:
         """Flag supported features."""
         return self._supported_features
@@ -81,13 +95,15 @@ class HaikuSenseMeFan(FanEntity):
         retryCount = 2
         while retryCount != 0:
             try:
-                self._hub.fan_speed = speed
+                if speed == None:
+                    self._hub.fan_on = True
+                else:
+                    self._hub.fan_speed = speed
                 break
             except socket.error as e:
                 retryCount -= 1
                 if retryCount == 0:
                     raise
-        _LOGGER.debug("%s: Turn fan on, speed: %s" % (self._name, speed))
 
 
     def turn_off(self, **kwargs) -> None:
@@ -101,21 +117,27 @@ class HaikuSenseMeFan(FanEntity):
                 retryCount -= 1
                 if retryCount == 0:
                     raise
-        _LOGGER.debug("%s: Turn fan off" % self._name)
 
 
     def set_speed(self, speed: str) -> None:
         """Set the speed of the fan."""
-        retryCount = 2
-        while retryCount != 0:
-            try:
-                self._hub.fan_speed = speed
-                break
-            except socket.error as e:
-                retryCount -= 1
-                if retryCount == 0:
-                    raise
-        _LOGGER.debug("%s: Set fan speed: %s" % (self._name, speed))
+        # Validate speed
+        if speed in _VALID_SPEEDS or speed == STATE_UNKNOWN:
+            retryCount = 2
+            while retryCount != 0:
+                try:
+                    self._hub.fan_speed = speed
+                    break
+                except socket.error as e:
+                    retryCount -= 1
+                    if retryCount == 0:
+                        raise
+        else:
+            _LOGGER.error(
+                'Received invalid speed: %s. ' +
+                'Expected: %s.',
+                speed, self._speed_list)
+            self._speed = None
 
 
     def oscillate(self, oscillating: bool) -> None:
@@ -129,7 +151,25 @@ class HaikuSenseMeFan(FanEntity):
                 retryCount -= 1
                 if retryCount == 0:
                     raise
-        _LOGGER.debug("%s: Turn Whoosh On:%s" % (self._name, oscillating))
+
+
+    def set_direction(self, direction: str) -> None:
+        """Set the direction of the fan."""
+        if direction in _VALID_DIRECTIONS:
+            retryCount = 2
+            while retryCount != 0:
+                try:
+                    self._hub.fan_direction = direction
+                    break
+                except socket.error as e:
+                    retryCount -= 1
+                    if retryCount == 0:
+                        raise
+        else:
+            _LOGGER.error(
+                'Received invalid direction: %s. ' +
+                'Expected: %s.',
+                direction, ', '.join(_VALID_DIRECTIONS))
 
 
     def update(self) -> None:

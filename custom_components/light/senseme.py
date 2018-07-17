@@ -6,10 +6,13 @@ For more details about this platform, please refer to the documentation
 """
 import logging
 import socket
+from datetime import timedelta
 
 from homeassistant.components.light import (Light, ATTR_BRIGHTNESS,
                                             SUPPORT_BRIGHTNESS)
 from custom_components.senseme import (DATA_HUBS)
+
+SCAN_INTERVAL = timedelta(seconds=15)
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -32,7 +35,6 @@ class HaikuSenseMeLight(Light):
         self.hass = hass
         self._hub = hub
         self._name = hub.name + " Light"
-        self._last_brightness = None
         self._supported_features = SUPPORT_BRIGHTNESS
         _LOGGER.debug("%s: Created HaikuSenseMeLight" % self.name)
 
@@ -70,11 +72,8 @@ class HaikuSenseMeLight(Light):
     def turn_on(self, **kwargs) -> None:
         """Turn on the light."""
         brightness = kwargs.get(ATTR_BRIGHTNESS)
-        if brightness == None:
-            if self._last_brightness:   # use last brightness if available
-                brightness = self._last_brightness
-            else:                       # use default of 255
-                brightness = 255
+        if brightness == None:          # use default of 255 when unspecified
+            brightness = 255
         retryCount = 2
         while retryCount != 0:
             try:
@@ -90,8 +89,6 @@ class HaikuSenseMeLight(Light):
 
     def turn_off(self, **kwargs) -> None:
         """Turn off the light."""
-        # use to default brightness when turning on again
-        self._last_brightness = self.brightness
         retryCount = 2
         while retryCount != 0:
             try:

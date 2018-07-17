@@ -13,10 +13,15 @@ from homeassistant.helpers import config_validation as cv
 from homeassistant.helpers.discovery import load_platform
 from homeassistant.helpers.event import track_time_interval
 from homeassistant.util import Throttle
+from homeassistant.components.fan import (DIRECTION_FORWARD)
+
+# delay between SenseMe background updates (in seconds)
+SENSEME_UPDATE_DELAY = 30.0
 
 # SenseMe Python library by Tom Faulkner
-REQUIREMENTS = ['SenseMe==0.1.2']
+REQUIREMENTS = ['SenseMe==0.1.5']
 
+# Component update rate
 MIN_TIME_BETWEEN_UPDATES = timedelta(seconds=30)
 
 DOMAIN = 'senseme'
@@ -52,7 +57,11 @@ def setup(hass, config):
         # add only included fans
         for device in devices:
             if device.name in include_list:
-                hubs.append(SenseMeDevice(device))
+                newDevice = SenseMe(ip=device.ip, name=device.name,
+                                    monitor_frequency=SENSEME_UPDATE_DELAY,
+                                    monitor=True)
+                hubs.append(SenseMeHub(newDevice))
+                # hubs.append(SenseMeDevice(device))
                 _LOGGER.debug("Added included fan '%s'." % device.name)
         # make sure all included fans exist
         for hub in hubs:
@@ -63,7 +72,11 @@ def setup(hass, config):
         for device in devices:
             # add only if NOT excluded
             if device.name not in exclude_list:
-                hubs.append(SenseMeHub(device))
+                newDevice = SenseMe(ip=device.ip, name=device.name,
+                                    monitor_frequency=SENSEME_UPDATE_DELAY,
+                                    monitor=True)
+                hubs.append(SenseMeHub(newDevice))
+                # hubs.append(SenseMeHub(device))
                 _LOGGER.debug("Added discovered fan '%s'." % device.name)
 
     # SenseME fan and light platforms use hub to communicate with the fan
@@ -99,8 +112,8 @@ class SenseMeHub(object):
         self._device = device
         self._fan_on = None
         self._fan_speed = None
-        self._last_speed = None
         self._whoosh_on = None
+        self._fan_direction = None
         self._light_on = None
         self._light_brightness = None
         # need to know if fan has a light early, before first update()
@@ -114,6 +127,7 @@ class SenseMeHub(object):
     def name(self) -> str:
         """Gets name of fan."""
         return self._device.name
+
 
     @property
     def ip(self) -> str:
@@ -130,15 +144,10 @@ class SenseMeHub(object):
     @fan_on.setter
     def fan_on(self, fan_on):
         """Sets fan on state."""
-        if not fan_on:      # used to continue fan speed when turning back on
-            if self._fan_speed != '0':  # don't save fan speed that is off
-                self._last_speed = self._fan_speed
-        self._device.fan_powered_on = fan_on
-        self._fan_on = fan_on
-        # changing fan on state also affects fan speed and whoosh state
-        if not fan_on:
-            self._fan_speed = '0'
-            self._whoosh_on = False
+        if fan_on:                  # fan was turned on
+            self.fan_speed = '4'
+        else:                       # fan was turned off
+            self.fan_speed = 'off'
 
 
     @property
@@ -150,19 +159,35 @@ class SenseMeHub(object):
     @fan_speed.setter
     def fan_speed(self, fan_speed):
         """Sets fan speed."""
-        if fan_speed == None:
-            if self._last_speed:    # use last speed
-                fan_speed = self._last_speed
-            else:                   # use default speed
-                fan_speed = '4'
-        self._device.speed = int(fan_speed)
+        if fan_speed == None:       # default fan speed when not specified
+            fan_speed = '4'
         self._fan_speed = fan_speed
-        # changing fan speed also affects fan on and whoosh states
-        if fan_speed == '0':
+        if fan_speed == 'off':      # fan speed set to off
+            self._device.speed = 0
+            # turning fan off also affects whoosh state
             self._fan_on = False
             self._whoosh_on = False
-        else:
+        else:                       # fan speed set to a number
+            self._device.speed = int(fan_speed)
             self._fan_on = True
+
+
+    @property
+    def fan_direction(self) -> str:
+        """Gets fan direction state."""
+        return self._fan_direction
+
+
+    @fan_direction.setter
+    def fan_direction(self, fan_direction):
+        """Sets fan direction state."""
+        self._fan_direction = fan_direction
+        direction = 'FWD'
+        if fan_direction != DIRECTION_FORWARD:
+            direction = 'REV'
+        self._device._send_command(
+            '<%s;FAN;DIR;SET;%s>' % (self.name, direction))
+        self._device._update_cache('FAN;DIR', direction)
 
 
     @property
@@ -193,11 +218,11 @@ class SenseMeHub(object):
     @light_on.setter
     def light_on(self, light_on):
         """Sets light state."""
-        self._device.light_powered_on = light_on
-        self._light_on = light_on
-        # changing light on state also affects light brightness
-        if not light_on:
-            self._light_brightness = 0
+        # changing light on state using brightness
+        if light_on:               # light was turned on
+            self.light_brightness = 255
+        else:                      # light was turned off
+            self.light_brightness = 0
 
 
     @property
@@ -213,25 +238,26 @@ class SenseMeHub(object):
         self._light_brightness = light_brightness
         # changing brightness also affects light on state
         if light_brightness == 0:
-            self.light_on = False
+            self._light_on = False
         else:
-            self.light_on = True
+            self._light_on = True
 
 
     @Throttle(MIN_TIME_BETWEEN_UPDATES)
     def update(self) -> None:
         """Get the latest status from fan."""
-        data = self._device._get_all()
-        if data['FAN;PWR']:
-            self._fan_on = data['FAN;PWR']
-        if data['FAN;SPD;ACTUAL']:
-            self._fan_speed = data['FAN;SPD;ACTUAL']
-        if data['FAN;WHOOSH;STATUS']:
-            self._whoosh_on = data['FAN;WHOOSH;STATUS'] == 'ON'
-        if data['LIGHT;PWR']:
-            self._light_on = data['LIGHT;PWR'] == 'ON'
-        if data['LIGHT;LEVEL;ACTUAL']:
-            self._light_brightness = conv_bright_lib_to_ha(
-                data['LIGHT;LEVEL;ACTUAL'])
+        self._fan_on = self._device.get_attribute("FAN;PWR") == 'ON'
+        self._fan_speed = self._device.get_attribute("FAN;SPD;ACTUAL")
+        if self._fan_speed == '0':
+            self._fan_speed = 'off'
+        if self._device.get_attribute("FAN;DIR") == 'FWD':
+            self._fan_direction = DIRECTION_FORWARD
+        else:
+            self._fan_direction = DIRECTION_REVERSE
+        self._whoosh_on = self._device.get_attribute(
+            "FAN;WHOOSH;STATUS") == 'ON'
+        self._light_on = self._device.get_attribute("LIGHT;PWR") == 'ON'
+        self._light_brightness = conv_bright_lib_to_ha(
+            self._device.get_attribute("LIGHT;LEVEL;ACTUAL"))
         _LOGGER.debug("SenseMe: Updated fan '%s'." % self._device.name)
         return True
