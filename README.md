@@ -43,5 +43,4 @@ senseme:
 ```
 
 ### Problems
-* Configuration takes a little more than 10 seconds and HA complains about it in the log.
 * Occasionally changes to the fan state fail to connect to fan and make the change, usually as a network (python socket) error. Same thing is true for the SenseMe background task which gets the complete fan state every minute.
