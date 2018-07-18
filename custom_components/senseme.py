@@ -51,6 +51,7 @@ def setup(hass, config):
     # discover Haiku with SenseME fans
     devices = discover(config[DOMAIN][CONF_MAX_NUMBER_FANS], 8)
     hubs = []
+    groups = []
     include_list = config[DOMAIN].get(CONF_INCLUDE)
     exclude_list = config[DOMAIN].get(CONF_EXCLUDE)
     if len(include_list) > 0:
@@ -60,13 +61,18 @@ def setup(hass, config):
                 newDevice = SenseMe(ip=device.ip, name=device.name,
                                     monitor_frequency=SENSEME_UPDATE_DELAY,
                                     monitor=True)
-                hubs.append(SenseMeHub(newDevice))
-                # hubs.append(SenseMeDevice(device))
-                _LOGGER.debug("Added included fan '%s'." % device.name)
+                newHub = SenseMeHub(newDevice)
+                if newHub.group:
+                    if newHub.group not in groups:
+                        groups.append(newHub.group)
+                        hubs.append(SenseMeHub(newDevice))
+                else:
+                    hubs.append(SenseMeHub(newDevice))
+                    _LOGGER.debug("Added included fan: '%s'." % device.name)
         # make sure all included fans exist
         for hub in hubs:
             if hub.name not in include_list:
-                _LOGGER.warning("Included fan '%s' not found." % hub.name)
+                _LOGGER.error("Included fan not found: '%s'." % hub.name)
     else:
         # add only not excluded fans
         for device in devices:
@@ -75,9 +81,13 @@ def setup(hass, config):
                 newDevice = SenseMe(ip=device.ip, name=device.name,
                                     monitor_frequency=SENSEME_UPDATE_DELAY,
                                     monitor=True)
-                hubs.append(SenseMeHub(newDevice))
-                # hubs.append(SenseMeHub(device))
-                _LOGGER.debug("Added discovered fan '%s'." % device.name)
+                newHub = SenseMeHub(newDevice)
+                if newHub.group:
+                    if newHub.group not in groups:
+                        groups.append(newHub.group)
+                        hubs.append(SenseMeHub(newDevice))
+                else:
+                    hubs.append(SenseMeHub(newDevice))
 
     # SenseME fan and light platforms use hub to communicate with the fan
     hass.data[DATA_HUBS] = hubs
@@ -116,12 +126,16 @@ class SenseMeHub(object):
         self._fan_direction = None
         self._light_on = None
         self._light_brightness = None
-        # need to know if fan has a light early, before first update()
+        # light presence is needed to setup light before first update()
         if device._query('<%s;DEVICE;LIGHT;GET>' % device.name) == 'PRESENT':
             self._light_exists = True
         else:
             self._light_exists = False
-
+        # group is is needed to setup fans before first update()
+        self._group = device._query('<%s;GROUP;LIST;GET>' % device.name)
+        self._group.strip()
+        if len(self._group) == 0:
+            self._group = None
 
     @property
     def name(self) -> str:
@@ -133,6 +147,18 @@ class SenseMeHub(object):
     def ip(self) -> str:
         """Gets IP address of fan."""
         return self._device.ip
+
+
+    @property
+    def group(self) -> str:
+        """Gets fan group (room name)."""
+        return self._group
+
+
+    @property
+    def light_exists(self) -> bool:
+        """Gets light exists state."""
+        return self._light_exists
 
 
     @property
@@ -186,7 +212,7 @@ class SenseMeHub(object):
         if fan_direction != DIRECTION_FORWARD:
             direction = 'REV'
         self._device._send_command(
-            '<%s;FAN;DIR;SET;%s>' % (self.name, direction))
+            '<%s;FAN;DIR;SET;%s>' % (self._device.name, direction))
         self._device._update_cache('FAN;DIR', direction)
 
 
@@ -201,12 +227,6 @@ class SenseMeHub(object):
         """Sets whoosh on state."""
         self._device.whoosh = whoosh_on
         self._whoosh_on = whoosh_on
-
-
-    @property
-    def light_exists(self) -> bool:
-        """Gets light exists state."""
-        return self._light_exists
 
 
     @property
