@@ -276,8 +276,9 @@ class SenseMeHub(object):
             self._fan_direction = DIRECTION_REVERSE
         self._whoosh_on = self._device.get_attribute(
             "FAN;WHOOSH;STATUS") == 'ON'
-        self._light_on = self._device.get_attribute("LIGHT;PWR") == 'ON'
-        self._light_brightness = conv_bright_lib_to_ha(
-            self._device.get_attribute("LIGHT;LEVEL;ACTUAL"))
+        if self._light_exists:
+            self._light_on = self._device.get_attribute("LIGHT;PWR") == 'ON'
+            self._light_brightness = conv_bright_lib_to_ha(
+                self._device.get_attribute("LIGHT;LEVEL;ACTUAL"))
         _LOGGER.debug("SenseMe: Updated fan '%s'." % self._device.name)
         return True
