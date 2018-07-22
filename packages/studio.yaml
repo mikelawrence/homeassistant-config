@@ -45,12 +45,9 @@ homeassistant:
       icon: mdi:ceiling-light
     light.studio_kitchen_cabinet_lights:
       friendly_name: "Studio Kitchen Cabinet Lights"
-    # light.studio_vault_fan_light:
-    #   friendly_name: "Studio Fan Light"
-    #   icon: mdi:ceiling-light
-    # light.studio_beam_fan_light:
-    #   friendly_name: "Studio Beam Fan Light"
-    #   icon: mdi:ceiling-light
+    light.studio_light:
+      friendly_name: "Studio Fan Light"
+      icon: mdi:ceiling-light
 
     ################################################
     ## Switch
@@ -93,10 +90,8 @@ homeassistant:
     ################################################
     ## Fan
     ################################################
-    # fan.studio_vault_fan:
-    #   friendly_name: "Studio Fan"
-    # fan.studio_beam_fan:
-    #   friendly_name: "Studio Beam Fan"
+    fan.studio:
+      friendly_name: "Studio Fan"
     fan.studio_bed_fan:
       friendly_name: "Studio Bedroom Fan"
     fan.studio_loft_fan:
