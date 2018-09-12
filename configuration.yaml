@@ -76,8 +76,8 @@ senseme:
   # include:
   #   - "Studio Vault Fan"
   #   - "Studio Beam Fan"
-  #exclude:
-  #  - "Studio Beam Fan"
+  exclude:
+    - "Studio Beam Fan"
 
 # climate
 climate:

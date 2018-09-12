@@ -8,7 +8,7 @@
 #     entity_id: '{{trigger.entity_id}}'
 # OPTIONS
 # List the trackers for each individual
-MikeTrackers = ['device_tracker.mike_iphone_ios',
+MikeTrackers = ['device_tracker.mike_iphone_ios', 
                 'device_tracker.mike_iphone',]
 ClaraTrackers = ['device_tracker.clara_iphone_ios',
                  'device_tracker.clara_iphone']

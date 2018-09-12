@@ -9,15 +9,15 @@ history:
       - sensor.studio_mode
       - binary_sensor.people_home
       - device_tracker.mike_meta
-      - device_tracker.mike_iphone
-      - device_tracker.mike_iphone_ios
+      #- device_tracker.mike_iphone
+      #- device_tracker.mike_iphone_ios
       - device_tracker.clara_meta
-      - device_tracker.clara_iphone
-      - device_tracker.clara_iphone_ios
+      #- device_tracker.clara_iphone
+      #- device_tracker.clara_iphone_ios
       - device_tracker.mikey_meta
-      - device_tracker.mikey_iphone
+      #- device_tracker.mikey_iphone
       - device_tracker.bryan_meta
-      - device_tracker.bryan_iphone
+      #- device_tracker.bryan_iphone
       - binary_sensor.any_motion
       - binary_sensor.any_house_motion
       - binary_sensor.any_studio_motion
@@ -30,6 +30,10 @@ history:
       - binary_sensor.studio_motion
       - binary_sensor.studio_bath_motion
       - binary_sensor.garage_motion
+      - binary_sensor.house_front_door_sensor
+      - binary_sensor.house_back_door_sensor
+      - binary_sensor.studio_front_door_sensor
+      - binary_sensor.garage_door_sensor
       - sensor.front_gate_status
       - sensor.septic_status
       - binary_sensor.septic_pump

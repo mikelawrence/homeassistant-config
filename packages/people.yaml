@@ -63,6 +63,10 @@ homeassistant:
       friendly_name: 'Bryan iPhone (WiFi)'
       icon: mdi:wifi
 
+    device_tracker.bryan_iphone_ios:
+      friendly_name: 'Bryan iPhone (iOS)'
+      icon: mdi:wifi
+
     device_tracker.dan_iphone:
       friendly_name: 'Dan iPhone (WiFi)'
       icon: mdi:wifi

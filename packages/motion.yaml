@@ -38,7 +38,7 @@ homeassistant:
     binary_sensor.garage_motion_sensor_lb:
       friendly_name: "Garage Motion Sensor Low Battery"
       device_class: battery
-    binary_sensor.test_motion_sensor_lb:
+    binary_sensor.spare_motion_sensor_lb:
       friendly_name: "Spare Motion Sensor Low Battery"
       device_class: battery
 

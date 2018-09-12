@@ -82,6 +82,7 @@ def setup(hass, config):
                                     monitor_frequency=SENSEME_UPDATE_DELAY,
                                     monitor=True)
                 newHub = SenseMeHub(newDevice)
+                _LOGGER.debug("Found fan: '%s'." % device.name)
                 if newHub.group:
                     if newHub.group not in groups:
                         groups.append(newHub.group)
