@@ -344,15 +344,15 @@ script:
     sequence:
       - service: script.turn_off
         data:
-          entity_id: script.nest_studio_thermostat_set_home
+          entity_id: script.nest_upstairs_thermostat_set_home
       - delay: "00:05:00"
       - service: climate.set_away_mode
         data_template:
-          entity_id: climate.studio
+          entity_id: climate.upstairs
           away_mode: 'true'
       - service: climate.set_operation_mode
         data_template:
-          entity_id: climate.studio
+          entity_id: climate.upstairs
           operation_mode: 'eco'
       - service: logbook.log
         data_template:

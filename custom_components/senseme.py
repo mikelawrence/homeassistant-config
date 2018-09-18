@@ -8,18 +8,22 @@ import logging
 import voluptuous as vol
 from datetime import timedelta
 
-from homeassistant.const import (CONF_INCLUDE, CONF_EXCLUDE)
+from homeassistant.const import (CONF_INCLUDE, CONF_EXCLUDE,
+                                 CONF_NAME, CONF_FRIENDLY_NAME)
 from homeassistant.helpers import config_validation as cv
 from homeassistant.helpers.discovery import load_platform
 from homeassistant.helpers.event import track_time_interval
 from homeassistant.util import Throttle
 from homeassistant.components.fan import (DIRECTION_FORWARD)
 
+# SenseMe Python library by Tom Faulkner
+REQUIREMENTS = ['SenseMe==0.1.5']
+
 # delay between SenseMe background updates (in seconds)
 SENSEME_UPDATE_DELAY = 30.0
 
-# SenseMe Python library by Tom Faulkner
-REQUIREMENTS = ['SenseMe==0.1.5']
+# Fan has light default value
+HAS_LIGHT_DEFAULT = True
 
 # Component update rate
 MIN_TIME_BETWEEN_UPDATES = timedelta(seconds=30)
@@ -29,13 +33,19 @@ DOMAIN = 'senseme'
 DATA_HUBS = 'fans'
 
 CONF_MAX_NUMBER_FANS = 'max_number_fans'
+CONF_HAS_LIGHT = 'has_light'
+
+INCLUDE_SCHEMA = vol.Schema({
+    vol.Required(CONF_NAME): cv.string,
+    vol.Optional(CONF_FRIENDLY_NAME): cv.string,
+    vol.Optional(CONF_HAS_LIGHT, default=HAS_LIGHT_DEFAULT): cv.boolean})
 
 CONFIG_SCHEMA = vol.Schema({
     DOMAIN: vol.Schema({
         vol.Optional(CONF_MAX_NUMBER_FANS, default=5):
                      vol.All(vol.Coerce(int), vol.Range(min=1, max=25)),
-        vol.Optional(CONF_INCLUDE, default=[]):
-                     vol.All(cv.ensure_list, [cv.string]),
+        vol.Optional(CONF_INCLUDE, default=[]): vol.All(
+            cv.ensure_list, [INCLUDE_SCHEMA]),
         vol.Optional(CONF_EXCLUDE, default=[]):
                      vol.All(cv.ensure_list, [cv.string]),
     })
@@ -51,27 +61,25 @@ def setup(hass, config):
     # discover Haiku with SenseME fans
     devices = discover(config[DOMAIN][CONF_MAX_NUMBER_FANS], 8)
     hubs = []
-    groups = []
     include_list = config[DOMAIN].get(CONF_INCLUDE)
     exclude_list = config[DOMAIN].get(CONF_EXCLUDE)
     if len(include_list) > 0:
         # add only included fans
         for device in devices:
-            if device.name in include_list:
-                newDevice = SenseMe(ip=device.ip, name=device.name,
-                                    monitor_frequency=SENSEME_UPDATE_DELAY,
-                                    monitor=True)
-                newHub = SenseMeHub(newDevice)
-                if newHub.group:
-                    if newHub.group not in groups:
-                        groups.append(newHub.group)
-                        hubs.append(SenseMeHub(newDevice))
-                else:
-                    hubs.append(SenseMeHub(newDevice))
-                    _LOGGER.debug("Added included fan: '%s'." % device.name)
+            for include in include_list:
+                _LOGGER.warning("Config Include Fan: '%s'" % str(include))
+                if include['name'] == device.name:
+                    newDevice = SenseMe(ip=device.ip, name=device.name,
+                                        monitor_frequency=SENSEME_UPDATE_DELAY,
+                                        monitor=True)
+                    hubs.append(SenseMeHub(newDevice, include['friendly_name'],
+                                           include['has_light']))
+                    _LOGGER.debug("Added included fan: '%s', %s." %
+                                  (device.name, "with light" if
+                                  include['has_light'] else "without light"))
         # make sure all included fans exist
         for hub in hubs:
-            if hub.name not in include_list:
+            if not any(include.name == hub.name for include in include_list):
                 _LOGGER.error("Included fan not found: '%s'." % hub.name)
     else:
         # add only not excluded fans
@@ -81,14 +89,10 @@ def setup(hass, config):
                 newDevice = SenseMe(ip=device.ip, name=device.name,
                                     monitor_frequency=SENSEME_UPDATE_DELAY,
                                     monitor=True)
-                newHub = SenseMeHub(newDevice)
-                _LOGGER.debug("Found fan: '%s'." % device.name)
-                if newHub.group:
-                    if newHub.group not in groups:
-                        groups.append(newHub.group)
-                        hubs.append(SenseMeHub(newDevice))
-                else:
-                    hubs.append(SenseMeHub(newDevice))
+                hubs.append(SenseMeHub(newDevice, None, HAS_LIGHT_DEFAULT))
+                _LOGGER.debug("Found fan: '%s', %s." %
+                              (device.name, "with light" if
+                              HAS_LIGHT_DEFAULT else "without light"))
 
     # SenseME fan and light platforms use hub to communicate with the fan
     hass.data[DATA_HUBS] = hubs
@@ -118,7 +122,7 @@ def conv_bright_lib_to_ha(brightness) -> int:
 class SenseMeHub(object):
     """Data object and access to Haiku with SenseME fan."""
 
-    def __init__(self, device):
+    def __init__(self, device, friendly_name, has_light):
         """Initialize the data object."""
         self._device = device
         self._fan_on = None
@@ -127,16 +131,9 @@ class SenseMeHub(object):
         self._fan_direction = None
         self._light_on = None
         self._light_brightness = None
-        # light presence is needed to setup light before first update()
-        if device._query('<%s;DEVICE;LIGHT;GET>' % device.name) == 'PRESENT':
-            self._light_exists = True
-        else:
-            self._light_exists = False
-        # group is is needed to setup fans before first update()
-        self._group = device._query('<%s;GROUP;LIST;GET>' % device.name)
-        self._group.strip()
-        if len(self._group) == 0:
-            self._group = None
+        self._friendly_name = friendly_name
+        self._light_exists = has_light
+
 
     @property
     def name(self) -> str:
@@ -145,15 +142,20 @@ class SenseMeHub(object):
 
 
     @property
-    def ip(self) -> str:
-        """Gets IP address of fan."""
-        return self._device.ip
+    def friendly_name(self) -> str:
+        """Gets friendly name of fan."""
+        if self._friendly_name:
+            # friendly name is defined
+            return self._friendly_name
+        else:
+            # friendly name is not defined
+            return self._device.name
 
 
     @property
-    def group(self) -> str:
-        """Gets fan group (room name)."""
-        return self._group
+    def ip(self) -> str:
+        """Gets IP address of fan."""
+        return self._device.ip
 
 
     @property

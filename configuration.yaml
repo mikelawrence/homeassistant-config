@@ -75,9 +75,12 @@ senseme:
   max_number_fans: 2
   # include:
   #   - "Studio Vault Fan"
-  #   - "Studio Beam Fan"
-  exclude:
-    - "Studio Beam Fan"
+  include:
+    - name: "Studio Vault Fan"
+      friendly_name: "Studio Fan"
+      has_light: true
+#exclude:
+  #  - "Studio Beam Fan"
 
 # climate
 climate:

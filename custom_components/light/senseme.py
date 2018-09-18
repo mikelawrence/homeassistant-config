@@ -34,10 +34,7 @@ class HaikuSenseMeLight(Light):
         """Initialize the entity."""
         self.hass = hass
         self._hub = hub
-        if hub.group:
-            self._name = hub.group + " Light"
-        else:
-            self._name = hub.name + " Light"
+        self._name = hub.friendly_name + " Light"
         self._supported_features = SUPPORT_BRIGHTNESS
         _LOGGER.debug("%s: Created HaikuSenseMeLight" % self.name)
 

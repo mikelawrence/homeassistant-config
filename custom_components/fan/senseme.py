@@ -38,10 +38,7 @@ class HaikuSenseMeFan(FanEntity):
         """Initialize the entity."""
         self.hass = hass
         self._hub = hub
-        if hub.group:
-            self._name = hub.group
-        else:
-            self._name = hub.name
+        self._name = hub.friendly_name
         self._supported_features = SUPPORT_SET_SPEED | SUPPORT_OSCILLATE | SUPPORT_DIRECTION
         _LOGGER.debug("%s: Created HaikuSenseMeFan" % self.name)
 

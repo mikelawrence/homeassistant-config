@@ -5,12 +5,12 @@
 ################################################################
 ## Camera
 ################################################################
-camera:
-  # enable Unifi Video Cameras
-  - platform: uvc
-    nvr: 192.168.1.200
-    password: !secret uvc_password
-    key: !secret uvc_api_key
+# camera:
+#   # enable Unifi Video Cameras
+#   - platform: uvc
+#     nvr: 192.168.1.2
+#     password: !secret uvc_password
+#     key: !secret uvc_api_key
 
 ################################################################
 ## Axis
