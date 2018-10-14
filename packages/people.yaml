@@ -55,6 +55,10 @@ homeassistant:
       friendly_name: 'Mikey iPhone (WiFi)'
       icon: mdi:wifi
 
+    device_tracker.mikey_iphone_ios:
+      friendly_name: 'Mikey iPhone (iOS)'
+      icon: mdi:apple-ios
+
     device_tracker.bryan_meta:
       friendly_name: 'Bryan'
       entity_picture: '/local/bryan.jpg'
@@ -65,7 +69,7 @@ homeassistant:
 
     device_tracker.bryan_iphone_ios:
       friendly_name: 'Bryan iPhone (iOS)'
-      icon: mdi:wifi
+      icon: mdi:apple-ios
 
     device_tracker.dan_iphone:
       friendly_name: 'Dan iPhone (WiFi)'
@@ -120,9 +124,17 @@ group:
     control: hidden
     entities:
       - device_tracker.mike_meta
+      - device_tracker.mike_iphone
+      - device_tracker.mike_iphone_ios
       - device_tracker.clara_meta
+      - device_tracker.clara_iphone
+      - device_tracker.clara_iphone_ios
       - device_tracker.mikey_meta
+      - device_tracker.mikey_iphone
+      - device_tracker.mikey_iphone_ios
       - device_tracker.bryan_meta
+      - device_tracker.bryan_iphone
+      - device_tracker.bryan_iphone_ios
       - group.guests
 
   family:

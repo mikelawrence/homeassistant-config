@@ -41,8 +41,8 @@ homeassistant:
       friendly_name: "Downstairs Bathroom Light"
     light.family_room_fan_light:
       friendly_name: "Family Room Light"
-    light.down_hall_light_kitchen:
-      friendly_name: "Hallway Light"
+    light.down_bath_light:
+      friendly_name: "Downstairs Bathroom Light"
     light.stairs_light_downstairs:
       friendly_name: "Stairs Light"
     light.master_bed_fan_light:
@@ -61,7 +61,7 @@ homeassistant:
       friendly_name: "Upstairs Bathroom Light"
     light.up_sm_bed_closet_light:
       friendly_name: "Mikey Closet Light"
-    
+
     ################################################
     ## Switch
     ################################################
@@ -70,11 +70,6 @@ homeassistant:
       icon: mdi:fan
       homebridge_visible: true
       homebridge_name: "Kitchen Lights"
-    switch.kitchen_fan:
-      friendly_name: "Kitchen Fan"
-      icon: mdi:fan
-      homebridge_visible: true
-      homebridge_name: "Kitchen Fan"
     switch.computer_room_light:
       friendly_name: "Computer Room Light"
       icon: mdi:lightbulb
@@ -85,6 +80,9 @@ homeassistant:
       icon: mdi:lightbulb
       homebridge_visible: true
       homebridge_name: "Master Bedroom Light"
+    switch.down_bath_vent_fan:
+      friendly_name: "Downstairs Bathroom Fan"
+      icon: mdi:fan
     switch.master_bed_light:
       friendly_name: "Master Bedroom Light"
       icon: mdi:lightbulb
@@ -112,6 +110,10 @@ homeassistant:
     ################################################
     ## Fan
     ################################################
+    fan.kitchen_fan_front:
+      friendly_name: "Kitchen Fan"
+      homebridge_visible: true
+      homebridge_name: "Kitchen Fan"
     fan.family_room_fan:
       friendly_name: "Family Room Fan"
       homebridge_visible: true
@@ -162,7 +164,7 @@ group:
     control: hidden
     entities:
       - switch.kitchen_lights
-      - switch.kitchen_fan
+      - fan.kitchen_fan_front
       - scene.kitchen_morning
       - scene.kitchen_all_off
 
@@ -193,6 +195,14 @@ group:
       - fan.master_bed_fan
       - switch.master_closet_light
       - switch.master_bath_light
+
+  # House Downstairs Bathroom
+  downstairs_bathroom:
+    name: Downstairs Bathroom
+    control: hidden
+    entities:
+      - light.down_bath_light
+      - switch.down_bath_vent_fan
 
   # Mikey's Bedroom
   mikey_bed_room:

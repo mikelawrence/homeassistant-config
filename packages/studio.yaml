@@ -21,13 +21,6 @@ homeassistant:
       friendly_name: "Sonos Studio"
 
     ################################################
-    ## Binary Sensor
-    ################################################
-    binary_sensor.studio_front_door_sensor:
-      friendly_name: "Studio Door"
-      device_class: door
-
-    ################################################
     ## Light
     ################################################
     light.studio_chandeliers_door:

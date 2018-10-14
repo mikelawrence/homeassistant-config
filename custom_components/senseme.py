@@ -67,7 +67,6 @@ def setup(hass, config):
         # add only included fans
         for device in devices:
             for include in include_list:
-                _LOGGER.warning("Config Include Fan: '%s'" % str(include))
                 if include['name'] == device.name:
                     newDevice = SenseMe(ip=device.ip, name=device.name,
                                         monitor_frequency=SENSEME_UPDATE_DELAY,
@@ -79,7 +78,7 @@ def setup(hass, config):
                                   include['has_light'] else "without light"))
         # make sure all included fans exist
         for hub in hubs:
-            if not any(include.name == hub.name for include in include_list):
+            if not any(include['name'] == hub.name for include in include_list):
                 _LOGGER.error("Included fan not found: '%s'." % hub.name)
     else:
         # add only not excluded fans
@@ -90,7 +89,7 @@ def setup(hass, config):
                                     monitor_frequency=SENSEME_UPDATE_DELAY,
                                     monitor=True)
                 hubs.append(SenseMeHub(newDevice, None, HAS_LIGHT_DEFAULT))
-                _LOGGER.debug("Found fan: '%s', %s." %
+                _LOGGER.debug("Added not excluded fan: '%s', %s." %
                               (device.name, "with light" if
                               HAS_LIGHT_DEFAULT else "without light"))
 

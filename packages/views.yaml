@@ -51,7 +51,7 @@ group:
       - group.house_mode
       - group.kitchen
       - group.family_room
-      - group.computer_room
+      - group.downstairs_bathroom
       - group.computer_room
       - group.master_bed_room
       - group.mikey_bed_room
@@ -127,7 +127,8 @@ group:
   lights_view:
     view: yes
     entities:
-      - group.motion
+      - group.motion_sensors
+      - group.door_sensors
       - group.all_scripts
       - group.all_automations
       - group.all_scenes

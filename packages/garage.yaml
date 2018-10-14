@@ -33,13 +33,6 @@ homeassistant:
       friendly_name: "Garage Light"
       icon: mdi:lightbulb
 
-    ################################################
-    ## Binary Sensor
-    ################################################
-    binary_sensor.garage_door_sensor:
-      friendly_name: "Garage Door"
-      device_class: door
-
 ################################################################
 ## Group
 ################################################################

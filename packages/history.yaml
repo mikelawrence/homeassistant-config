@@ -30,6 +30,7 @@ history:
       - binary_sensor.studio_motion
       - binary_sensor.studio_bath_motion
       - binary_sensor.garage_motion
+      - binary_sensor.spare_motion
       - binary_sensor.house_front_door_sensor
       - binary_sensor.house_back_door_sensor
       - binary_sensor.studio_front_door_sensor
