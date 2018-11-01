@@ -41,8 +41,6 @@ homeassistant:
       friendly_name: "Downstairs Bathroom Light"
     light.family_room_fan_light:
       friendly_name: "Family Room Light"
-    light.down_bath_light:
-      friendly_name: "Downstairs Bathroom Light"
     light.stairs_light_downstairs:
       friendly_name: "Stairs Light"
     light.master_bed_fan_light:
@@ -67,7 +65,7 @@ homeassistant:
     ################################################
     switch.kitchen_lights:
       friendly_name: "Kitchen Lights"
-      icon: mdi:fan
+      icon: mdi:lightbulb
       homebridge_visible: true
       homebridge_name: "Kitchen Lights"
     switch.computer_room_light:

@@ -138,3 +138,11 @@ recorder:
 
 sensor:
   - platform: yr
+  # temperature of Hassio Raspberri Pi
+  - platform: command_line
+    name: Hassio Temperature
+    command: "cat /sys/class/thermal/thermal_zone0/temp"
+    # If errors occur, remove degree symbol below
+    unit_of_measurement: "°C"
+    scan_interval: 60
+    value_template: '{{ value | multiply(0.001) | round(1) }}'

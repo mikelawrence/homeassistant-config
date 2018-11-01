@@ -97,8 +97,8 @@ def setup(hass, config):
     hass.data[DATA_HUBS] = hubs
 
     # Add fan and light platform
-    load_platform(hass, 'fan', DOMAIN)
-    load_platform(hass, 'light', DOMAIN)
+    load_platform(hass, 'fan', DOMAIN, {}, config)
+    load_platform(hass, 'light', DOMAIN, {}, config)
 
     return True
 

@@ -50,6 +50,9 @@ history:
       - sensor.front_gate_temperature
       - sensor.septic_temperature
       - sensor.weewx_temperature
+      - sensor.hassio_temperature
+      - sensor.studio_roof_light_temperature
+      - sensor.house_roof_light_temperature
       - sensor.front_gate_rssi
       - sensor.septic_rssi
       - sensor.house_roof_light_rssi
