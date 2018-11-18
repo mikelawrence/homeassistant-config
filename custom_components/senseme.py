@@ -14,7 +14,7 @@ from homeassistant.helpers import config_validation as cv
 from homeassistant.helpers.discovery import load_platform
 from homeassistant.helpers.event import track_time_interval
 from homeassistant.util import Throttle
-from homeassistant.components.fan import (DIRECTION_FORWARD)
+from homeassistant.components.fan import (DIRECTION_FORWARD, DIRECTION_REVERSE)
 
 # SenseMe Python library by Tom Faulkner
 REQUIREMENTS = ['SenseMe==0.1.5']
