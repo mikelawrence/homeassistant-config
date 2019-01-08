@@ -1,6 +1,10 @@
+###############################################################
+## House Main Configuration
+################################################################
+
 homeassistant:
   # Name of the location where Home Assistant is running
-  name: Lawrence Home Automation
+  name: House
   # Location required to calculate the time the sun rises and sets
   latitude: !secret latitude
   longitude: !secret longitude
@@ -10,13 +14,8 @@ homeassistant:
   unit_system: imperial
   # Pick yours from here: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
   time_zone: America/Chicago
-  # Customization file
-  #customize: !include customize.yaml
   # Packages directory
   packages: !include_dir_named packages
-
-# Show links to resources in log and frontend
-#introduction:
 
 # Enables the frontend
 frontend:
@@ -31,10 +30,6 @@ http:
   ssl_key: /ssl/privkey.pem
 
 # Checks for available updates
-# Note: This component will send some information about your system to
-# the developers to assist with development of Home Assistant.
-# For more information, please see:
-# https://home-assistant.io/blog/2016/10/25/explaining-the-updater/
 updater:
   # Optional, allows Home Assistant developers to focus on popular components.
   include_used_components: true
@@ -46,6 +41,7 @@ discovery:
    - directv
    - plex_mediaserver
    - google_cast
+   - roku
 
 # Enable ios app
 ios:
@@ -54,21 +50,18 @@ ios:
 conversation:
 
 # Enables a map showing the location of tracked devices
-map:
+#map:
 
 # Track the sun
 sun:
 
-# Enable Homekit
-#homekit:
-#  pincode: '128-87-260'
-
 # Enable Python scripts
 python_script:
 
-# enable weather
-weather:
-  - platform: yweather
+# # enable weather
+# weather:
+#   - platform: yweather
+#     woeid: 2398250
 
 # enable Haiku with SenseMe ceiling fans
 senseme:
@@ -82,10 +75,6 @@ senseme:
 #exclude:
   #  - "Studio Beam Fan"
 
-# climate
-climate:
-  platform: nest
-
 # nest
 nest:
   client_id: !secret nest_client_id
@@ -97,13 +86,18 @@ isy994:
   username: !secret isy_username
   password: !secret isy_password
   enable_climate: false
-  #tls: 1.2
 
 # Enable MQTT
 mqtt:
-  broker: core-mosquitto
+  broker: 192.168.1.3
+  client_id: hassio
   discovery: true
   discovery_prefix: hass
+
+# Enable MQTT Sharing between Hassio instances.
+# This is a client to the hosting instance.
+mqtt_shareclient:
+  base_topic: hass_share
 
 # Google Text to Speech
 tts:
@@ -136,11 +130,16 @@ recorder:
       - sun.sun
       - sensor.date
 
+# Z-Wave
+zwave:
+  usb_path: /dev/ttyACM0
+  network_key: "0xD2, 0x7D, 0x39, 0xC0, 0xD0, 0xE4, 0xA5, 0x81, 0xEF, 0x91, 0x76, 0x67, 0x37, 0xB5, 0xF0, 0xE0"
+
 sensor:
   - platform: yr
   # temperature of Hassio Raspberri Pi
   - platform: command_line
-    name: Hassio Temperature
+    name: Hassio House Temperature
     command: "cat /sys/class/thermal/thermal_zone0/temp"
     # If errors occur, remove degree symbol below
     unit_of_measurement: "°C"

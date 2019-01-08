@@ -1,31 +1,56 @@
 ################################################################
 ## Packages / homekit
 ##   Handles Homekit setup
-#################################################################
+################################################################
+
+################################################################
+# Current Pincode 401-28-964
+################################################################
 homekit:
   filter:
     include_entities:
-      - switch.backyard_lights
-      - switch.studio_state
+      # Kitchen
+      - switch.kitchen_lights
+      - fan.kitchen_fan_front
+      # Family Room
+      - switch.family_room_light
+      - fan.family_room_fan
+      # Master Bedroom
+      - switch.master_bed_light
+      - fan.master_bed_fan
+      # Studio
+      - switch.studio_state           # Home/Away for Studio
       - switch.studio_chandeliers
       - switch.studio_shoplights
-      - media_player.sonos_studio
-
-
-
+      - fan.studio_fan
+      # Backyard
+      - switch.backyard_lights
 
   entity_config:
-    switch.backyard_lights:
-      name: "Backyard Lights"
-
+    # Kitchen
+    switch.kitchen_lights:
+      name: "Kitchen Light"
+    switch.kitchen_fan_front:
+      name: "Kitchen Fan"
+    # Family Room
+    switch.family_room_light:
+      name: "Family Room Light"
+    fan.family_room_fan:
+      name: "Family Room Fan"
+    # Master Bedroom
+    switch.master_bed_light:
+      name: "Master Bedroom Light"
+    fan.master_bed_fan:
+      name: "Master Bedroom Fan"
+    # Studio
     switch.studio_state:
       name: "Studio"
     switch.studio_chandeliers:
-      name: "Studio Lights"
+      name: "Studio Light"
     switch.studio_shoplights:
-      name: "Studio Shoplights"
-    media_player.sonos_studio:
-      name: "Studio Sonos"
-      feature_list:
-        - feature: on_off
-        - feature: play_pause
+      name: "Studio Shoplight"
+    fan.studio:
+      name: "Studio Fan"
+    # Backyard
+    switch.backyard_lights:
+      name: "Backyard Light"

@@ -221,24 +221,24 @@ automation:
           name: Upstairs Nest Thermostat
           message: forced back to Auto Mode because Guest Mode is enabled or somebody is home
 
-  # Automatically set Studio thermostat to Eco mode at night
-  - id: nest_studio_auto_away_night
-    alias: "Studio Nest thermostat Auto Away Night"
-    initial_state: 'on'
-    trigger:
-      platform: time
-      at: '22:00:00'
-    condition:
-      condition: and
-      conditions:
-        - condition: state
-          entity_id: binary_sensor.guest_active
-          state: 'off'
-        - condition: state
-          entity_id: binary_sensor.vacation_active
-          state: 'off'
-    action:
-      service: script.nest_studio_thermostat_set_away
+  # # Automatically set Studio thermostat to Eco mode at night
+  # - id: nest_studio_auto_away_night
+  #   alias: "Studio Nest thermostat Auto Away Night"
+  #   initial_state: 'on'
+  #   trigger:
+  #     platform: time
+  #     at: '22:00:00'
+  #   condition:
+  #     condition: and
+  #     conditions:
+  #       - condition: state
+  #         entity_id: binary_sensor.guest_active
+  #         state: 'off'
+  #       - condition: state
+  #         entity_id: binary_sensor.vacation_active
+  #         state: 'off'
+  #   action:
+  #     service: script.nest_studio_thermostat_set_away
 
 ################################################################
 ## Script

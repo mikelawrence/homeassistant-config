@@ -21,74 +21,10 @@ homeassistant:
       friendly_name: "Sonos Studio"
 
     ################################################
-    ## Light
-    ################################################
-    light.studio_chandeliers_door:
-      friendly_name: "Studio Chandeliers"
-      icon: mdi:ceiling-light
-    light.studio_bed_fan_light:
-      friendly_name: "Studio Bedroom Light"
-    light.studio_bath_light_door:
-      friendly_name: "Studio Bathroom Light"
-    light.studio_kitchen_chandelier:
-      friendly_name: "Studio Kitchen Chandelier"
-      icon: mdi:ceiling-light
-    light.studio_kitchen_sink_lights:
-      friendly_name: "Studio Kitchen Sink Lights"
-      icon: mdi:ceiling-light
-    light.studio_kitchen_cabinet_lights:
-      friendly_name: "Studio Kitchen Cabinet Lights"
-    light.studio_fan_light:
-      friendly_name: "Studio Fan Light"
-      icon: mdi:ceiling-light
-
-    ################################################
-    ## Switch
-    ################################################
-    # scene
-    switch.studio_chandeliers:
-      friendly_name: "Studio Chandeliers"
-      icon: mdi:ceiling-light
-    switch.studio_shoplights:
-      friendly_name: "Studio Shoplights"
-      icon: mdi:spotlight-beam
-    switch.studio_shoplight_a:
-      friendly_name: "Studio Shoplight A"
-      icon: mdi:spotlight-beam
-    switch.studio_shoplight_b:
-      friendly_name: "Studio Shoplight B"
-      icon: mdi:spotlight-beam
-    switch.studio_shoplight_c:
-      friendly_name: "Studio Shoplight C"
-      icon: mdi:spotlight-beam
-    switch.studio_shoplight_d:
-      friendly_name: "Studio Shoplight D"
-      icon: mdi:spotlight-beam
-    switch.studio_kitchen_lights:
-      friendly_name: "Studio Kitchen Lights"
-      icon: mdi:lightbulb
-    switch.studio_bed_light:
-      friendly_name: "Studio Bedroom Light"
-      icon: mdi:lightbulb
-    switch.studio_bath_light:
-      friendly_name: "Studio Bathroom Light"
-      icon: mdi:lightbulb
-    switch.studio_bath_vent_fan:
-      friendly_name: "Studio Bathroom Fan"
-      icon: mdi:fan
-    switch.studio_loft_light:
-      friendly_name: "Studio Loft Light"
-      icon: mdi:lightbulb
-
-    ################################################
     ## Fan
     ################################################
     fan.studio_fan:
       friendly_name: "Studio Fan"
-    fan.studio_bed_fan:
-      friendly_name: "Studio Bedroom Fan"
-    fan.studio_loft_fan:
-      friendly_name: "Studio Loft Fan"
 
     ################################################
     ## Remote
@@ -105,8 +41,7 @@ group:
     name: Studio
     control: hidden
     entities:
-      - light.studio_chandeliers_door
-      - light.studio_kitchen_chandelier
+      - light.studio_chandeliers
       - switch.studio_shoplights
       - switch.studio_shoplight_a
       - switch.studio_shoplight_b
@@ -130,17 +65,16 @@ group:
     name: Studio Bedroom
     control: hidden
     entities:
-      - switch.studio_bed_light
+      - light.studio_bed_fan_light
       - fan.studio_bed_fan
-      - switch.studio_bath_light
-      - switch.studio_bath_fan
+      - light.studio_bath_light
 
   # Studio Loft ISY-994 group
   studio_loft:
     name: Studio Loft
     control: hidden
     entities:
-      - switch.studio_loft_light
+      - light.studio_loft_fan_light
       - fan.studio_loft_fan
 
   # Studio Media Players
@@ -165,7 +99,7 @@ group:
 ## Sensor
 ################################################################
 sensor:
-  # accumulates the time the Studio AC has been cooling yesterday
+  # accumulates the time the Studio AC was cooling yesterday
   - platform: history_stats
     name: Studio Cool Hours Yesterday
     entity_id: sensor.studio_thermostat_hvac_state
@@ -176,7 +110,7 @@ sensor:
     duration:
       hours: 24
 
-  # accumulates the time the Studio AC has been heating yesterday
+  # accumulates the time the Studio AC was heating yesterday
   - platform: history_stats
     name: Studio Heat Hours Yesterday
     entity_id: sensor.studio_thermostat_hvac_state

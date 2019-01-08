@@ -21,15 +21,6 @@ homeassistant:
     sensor.studio_mode:
       friendly_name: "Studio Mode"
 
-    ################################################
-    ## Switch
-    ################################################
-    # ISY-994 program switch "HA.switch/studio state"
-    # 'on' = Home, 'off' = Away
-    switch.studio_state:
-      friendly_name: "Studio Home"
-      icon: mdi:home
-
 ################################################################
 ## Group
 ################################################################
@@ -123,11 +114,11 @@ automation:
         data_template:
           name: Studio
           message: manually switched to Away Mode
-      - service: script.sonos_studio_say
-        data:
-          volume: 0.5
-          delay: '00:00:02'
-          message: 'Goodbye.'
+      # - service: script.sonos_studio_say
+      #   data:
+      #     volume: 0.5
+      #     delay: '00:00:02'
+      #     message: 'Goodbye.'
       # turn off Studio TV
       - service: remote.turn_off
         data:
@@ -148,8 +139,8 @@ automation:
         data_template:
           name: Studio
           message: manually switched to Home Mode
-      - service: script.sonos_studio_say
-        data:
-          volume: 0.5
-          delay: '00:00:02'
-          message: 'Hello.'
+      # - service: script.sonos_studio_say
+      #   data:
+      #     volume: 0.5
+      #     delay: '00:00:02'
+      #     message: 'Hello.'

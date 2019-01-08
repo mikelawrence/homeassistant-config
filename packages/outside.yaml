@@ -18,28 +18,63 @@ homeassistant:
     ################################################
     ## Switch
     ################################################
-    switch.floodlights__backyard:
-      friendly_name: "Backyard Floodlights"
+    switch.flood_lights_house_front:
+      friendly_name: "House Front Flood Lights"
       icon: mdi:lightbulb
-    switch.porch_lights__backyard:
-      friendly_name: "Backyard Porch Lights"
+    switch.flood_lights_house_backyard:
+      friendly_name: "House Backyard Flood Lights"
       icon: mdi:lightbulb
-    switch.backyard_lights:
-      friendly_name: "All Backyard Lights"
+    switch.porch_lights_house_front:
+      friendly_name: "House Front Porch Lights"
+      icon: mdi:lightbulb
+    switch.porch_lights_house_back:
+      friendly_name: "House Back Porch Lights"
+      icon: mdi:lightbulb
+    switch.porch_lights_house_backyard:
+      friendly_name: "House Backyard Porch Lights"
+      icon: mdi:lightbulb
+    switch.flood_lights_house:
+      friendly_name: "All House Flood Lights"
+      icon: mdi:lightbulb
+    switch.porch_lights_house:
+      friendly_name: "All House Porch Lights"
+      icon: mdi:lightbulb
+    switch.backyard_lights_house:
+      friendly_name: "All House Backyard Lights"
       icon: mdi:lightbulb
 
 ################################################################
 ## Group
 ################################################################
 group:
+  # Front Gate
+  front_gate:
+    name: Front Gate
+    control: hidden
+    entities:
+      - cover.front_gate
+
+  # Frontyard ISY-994 group
+  frontyard_lights:
+    name: Frontyard Lights
+    control: hidden
+    entities:
+      - switch.porch_lights_house
+      - switch.porch_lights_house_front
+      - switch.flood_lights_house
+      - switch.flood_lights_house_front
+
   # Backyard ISY-994 group
   backyard_lights:
     name: Backyard Lights
     control: hidden
     entities:
       - switch.backyard_lights
-      - switch.porch_lights__studio
-      - switch.floodlights__backyard
+      - switch.porch_lights_house_backyard
+      - switch.porch_lights_house_back
+      - switch.porch_lights_house_studio
+      - switch.flood_lights_house_backyard
+      - switch.flood_lights_house_front
 
   # Roof RGB Floodlights
   roof_floodlights:
@@ -50,20 +85,16 @@ group:
       - light.roof_lights
       - light.house_roof_light
       - light.studio_roof_light
-      - sensor.house_roof_light_temperature
-      - sensor.studio_roof_light_temperature
-      - sensor.house_roof_light_rssi
-      - sensor.studio_roof_light_rssi
+      - light.garage_roof_light
 
-  # Front Gate
-  front_gate:
-    name: Front Gate
+  # Christmas Lights
+  christmas_lights:
+    name: Christmas Lights
     control: hidden
     entities:
-      - cover.front_gate
-      - sensor.front_gate_status
-      - sensor.front_gate_rssi
-      - sensor.front_gate_temperature
+      - input_boolean.christmas_season
+      - switch.christmas_lights
+      - switch.studio_christmas_lights
 
   # Septic Controller
   septic:
@@ -71,12 +102,8 @@ group:
     control: hidden
     entities:
       - sensor.septic_status
-      - binary_sensor.septic_pump
-      - binary_sensor.septic_alarm
       - sensor.septic_minutes_yesterday
       - sensor.septic_usage_yesterday
-      - sensor.septic_rssi
-      - sensor.septic_temperature
 
 ##################################################
 ## input_number
@@ -84,10 +111,17 @@ group:
 input_number:
   roof_lights_transition_time:
     name: "Roof Lights Transition Time"
-    initial: 120
     min: 1
     max: 300
     step: 1
+
+##################################################
+## input_boolean
+##################################################
+input_boolean:
+  christmas_season:
+    name: Christmas Lights Auto On
+    icon: mdi:pine-tree
 
 ################################################################
 ## Sensor
@@ -131,15 +165,21 @@ binary_sensor:
     sensors:
       # Turns on when Front Gate has been open too long
       front_gate_open_too_long:
-        friendly_name: "Front Gate has open too long"
+        friendly_name: "Front Gate open too long"
         delay_on: '00:04:00'
         value_template: "{{ is_state('cover.front_gate', 'open') }}"
 
-      # Turns on when Front Gate state hasn't changed in 24 hours
-      front_gate_no_change:
-        friendly_name: "Front Gate has not changed in 24 hours"
-        delay_on: '00:04:00'
-        value_template: "{{ (as_timestamp(now())-as_timestamp(states.cover.front_gate.last_updated)) > 1*60*60 }}"
+      # Turns on when Front Gate Controller has been off the network for too long
+      front_gate_controller_not_on_network:
+        friendly_name: "Front Gate controller not on network"
+        delay_on: '03:00:00'
+        value_template: "{{ is_state('device_tracker.front_gate_controller', 'away') }}"
+
+      # Turns on when Septic Controller has been off the network for too long
+      septic_controller_not_on_network:
+        friendly_name: "Septic controller not on network"
+        delay_on: '03:00:00'
+        value_template: "{{ is_state('device_tracker.septic_controller', 'away') }}"
 
 ################################################################
 ## Automation
@@ -148,13 +188,133 @@ automation:
   - id: roof_lights_transition_time
     alias: "Roof Lights Transition Time Send MQTT"
     trigger:
-      - platform: state
-        entity_id: input_number.roof_lights_transition_time
+      platform: state
+      entity_id: input_number.roof_lights_transition_time
     action:
+      # - service: light.turn_on
+      #   data_template:
+      #     entity_id: "light.roof_lights"
+      #     transition: "{{ trigger.to_state.state }}"
       - service: mqtt.publish
         data_template:
           topic: "hass/light/roof_lights/rgblight/set"
           payload: '{"transition": {{ trigger.to_state.state | int }}}'
+
+  # Roof lights are turned on at just the right time after sunset
+  - id: roof_lights_auto_on
+    alias: "Roof Lights Automatic On"
+    trigger:
+      platform: numeric_state
+      entity_id: sun.sun
+      value_template: "{{ state.attributes.elevation }}"
+      below: -5.0
+    action:
+      - service: light.turn_on
+        entity_id: light.roof_lights
+
+  # Roof lights go off at 2:00AM
+  - id: roof_lights_auto_off
+    alias: "Roof Lights Automatic Off"
+    trigger:
+      platform: time
+      at: "02:00:00"
+    action:
+      - service: light.turn_off
+        entity_id: light.roof_lights
+
+  # Christmas lights are turned on at just the right time after sunset
+  - id: christmas_lights_auto_on
+    alias: "Christmas Lights Automatic On"
+    trigger:
+      platform: numeric_state
+      entity_id: sun.sun
+      value_template: "{{ state.attributes.elevation }}"
+      below: -5.0
+    condition:
+      condition: state
+      entity_id: input_boolean.christmas_season
+      state: 'on'
+    action:
+      - service: switch.turn_on
+        entity_id: switch.christmas_lights
+      - service: switch.turn_on
+        entity_id: switch.studio_christmas_lights
+
+  # Christmas lights go off at 2:00AM
+  - id: christmas_lights_auto_off
+    alias: "Christmas Lights Automatic Off"
+    trigger:
+      platform: time
+      at: "02:00:00"
+    action:
+      - service: switch.turn_off
+        entity_id: switch.christmas_lights
+      - service: switch.turn_off
+        entity_id: switch.studio_christmas_lights
+
+  # turn on house back porch lights due to studio ISY994 fast on
+  - alias: "House Porch Lights Back On"
+    trigger:
+      platform: event
+      event_type: isy994_control
+      event_data:
+        entity_id: switch.studio_front_porch_light
+        control: 'DFON'
+      # platform: state
+      # entity_id: switch.porch_lights_studio_dfon
+      # to: 'on'
+    action:
+      service: switch.turn_on
+      entity_id: switch.porch_lights_house_back
+
+  # turn off house back porch lights due to studio ISY994 fast off
+  - alias: "House Porch Lights Back Off"
+    trigger:
+      platform: event
+      event_type: isy994_control
+      event_data:
+        entity_id: switch.studio_front_porch_light
+        control: 'DFOF'
+      # platform: state
+      # entity_id: switch.porch_lights_studio_dfof
+      # to: 'on'
+    action:
+      service: switch.turn_off
+      entity_id: switch.porch_lights_house_back
+
+  # turn on studio back porch lights due to house ISY994 fast on
+  - alias: "House Porch Lights Back On"
+    trigger:
+      - platform: event
+        event_type: isy994_control
+        event_data:
+          entity_id: switch.master_bed_porch_light
+          control: 'DFON'
+      - platform: event
+        event_type: isy994_control
+        event_data:
+          entity_id: light.back_porch_light_backdoor
+          control: 'DFON'
+    action:
+      service: switch.turn_on
+      entity_id: switch.porch_lights_studio
+
+  # turn off studio back porch lights due to house ISY994 fast off
+  - alias: "House Porch Lights Back Off"
+    trigger:
+      - platform: event
+        event_type: isy994_control
+        event_data:
+          entity_id: switch.master_bed_porch_light
+          control: 'DFOF'
+      - platform: event
+        event_type: isy994_control
+        event_data:
+          entity_id: light.back_porch_light_backdoor
+          control: 'DFOF'
+    action:
+      service: switch.turn_off
+      entity_id: switch.porch_lights_studio
 
   # Front Gate Opened
   - id: front_gate_opened
@@ -176,8 +336,7 @@ automation:
           message: 'Front Gate Open.'
 
   # Front Gate Open too long
-  - id: front_gate_open_too_long
-    alias: Front Gate Open too long
+  - alias: Front Gate Open too Long
     trigger:
       platform: state
       entity_id: binary_sensor.front_gate_open_too_long
@@ -231,6 +390,20 @@ alert:
     notifiers:
       - ios_mike_iphone_ios
 
+  # Front Gate Controller not on Network
+  front_gate_controller_not_on_network:
+    name: 'Front Gate controller is not on network!'
+    entity_id: binary_sensor.front_gate_controller_not_on_network
+    repeat:
+      - 60
+      - 120
+      - 180
+      - 720
+      - 1440
+    state: 'on'
+    notifiers:
+      - ios_mike_iphone_ios
+
   # Septic Controller Reset Hardware occurred
   septic_reset_hardware_occurred:
     name: 'Septic Reset Hardware occurred!'
@@ -246,6 +419,20 @@ alert:
     entity_id: sensor.septic_status
     repeat: 1440
     state: 'Reset WiFi Connect'
+    notifiers:
+      - ios_mike_iphone_ios
+
+  # Septic Controller not on Network
+  septic_controller_not_on_network:
+    name: 'Septic controller is not on network!'
+    entity_id: binary_sensor.septic_controller_not_on_network
+    repeat:
+      - 60
+      - 120
+      - 180
+      - 720
+      - 1440
+    state: 'on'
     notifiers:
       - ios_mike_iphone_ios
 

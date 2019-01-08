@@ -6,6 +6,9 @@ homeassistant:
     ################################################
     ## Binary Sensor
     ################################################
+    # ISY-994 door sensor component converts the
+    # heartbeat into a low battery by going high
+    # when the hearbeat is missed
     binary_sensor.house_front_door_sensor:
       friendly_name: "House Front Door"
       device_class: door
@@ -17,12 +20,6 @@ homeassistant:
       device_class: door
     binary_sensor.house_back_door_sensor_hb:
       friendly_name: "House Back Door Sensor Low Battery"
-      device_class: battery
-    binary_sensor.studio_front_door_sensor:
-      friendly_name: "Studio Front Door"
-      device_class: door
-    binary_sensor.studio_front_door_sensor_hb:
-      friendly_name: "Studio Front Door Sensor Low Battery"
       device_class: battery
     binary_sensor.garage_door_sensor:
       friendly_name: "Garage Door"

@@ -135,6 +135,10 @@ group:
       - device_tracker.bryan_meta
       - device_tracker.bryan_iphone
       - device_tracker.bryan_iphone_ios
+      - device_tracker.jim_meta
+      - device_tracker.jim_phone
+      - device_tracker.kasey_meta
+      - device_tracker.kasey_phone
       - group.guests
 
   family:
@@ -144,13 +148,13 @@ group:
       - device_tracker.clara_meta
       - device_tracker.mikey_meta
       - device_tracker.bryan_meta
+      - device_tracker.jim_meta
+      - device_tracker.kasey_meta
 
   guests:
     control: hidden
     entities:
       - device_tracker.dan_iphone
-      - device_tracker.jim_android
-      - device_tracker.kasey_android
 
 ################################################################
 ## Binary Sensor
@@ -182,6 +186,8 @@ automation:
           - device_tracker.clara_iphone
           - device_tracker.mikey_iphone
           - device_tracker.bryan_iphone
+          - device_tracker.jim_phone
+          - device_tracker.kasey_phone
         from: 'home'
         #for: '00:02:00'
       # Immediate Home action for router-based trackers
@@ -191,6 +197,8 @@ automation:
           - device_tracker.clara_iphone
           - device_tracker.mikey_iphone
           - device_tracker.bryan_iphone
+          - device_tracker.jim_phone
+          - device_tracker.kasey_phone
         to: 'home'
       # Immediate action for IOS application trackers
       - platform: state
@@ -200,9 +208,9 @@ automation:
     action:
       - service: script.update_tracker
         data_template:
-          entityid: '{{trigger.entity_id}}'
-          fromstate: '{{trigger.from_state.state}}'
-          tostate: '{{trigger.to_state.state}}'
+          entityid: '{{ trigger.entity_id }}'
+          fromstate: '{{ trigger.from_state.state }}'
+          tostate: '{{ trigger.to_state.state }}'
 
 ################################################################
 ## Script
@@ -215,7 +223,7 @@ script:
       #   value_template: '{{fromstate != tostate}}'
       - service: python_script.meta_device_tracker
         data_template:
-          entity_id: '{{entityid}}'
+          entity_id: '{{ entityid }}'
       # - service: logbook.log
       #   data_template:
       #     name: 'Tracker updated: '

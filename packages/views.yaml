@@ -46,8 +46,11 @@ group:
       - device_tracker.clara_meta
       - device_tracker.mikey_meta
       - device_tracker.bryan_meta
+      - device_tracker.jim_meta
+      - device_tracker.kasey_meta
       - sensor.downstairs_thermostat_temperature
       - sensor.upstairs_thermostat_temperature
+      - sensor.weewx_temperature
       - group.house_mode
       - group.kitchen
       - group.family_room
@@ -66,7 +69,10 @@ group:
       - device_tracker.clara_meta
       - device_tracker.mikey_meta
       - device_tracker.bryan_meta
+      - device_tracker.jim_meta
+      - device_tracker.kasey_meta
       - sensor.studio_thermostat_temperature
+      - sensor.weewx_temperature
       - group.studio_mode
       - group.studio
       - group.backyard
@@ -83,10 +89,14 @@ group:
       - device_tracker.clara_meta
       - device_tracker.mikey_meta
       - device_tracker.bryan_meta
+      - device_tracker.jim_meta
+      - device_tracker.kasey_meta
       - sensor.weewx_temperature
       - group.front_gate
-      - group.garage
+      - group.frontyard_lights
       - group.backyard_lights
+      - group.garage
+      - group.christmas_lights
       - group.roof_floodlights
       - group.septic
 
@@ -97,6 +107,9 @@ group:
       - device_tracker.clara_meta
       - device_tracker.mikey_meta
       - device_tracker.bryan_meta
+      - device_tracker.jim_meta
+      - device_tracker.kasey_meta
+      - sensor.weewx_temperature
       - weather.yweather
       - group.weewx
 

@@ -18,15 +18,15 @@ __pycache__
 .homekit.state
 .DS_Store
 known_devices.yaml
-entity_registry.yaml
 secrets.yaml
+*.db-shm
+*.db-wal
 
+# directories
 .cloud
 .storage
-appdaemon
+#custom_components
+custom_components_tmp
 deps
 tts
 www
-*.db-shm
-*.db-wal
-.config_entries.json

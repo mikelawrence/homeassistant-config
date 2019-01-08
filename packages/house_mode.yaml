@@ -16,26 +16,12 @@ homeassistant:
       icon: mdi:home-variant
 
     ################################################
-    ## Input Boolean
-    ################################################
-    input_boolean.guest_mode:
-      friendly_name: "Guest Mode"
-      icon: mdi:account
-
-    input_boolean.vacation_mode:
-      friendly_name: "Vacation Mode"
-      icon: mdi:beach
-
-    ################################################
     ## Switch
     ################################################
-    # ISY-994 program switch "HA.switch/studio state"
-    # 'on' = Home, 'off' = Away
-    switch.house_state:
+    # ISY-994 HA.switch "Program Switches"
+    switch.house_state:                     # 'on' = Home, 'off' = Away
       friendly_name: "House Home"
       icon: mdi:home
-      homebridge_name: "House"
-      homebridge_visible: true
 
     ################################################
     ## Binary Sensor
@@ -71,10 +57,12 @@ group:
 ################################################################
 input_boolean:
   guest_mode:
+    name: "Guest Mode"
+    icon: mdi:account
 
   vacation_mode:
-
-  house_home:
+    name: "Vacation Mode"
+    icon: mdi:beach
 
 ################################################################
 ## Binary Sensor

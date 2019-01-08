@@ -6,6 +6,7 @@ logbook:
     domains:
       - group
       - switch
+      - device_tracker
     entities:
       - light.kitchen_light_hallway
       - light.kitchen_cabinet_light_hall
@@ -67,6 +68,12 @@ logbook:
       - script.nest_downstairs_thermostat_set_away
       - script.nest_upstairs_thermostat_set_away
       - script.nest_upstairs_thermostat_set_away
+      - script.nest_upstairs_thermostat_set_away
+      - script.update_tracker
+      - sensor.master_bath_multisensor_alarm_level
+      - sensor.master_bath_multisensor_alarm_type
+      - sensor.master_bath_multisensor_burglar
+      - sensor.master_bath_multisensor_sourcenodeid
 
   include:
     entities:
@@ -76,3 +83,11 @@ logbook:
       - switch.studio_bath_vent_fan
       - switch.studio_fans
       - switch.studio_shoplights
+      - device_tracker.mike_meta
+      - device_tracker.clara_meta
+      - device_tracker.mikey_meta
+      - device_tracker.bryan_meta
+      - device_tracker.jim_meta
+      - device_tracker.kasey_meta
+      - device_tracker.septic_controller
+      - device_tracker.front_gate_controller

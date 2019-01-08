@@ -9,25 +9,33 @@ history:
       - sensor.studio_mode
       - binary_sensor.people_home
       - device_tracker.mike_meta
-      #- device_tracker.mike_iphone
-      #- device_tracker.mike_iphone_ios
+      # - device_tracker.mike_iphone
+      # - device_tracker.mike_iphone_ios
       - device_tracker.clara_meta
-      #- device_tracker.clara_iphone
-      #- device_tracker.clara_iphone_ios
+      # - device_tracker.clara_iphone
+      # - device_tracker.clara_iphone_ios
       - device_tracker.mikey_meta
-      #- device_tracker.mikey_iphone
       - device_tracker.bryan_meta
-      #- device_tracker.bryan_iphone
+      - device_tracker.jim_meta
+      - device_tracker.kasey_meta
+      - input_boolean.master_bath_light_stay_on
+      - input_boolean.master_bath_light_manual_input
+      - input_boolean.master_bath_humidity_high
+      - light.master_bath_light_door
+      - switch.master_bath_vent_fan
+      - timer.master_bath_light_timer
+      - timer.master_bath_vent_fan_timer
+      - binary_sensor.master_bath_humidity_rising
+      - binary_sensor.master_bath_multisensor
       - binary_sensor.any_motion
       - binary_sensor.any_house_motion
       - binary_sensor.any_studio_motion
       - binary_sensor.comp_room_motion
       - binary_sensor.kitchen_motion
-      - binary_sensor.master_bath_motion
       - binary_sensor.up_bath_motion
       - binary_sensor.up_sm_bed_motion
       - binary_sensor.up_lg_bed_motion
-      - binary_sensor.studio_motion
+      - binary_sensor.studio_multisensor
       - binary_sensor.studio_bath_motion
       - binary_sensor.garage_motion
       - binary_sensor.spare_motion
@@ -35,6 +43,12 @@ history:
       - binary_sensor.house_back_door_sensor
       - binary_sensor.studio_front_door_sensor
       - binary_sensor.garage_door_sensor
+      - cover.garage_door_1
+      - cover.garage_door_2
+      - cover.garage_door_3
+      - light.roof_lights
+      - switch.christmas_lights
+      - switch.studio_christmas_lights
       - sensor.front_gate_status
       - sensor.septic_status
       - binary_sensor.septic_pump
@@ -44,16 +58,29 @@ history:
       - sensor.downstairs_thermostat_hvac_state
       - sensor.studio_thermostat_operation_mode
       - sensor.studio_thermostat_hvac_state
+      - sensor.front_gate_rssi
+      - sensor.septic_rssi
+      - sensor.house_roof_light_rssi
+      - sensor.studio_roof_light_rssi
+      - sensor.garage_roof_light_rssi
       - sensor.downstairs_thermostat_temperature
       - sensor.upstairs_thermostat_temperature
       - sensor.studio_thermostat_temperature
       - sensor.front_gate_temperature
       - sensor.septic_temperature
       - sensor.weewx_temperature
-      - sensor.hassio_temperature
-      - sensor.studio_roof_light_temperature
+      - sensor.hassio_house_temperature
+      - sensor.hassio_studio_temperature
       - sensor.house_roof_light_temperature
-      - sensor.front_gate_rssi
-      - sensor.septic_rssi
-      - sensor.house_roof_light_rssi
-      - sensor.studio_roof_light_rssi
+      - sensor.studio_roof_light_temperature
+      - sensor.garage_roof_light_temperature
+      - sensor.downstairs_thermostat_humidity
+      - sensor.upstairs_thermostat_humidity
+      - sensor.studio_thermostat_humidity
+      - sensor.master_bath_multisensor_temperature
+      - sensor.master_bath_multisensor_humidity
+      - sensor.master_bath_multisensor_humidity_mean
+      - sensor.master_bath_multisensor_luminance
+      - sensor.studio_multisensor_humidity
+      - sensor.studio_multisensor_luminance
+      - sensor.studio_multisensor_temperature

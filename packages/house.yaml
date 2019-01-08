@@ -43,16 +43,6 @@ homeassistant:
       friendly_name: "Family Room Light"
     light.stairs_light_downstairs:
       friendly_name: "Stairs Light"
-    light.master_bed_fan_light:
-      friendly_name: "Master Bedroom Light"
-    light.master_bed_lamp_mike:
-      friendly_name: "Master Bedroom Mike's Lamp"
-    light.master_bed_lamp_clara:
-      friendly_name: "Master Bedroom Clara's Lamp"
-    light.master_closet_light_door:
-      friendly_name: "Master Closet Light"
-    light.master_bath_light_door:
-      friendly_name: "Master Bathroom Light"
     light.utility_room_light_backdoor:
       friendly_name: "Utility Room Light"
     light.up_bath_light_door:
@@ -66,38 +56,15 @@ homeassistant:
     switch.kitchen_lights:
       friendly_name: "Kitchen Lights"
       icon: mdi:lightbulb
-      homebridge_visible: true
-      homebridge_name: "Kitchen Lights"
     switch.computer_room_light:
       friendly_name: "Computer Room Light"
       icon: mdi:lightbulb
-      homebridge_visible: true
-      homebridge_name: "Computer Room Light"
     switch.family_room_light:
       friendly_name: "Family Room Light"
       icon: mdi:lightbulb
-      homebridge_visible: true
-      homebridge_name: "Master Bedroom Light"
     switch.down_bath_vent_fan:
       friendly_name: "Downstairs Bathroom Fan"
       icon: mdi:fan
-    switch.master_bed_light:
-      friendly_name: "Master Bedroom Light"
-      icon: mdi:lightbulb
-      homebridge_visible: true
-      homebridge_name: "Master Bedroom Light"
-    switch.master_closet_light:
-      friendly_name: "Master Closet Light"
-      icon: mdi:lightbulb
-    switch.master_bath_light:
-      friendly_name: "Master Bathroom Light"
-      icon: mdi:lightbulb
-    switch.master_bath_vent_fan:
-      friendly_name: "Master Bathroom Fan"
-      icon: mdi:fan
-    switch.master_bed_porch_light:
-      friendly_name: "Back Porch Light"
-      icon: mdi:lightbulb
     switch.up_sm_bed_light:
       friendly_name: "Mikey Bedroom Light"
       icon: mdi:lightbulb
@@ -110,41 +77,14 @@ homeassistant:
     ################################################
     fan.kitchen_fan_front:
       friendly_name: "Kitchen Fan"
-      homebridge_visible: true
-      homebridge_name: "Kitchen Fan"
     fan.family_room_fan:
       friendly_name: "Family Room Fan"
-      homebridge_visible: true
-      homebridge_name: "Family Room Fan"
     fan.computer_room_fan:
       friendly_name: "Computer Room Fan"
-      homebridge_visible: true
-      homebridge_name: "Computer Room Fan"
-    fan.master_bed_fan:
-      friendly_name: "Master Bedroom Fan"
-      homebridge_visible: true
-      homebridge_name: "Master Bedroom Fan"
     fan.up_lg_bed_fan:
       friendly_name: "Bryan Bedroom Fan"
-      homebridge_visible: true
-      homebridge_name: "Bryan Bedroom Fan"
     fan.up_sm_bed_fan:
       friendly_name: "Mikey Bedroom Fan"
-      homebridge_visible: true
-      homebridge_name: "Mikey Bedroom Fan"
-
-    ################################################
-    ## Scene
-    ################################################
-    scene.kitchen_morning:
-      friendly_name: "Kitchen Morning"
-      homebridge_visible: true
-      #homebridge_name: "Morning"
-
-    scene.master_bedroom_all_off:
-      friendly_name: "Master Bedroom All Off"
-      homebridge_visible: true
-      #homebridge_name: "Morning"
 
     ################################################
     ## Remote
@@ -183,16 +123,6 @@ group:
       - switch.computer_room_light
       - fan.computer_room_fan
       - scene.computer_room_all_off
-
-  # House Master Bedroom
-  master_bed_room:
-    name: Master Bedroom
-    control: hidden
-    entities:
-      - switch.master_bed_light
-      - fan.master_bed_fan
-      - switch.master_closet_light
-      - switch.master_bath_light
 
   # House Downstairs Bathroom
   downstairs_bathroom:
@@ -246,26 +176,6 @@ group:
       - sensor.upstairs_cool_hours_yesterday
       - sensor.downstairs_heat_hours_yesterday
       - sensor.upstairs_heat_hours_yesterday
-
-################################################################
-## Scene
-################################################################
-scene:
-  - name: Kitchen Morning
-    entities:
-      switch.kitchen_morning: on
-  - name: Kitchen All Off
-    entities:
-      switch.kitchen_all_off: on
-  - name: Family Room All Off
-    entities:
-      switch.family_room_all_off: on
-  - name: Computer Room All Off
-    entities:
-      switch.computer_room_all_off: on
-  - name: Master Bedroom All Off
-    entities:
-      switch.kitchen_all_off: on
 
 ################################################################
 ## Sensor

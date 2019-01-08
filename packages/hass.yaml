@@ -34,27 +34,37 @@ automation:
 ## Script
 ################################################################
 script:
-  # Intialize Home Assistant
+  # Initialize Home Assistant
   initialize_hass:
     alias: 'Initialize HASS after startup'
     sequence:
       - service: script.update_tracker
         data_template:
           entityid: 'device_tracker.mike_meta'
-          fromstate: 'away'
+          fromstate: 'not_home'
           tostate: 'home'
       - service: script.update_tracker
         data_template:
           entityid: 'device_tracker.clara_meta'
-          fromstate: 'away'
+          fromstate: 'not_home'
           tostate: 'home'
       - service: script.update_tracker
         data_template:
           entityid: 'device_tracker.mikey_meta'
-          fromstate: 'away'
+          fromstate: 'not_home'
           tostate: 'home'
       - service: script.update_tracker
         data_template:
           entityid: 'device_tracker.bryan_meta'
-          fromstate: 'away'
+          fromstate: 'not_home'
+          tostate: 'home'
+      - service: script.update_tracker
+        data_template:
+          entityid: 'device_tracker.jim_meta'
+          fromstate: 'not_home'
+          tostate: 'home'
+      - service: script.update_tracker
+        data_template:
+          entityid: 'device_tracker.kasey_meta'
+          fromstate: 'not_home'
           tostate: 'home'
