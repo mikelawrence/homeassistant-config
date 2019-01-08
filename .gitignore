@@ -25,8 +25,7 @@ secrets.yaml
 # directories
 .cloud
 .storage
-#custom_components
-custom_components_tmp
+custom_components
 deps
 tts
 www

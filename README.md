@@ -2,8 +2,8 @@
 Here's my [Home Assistant](https://home-assistant.io/) configuration for my House. I am using the easy to install [Hass.io](https://www.home-assistant.io/hassio/) running on a [Raspberry Pi](https://www.raspberrypi.org/products/raspberry-pi-3-model-b/).
 
 ## Some of the devices and services that I use with HA
-* [ISY-994i](https://www.home-assistant.io/components/isy994/) for Insteon control.
 * Lots of SmartHome [Insteon](https://www.smarthome.com/insteon.html) devices controlled through ISY-994i.
+* [ISY-994i](https://www.home-assistant.io/components/isy994/) for Insteon control.
 * Presence detection.
   * [Unifi Controller](https://home-assistant.io/components/device_tracker.unifi/) for network device tracking.
   * [iOS app](https://itunes.apple.com/us/app/home-assistant-companion/id1099568401?mt=8) for location tracking and notifications.
