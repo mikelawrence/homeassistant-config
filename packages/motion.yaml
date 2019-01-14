@@ -11,9 +11,9 @@ homeassistant:
     ################################################
     ## Binary Sensor
     ################################################
-    binary_sensor.kitchen_motion_sensor_lb:
-      friendly_name: "Kitchen Motion Sensor Low Battery"
-      device_class: battery
+    # binary_sensor.kitchen_motion_sensor_lb:
+    #   friendly_name: "Kitchen Motion Sensor Low Battery"
+    #   device_class: battery
     binary_sensor.comp_room_motion_sensor_lb:
       friendly_name: "Computer Room Motion Sensor Low Battery"
       device_class: battery
@@ -38,8 +38,8 @@ homeassistant:
 ################################################################
 input_boolean:
   # used as a state variables for motion detection
-  kitchen_motion_state:
-    initial: off
+  # kitchen_motion_state:
+  #   initial: off
   comp_room_motion_state:
     initial: off
   # master_bath_motion_state:
@@ -78,8 +78,7 @@ binary_sensor:
         friendly_name: "Any House Motion"
         device_class: motion
         value_template: >-
-          {{ is_state('binary_sensor.kitchen_motion', 'on')
-             or is_state('binary_sensor.comp_room_motion', 'on')
+          {{ is_state('binary_sensor.comp_room_motion', 'on')
              or is_state('binary_sensor.up_bath_motion', 'on')
              or is_state('binary_sensor.up_sm_bed_motion', 'on')
              or is_state('binary_sensor.up_lg_bed_motion', 'on') }}
@@ -89,12 +88,12 @@ binary_sensor:
         device_class: motion
         value_template: >-
           {{ is_state('binary_sensor.studio_motion', 'on') }}
-      # Kitchen motion
-      kitchen_motion:
-        friendly_name: "Kitchen Motion"
-        device_class: motion
-        value_template: >-
-          {{ is_state('input_boolean.kitchen_motion_state', 'on') }}
+      # # Kitchen motion
+      # kitchen_motion:
+      #   friendly_name: "Kitchen Motion"
+      #   device_class: motion
+      #   value_template: >-
+      #     {{ is_state('input_boolean.kitchen_motion_state', 'on') }}
       # Computer Room motion
       comp_room_motion:
         friendly_name: "Computer Room Motion"
@@ -161,7 +160,7 @@ group:
       - binary_sensor.any_motion
       - binary_sensor.any_house_motion
       - binary_sensor.any_studio_motion
-      - binary_sensor.kitchen_motion
+      # - binary_sensor.kitchen_motion
       - binary_sensor.comp_room_motion
       # - binary_sensor.master_bath_motion
       - binary_sensor.up_bath_motion
@@ -172,7 +171,7 @@ group:
       - binary_sensor.garage_motion
       - binary_sensor.spare_motion_sensor
       - binary_sensor.spare_motion
-      - binary_sensor.kitchen_motion_sensor_lb
+      # - binary_sensor.kitchen_motion_sensor_lb
       - binary_sensor.comp_room_motion_sensor_lb
       # - binary_sensor.master_bath_motion_sensor_lb
       - binary_sensor.up_bath_motion_sensor_lb
@@ -186,13 +185,13 @@ group:
 ## Alert
 ################################################################
 alert:
-  kitchen_motion_sensor_low_battery:
-    name: "Kitchen Motion Sensor Low Battery!"
-    entity_id: binary_sensor.kitchen_motion_sensor_lb
-    repeat:
-      - 1440
-    notifiers:
-      - ios_mike_iphone_ios
+  # kitchen_motion_sensor_low_battery:
+  #   name: "Kitchen Motion Sensor Low Battery!"
+  #   entity_id: binary_sensor.kitchen_motion_sensor_lb
+  #   repeat:
+  #     - 1440
+  #   notifiers:
+  #     - ios_mike_iphone_ios
 
   comp_room_motion_sensor_low_battery:
     name: "Computer Room Motion Sensor Low Battery!"
@@ -262,30 +261,30 @@ alert:
 ## Automation
 ################################################################
 automation:
-  - alias: "Kitchen Motion Detect ON"
-    trigger:
-      platform: event
-      event_type: isy994_control
-      event_data:
-        entity_id: binary_sensor.kitchen_motion_sensor
-        control: 'DON'
-    action:
-      service: input_boolean.turn_on
-      data:
-        entity_id: input_boolean.kitchen_motion_state
+  # - alias: "Kitchen Motion Detect ON"
+  #   trigger:
+  #     platform: event
+  #     event_type: isy994_control
+  #     event_data:
+  #       entity_id: binary_sensor.kitchen_motion_sensor
+  #       control: 'DON'
+  #   action:
+  #     service: input_boolean.turn_on
+  #     data:
+  #       entity_id: input_boolean.kitchen_motion_state
 
-  - alias: "Kitchen Motion Detect OFF"
-    trigger:
-      platform: state
-      entity_id: input_boolean.kitchen_motion_state
-      from: 'off'
-      to: 'on'
-      for:
-        minutes: 15
-    action:
-      service: input_boolean.turn_off
-      data:
-        entity_id: input_boolean.kitchen_motion_state
+  # - alias: "Kitchen Motion Detect OFF"
+  #   trigger:
+  #     platform: state
+  #     entity_id: input_boolean.kitchen_motion_state
+  #     from: 'off'
+  #     to: 'on'
+  #     for:
+  #       minutes: 15
+  #   action:
+  #     service: input_boolean.turn_off
+  #     data:
+  #       entity_id: input_boolean.kitchen_motion_state
 
   - alias: "Computer Room Motion Detect ON"
     trigger:
@@ -512,17 +511,17 @@ automation:
       data:
         entity_id: input_boolean.spare_motion_state
 
-  - alias: "Kitchen Motion Sensor Low Battery"
-    #initial_state: 'on'
-    trigger:
-      - platform: state
-        entity_id: binary_sensor.kitchen_motion_sensor_lb
-        to: 'on'
-    action:
-      - service: persistent_notification.create
-        data_template:
-          message: 'Time to replace battery in Kitchen Motion Sensor.'
-          title: "Low Battery Detected"
+  # - alias: "Kitchen Motion Sensor Low Battery"
+  #   #initial_state: 'on'
+  #   trigger:
+  #     - platform: state
+  #       entity_id: binary_sensor.kitchen_motion_sensor_lb
+  #       to: 'on'
+  #   action:
+  #     - service: persistent_notification.create
+  #       data_template:
+  #         message: 'Time to replace battery in Kitchen Motion Sensor.'
+  #         title: "Low Battery Detected"
 
   - alias: "Computer Room Motion Sensor Low Battery"
     #initial_state: 'on'

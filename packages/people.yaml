@@ -75,11 +75,11 @@ homeassistant:
       friendly_name: 'Dan iPhone (WiFi)'
       icon: mdi:wifi
 
-    device_tracker.jim_android:
+    device_tracker.jim_phone:
       friendly_name: 'Jim Android (WiFi)'
       icon: mdi:wifi
 
-    device_tracker.kasey_android:
+    device_tracker.kasey_phone:
       friendly_name: 'Kasey Android (WiFi)'
       icon: mdi:wifi
 
@@ -92,6 +92,10 @@ homeassistant:
 
     group.guests:
       friendly_name: 'Guests'
+      icon: mdi:human-male-female
+
+    group.people_status:
+      friendly_name: 'People Status'
       icon: mdi:human-male-female
 
     group.family:
@@ -139,7 +143,6 @@ group:
       - device_tracker.jim_phone
       - device_tracker.kasey_meta
       - device_tracker.kasey_phone
-      - group.guests
 
   family:
     control: hidden
@@ -155,6 +158,14 @@ group:
     control: hidden
     entities:
       - device_tracker.dan_iphone
+
+  people_status:
+    control: hidden
+    entities:
+      - binary_sensor.people_home
+      - binary_sensor.people_away
+      - group.family
+      - group.guests
 
 ################################################################
 ## Binary Sensor

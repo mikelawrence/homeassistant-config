@@ -42,6 +42,7 @@ discovery:
    - plex_mediaserver
    - google_cast
    - roku
+   - igd
 
 # Enable ios app
 ios:
@@ -49,19 +50,11 @@ ios:
 # Allows you to issue voice commands from the frontend in enabled browsers
 conversation:
 
-# Enables a map showing the location of tracked devices
-#map:
-
 # Track the sun
 sun:
 
 # Enable Python scripts
 python_script:
-
-# # enable weather
-# weather:
-#   - platform: yweather
-#     woeid: 2398250
 
 # enable Haiku with SenseMe ceiling fans
 senseme:
@@ -103,9 +96,6 @@ mqtt_shareclient:
 tts:
   - platform: google
 
-# Cloud
-cloud:
-
 device_tracker:
   # Unifi device tracker configuration
   - platform: unifi
@@ -119,7 +109,8 @@ device_tracker:
 
 # recorder configuration
 recorder:
-  purge_keep_days: 15
+  db_url:  mysql://hass:hasspassword@192.168.1.200/homeassistant
+  purge_keep_days: 31
   purge_interval: 1
   exclude:
     domains:

@@ -16,3 +16,18 @@ sensor.master_bath_multisensor_ultraviolet:
 binary_sensor.master_bath_multisensor:
   ignored: false
   polling_intensity: 0
+sensor.kitchen_multisensor_alarm_level:
+  ignored: true
+  polling_intensity: 0
+sensor.kitchen_multisensor_alarm_type:
+  ignored: true
+  polling_intensity: 0
+sensor.kitchen_multisensor_burglar:
+  ignored: true
+  polling_intensity: 0
+sensor.kitchen_multisensor_sourcenodeid:
+  ignored: true
+  polling_intensity: 0
+sensor.kitchen_multisensor_ultraviolet:
+  ignored: true
+  polling_intensity: 0

@@ -1,0 +1,43 @@
+################################################################
+## Packages / Kitchen
+################################################################
+
+################################################################
+## Customize
+################################################################
+homeassistant:
+  customize:
+    ################################################
+    ## Light
+    ################################################
+    light.kitchen_light_backdoor:
+      friendly_name: "Kitchen Light"
+    light.kitchen_cabinet_light_sink:
+      friendly_name: "Kitchen Cabinet Lights"
+
+    ################################################
+    ## Switch
+    ################################################
+    switch.kitchen_lights:
+      friendly_name: "Kitchen Lights"
+      icon: mdi:lightbulb
+
+    ################################################
+    ## Fan
+    ################################################
+    fan.kitchen_fan_front:
+      friendly_name: "Kitchen Fan"
+
+################################################################
+## Group
+################################################################
+group:
+  # House Kitchen
+  kitchen:
+    name: Kitchen
+    control: hidden
+    entities:
+      - switch.kitchen_lights
+      - fan.kitchen_fan_front
+      - scene.kitchen_morning
+      - scene.kitchen_all_off

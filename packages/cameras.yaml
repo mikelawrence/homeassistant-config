@@ -5,7 +5,26 @@
 ################################################################
 ## Camera
 ################################################################
-# camera:
+camera:
+  - platform: ffmpeg
+    name: Front Road
+    input: -rtsp_transport tcp -i rtsp://192.168.1.2:7447/7nD3vnKDZyjvA2Ov
+  - platform: ffmpeg
+    name: House Driveway
+    input: -rtsp_transport tcp -i rtsp://192.168.1.2:7447/jVrArc7T0qhkU0CT
+  - platform: ffmpeg
+    name: Garage Driveway
+    input: -rtsp_transport tcp -i rtsp://192.168.1.2:7447/yQgbgAOREtaAdzYc
+  - platform: ffmpeg
+    name: Studio Front
+    input: -rtsp_transport tcp -i rtsp://192.168.1.2:7447/E6LRx34OlHAgzEsK
+  - platform: ffmpeg
+    name: Garage Inside Left
+    input: -rtsp_transport tcp -i rtsp://192.168.1.2:7447/p4wfjQ1FzVT6roY1
+  - platform: ffmpeg
+    name: Garage Inside Right
+    input: -rtsp_transport tcp -i rtsp://192.168.1.2:7447/HjNaVPRNgfJo5buH
+
 #   # enable Unifi Video Cameras
 #   - platform: uvc
 #     nvr: 192.168.1.2
@@ -39,9 +58,6 @@ group:
   camera_studio_front:
     entities:
       - camera.studio_front
-  camera_studio_back:
-    entities:
-      - camera.studio_back
   camera_garage_inside_left:
     entities:
       - camera.garage_inside_left

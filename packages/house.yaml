@@ -33,10 +33,6 @@ homeassistant:
     ################################################
     ## Light
     ################################################
-    light.kitchen_light_backdoor:
-      friendly_name: "Kitchen Light"
-    light.kitchen_cabinet_light_sink:
-      friendly_name: "Kitchen Cabinet Lights"
     light.down_bath_light:
       friendly_name: "Downstairs Bathroom Light"
     light.family_room_fan_light:
@@ -53,9 +49,6 @@ homeassistant:
     ################################################
     ## Switch
     ################################################
-    switch.kitchen_lights:
-      friendly_name: "Kitchen Lights"
-      icon: mdi:lightbulb
     switch.computer_room_light:
       friendly_name: "Computer Room Light"
       icon: mdi:lightbulb
@@ -75,8 +68,6 @@ homeassistant:
     ################################################
     ## Fan
     ################################################
-    fan.kitchen_fan_front:
-      friendly_name: "Kitchen Fan"
     fan.family_room_fan:
       friendly_name: "Family Room Fan"
     fan.computer_room_fan:
@@ -96,16 +87,6 @@ homeassistant:
 ## Group
 ################################################################
 group:
-  # House Kitchen
-  kitchen:
-    name: Kitchen
-    control: hidden
-    entities:
-      - switch.kitchen_lights
-      - fan.kitchen_fan_front
-      - scene.kitchen_morning
-      - scene.kitchen_all_off
-
   # House Family Room
   family_room:
     name: Family Room

@@ -18,28 +18,28 @@ homeassistant:
     ################################################
     ## Switch
     ################################################
-    switch.flood_lights_house_front:
+    switch.house_flood_lights_front:
       friendly_name: "House Front Flood Lights"
       icon: mdi:lightbulb
-    switch.flood_lights_house_backyard:
+    switch.house_flood_lights_backyard:
       friendly_name: "House Backyard Flood Lights"
       icon: mdi:lightbulb
-    switch.porch_lights_house_front:
+    switch.house_porch_lights_front:
       friendly_name: "House Front Porch Lights"
       icon: mdi:lightbulb
-    switch.porch_lights_house_back:
+    switch.house_porch_lights_back:
       friendly_name: "House Back Porch Lights"
       icon: mdi:lightbulb
-    switch.porch_lights_house_backyard:
+    switch.house_porch_lights_backyard:
       friendly_name: "House Backyard Porch Lights"
       icon: mdi:lightbulb
-    switch.flood_lights_house:
+    switch.house_flood_lights:
       friendly_name: "All House Flood Lights"
       icon: mdi:lightbulb
-    switch.porch_lights_house:
+    switch.house_porch_lights:
       friendly_name: "All House Porch Lights"
       icon: mdi:lightbulb
-    switch.backyard_lights_house:
+    switch.house_backyard_lights:
       friendly_name: "All House Backyard Lights"
       icon: mdi:lightbulb
 
@@ -59,22 +59,22 @@ group:
     name: Frontyard Lights
     control: hidden
     entities:
-      - switch.porch_lights_house
-      - switch.porch_lights_house_front
-      - switch.flood_lights_house
-      - switch.flood_lights_house_front
+      - switch.house_porch_lights
+      - switch.house_porch_lights_front
+      - switch.house_flood_lights
+      - switch.house_flood_lights_front
 
   # Backyard ISY-994 group
   backyard_lights:
     name: Backyard Lights
     control: hidden
     entities:
-      - switch.backyard_lights
-      - switch.porch_lights_house_backyard
-      - switch.porch_lights_house_back
-      - switch.porch_lights_house_studio
-      - switch.flood_lights_house_backyard
-      - switch.flood_lights_house_front
+      - switch.house_backyard_lights
+      - switch.house_porch_lights_backyard
+      - switch.house_porch_lights_back
+      - switch.house_porch_lights_studio
+      - switch.house_flood_lights_backyard
+      - switch.house_flood_lights_front
 
   # Roof RGB Floodlights
   roof_floodlights:
@@ -93,7 +93,7 @@ group:
     control: hidden
     entities:
       - input_boolean.christmas_season
-      - switch.christmas_lights
+      - switch.house_christmas_lights
       - switch.studio_christmas_lights
 
   # Septic Controller
@@ -236,7 +236,7 @@ automation:
       state: 'on'
     action:
       - service: switch.turn_on
-        entity_id: switch.christmas_lights
+        entity_id: switch.house_christmas_lights
       - service: switch.turn_on
         entity_id: switch.studio_christmas_lights
 
@@ -248,11 +248,11 @@ automation:
       at: "02:00:00"
     action:
       - service: switch.turn_off
-        entity_id: switch.christmas_lights
+        entity_id: switch.house_christmas_lights
       - service: switch.turn_off
         entity_id: switch.studio_christmas_lights
 
-  # turn on house back porch lights due to studio ISY994 fast on
+  # turn on house back porch lights due to studio ISY994 Fast On
   - alias: "House Porch Lights Back On"
     trigger:
       platform: event
@@ -260,14 +260,11 @@ automation:
       event_data:
         entity_id: switch.studio_front_porch_light
         control: 'DFON'
-      # platform: state
-      # entity_id: switch.porch_lights_studio_dfon
-      # to: 'on'
     action:
       service: switch.turn_on
-      entity_id: switch.porch_lights_house_back
+      entity_id: switch.house_porch_lights_back
 
-  # turn off house back porch lights due to studio ISY994 fast off
+  # turn off house back porch lights due to studio ISY994 Fast Off
   - alias: "House Porch Lights Back Off"
     trigger:
       platform: event
@@ -275,14 +272,11 @@ automation:
       event_data:
         entity_id: switch.studio_front_porch_light
         control: 'DFOF'
-      # platform: state
-      # entity_id: switch.porch_lights_studio_dfof
-      # to: 'on'
     action:
       service: switch.turn_off
-      entity_id: switch.porch_lights_house_back
+      entity_id: switch.house_porch_lights_back
 
-  # turn on studio back porch lights due to house ISY994 fast on
+  # turn on studio back porch lights due to house ISY994 Fast On
   - alias: "House Porch Lights Back On"
     trigger:
       - platform: event
@@ -297,9 +291,9 @@ automation:
           control: 'DFON'
     action:
       service: switch.turn_on
-      entity_id: switch.porch_lights_studio
+      entity_id: switch.studio_porch_lights
 
-  # turn off studio back porch lights due to house ISY994 fast off
+  # turn off studio back porch lights due to house ISY994 Fast Off
   - alias: "House Porch Lights Back Off"
     trigger:
       - platform: event
@@ -314,7 +308,7 @@ automation:
           control: 'DFOF'
     action:
       service: switch.turn_off
-      entity_id: switch.porch_lights_studio
+      entity_id: switch.studio_porch_lights
 
   # Front Gate Opened
   - id: front_gate_opened

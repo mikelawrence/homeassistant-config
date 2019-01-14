@@ -35,6 +35,39 @@ homeassistant:
       friendly_name: "Everything"
       icon: mdi:lightbulb
 
+    # unhide the all_* groups
+    group.all_scripts:
+      control: hidden
+      hidden: false
+
+    group.all_automations:
+      control: hidden
+      hidden: false
+
+    group.all_scenes:
+      control: hidden
+      hidden: false
+
+    group.all_lights:
+      control: hidden
+      hidden: false
+
+    group.all_switches:
+      control: hidden
+      hidden: false
+
+    group.all_fans:
+      control: hidden
+      hidden: false
+
+    group.all_covers:
+      control: hidden
+      hidden: false
+
+    group.all_devices:
+      control: hidden
+      hidden: false
+
 ################################################
 ## Group
 ################################################
@@ -48,9 +81,6 @@ group:
       - device_tracker.bryan_meta
       - device_tracker.jim_meta
       - device_tracker.kasey_meta
-      - sensor.downstairs_thermostat_temperature
-      - sensor.upstairs_thermostat_temperature
-      - sensor.weewx_temperature
       - group.house_mode
       - group.kitchen
       - group.family_room
@@ -71,8 +101,6 @@ group:
       - device_tracker.bryan_meta
       - device_tracker.jim_meta
       - device_tracker.kasey_meta
-      - sensor.studio_thermostat_temperature
-      - sensor.weewx_temperature
       - group.studio_mode
       - group.studio
       - group.backyard
@@ -91,7 +119,6 @@ group:
       - device_tracker.bryan_meta
       - device_tracker.jim_meta
       - device_tracker.kasey_meta
-      - sensor.weewx_temperature
       - group.front_gate
       - group.frontyard_lights
       - group.backyard_lights
@@ -109,13 +136,18 @@ group:
       - device_tracker.bryan_meta
       - device_tracker.jim_meta
       - device_tracker.kasey_meta
-      - sensor.weewx_temperature
       - weather.yweather
       - group.weewx
 
   camera_view:
     view: yes
     entities:
+      - device_tracker.mike_meta
+      - device_tracker.clara_meta
+      - device_tracker.mikey_meta
+      - device_tracker.bryan_meta
+      - device_tracker.jim_meta
+      - device_tracker.kasey_meta
       - group.camera_front_road
       - group.camera_house_driveway
       - group.camera_garage_driveway
@@ -128,13 +160,8 @@ group:
   household_view:
     view: yes
     entities:
-      - device_tracker.mike_meta
-      - device_tracker.clara_meta
-      - device_tracker.mikey_meta
-      - device_tracker.bryan_meta
-      - binary_sensor.people_home
-      - binary_sensor.people_away
       - group.household
+      - group.people_status
       - group.guests
 
   lights_view:

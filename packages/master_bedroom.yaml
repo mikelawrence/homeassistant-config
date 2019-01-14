@@ -13,9 +13,9 @@ homeassistant:
     light.master_bed_fan_light:
       friendly_name: "Master Bedroom Light"
     light.master_bed_lamp_mike:
-      friendly_name: "Master Bedroom Mike's Lamp"
+      friendly_name: "Master Bedroom Lamp Mike's"
     light.master_bed_lamp_clara:
-      friendly_name: "Master Bedroom Clara's Lamp"
+      friendly_name: "Master Bedroom Lamp Clara's"
     light.master_closet_light_door:
       friendly_name: "Master Closet Light"
     light.master_bath_light_door:
@@ -25,7 +25,7 @@ homeassistant:
     ## ISY994 Switches
     ################################################
     switch.master_bath_vent_fan:
-      friendly_name: "Master Bathroom Fan"
+      friendly_name: "Master Bathroom Vent Fan"
       icon: mdi:fan
     switch.master_bed_porch_light:
       friendly_name: "Back Porch Light"
@@ -46,31 +46,34 @@ group:
     name: Master Bedroom
     control: hidden
     entities:
-      - switch.master_bed_light
+      - light.master_bed_fan_light
       - fan.master_bed_fan
-      - switch.master_closet_light
-      - switch.master_bath_light
+      - light.master_bed_lamp_mike
+      - light.master_bed_lamp_clara
+      - light.master_closet_light
+      - light.master_bath_light_door
       - switch.master_bath_vent_fan
-      - binary_sensor.master_bath_humidity_rising
+      # - timer.master_bath_light_timer
+      # - timer.master_bath_vent_fan_timer
 
 ################################################################
 ## Input Boolean
 ################################################################
 input_boolean:
   # When true the Master Bath Light will stay on until turned off
-  # Not intended is input from user
+  # Not intended as input from user
   master_bath_light_stay_on:
     name: "Master Bath Light Stay On"
     initial: off
   # When true the Master Bath Light Door was turned on manually
-  # Not intended is input from user
+  # Not intended as input from user
   master_bath_light_manual_input:
     name: "Master Bath Light Manual On"
     initial: off
   # When true the Master Bath Humidity is high
-  # Not intended is input from user
+  # Not intended as input from user
   master_bath_humidity_high:
-    name: "Master Bath Humidity is High"
+    name: "Master Bath Humidity High"
     initial: off
 
 ################################################################
@@ -86,7 +89,7 @@ binary_sensor:
         device_class: moisture
         max_samples: 20
         sample_duration: 2100   # 35 minutes
-        min_gradient: 0.02000   # rising 6% in 5 minutes
+        min_gradient: 0.01000   # rising 6% in 10 minutes
 
 ################################################################
 ## Sensor
@@ -184,7 +187,7 @@ automation:
   - alias: "Master Bath Light Bedtime Motion On"
     trigger:
       platform: state
-      entity_id: binary_sensor.master_bath_multisensor
+      entity_id: binary_sensor.master_bath_multisensor_motion
       to: 'on'
     condition:
       condition: and
@@ -210,7 +213,7 @@ automation:
   - alias: "Master Bath Light Daytime Motion On"
     trigger:
       platform: state
-      entity_id: binary_sensor.master_bath_multisensor
+      entity_id: binary_sensor.master_bath_multisensor_motion
       to: 'on'
     condition:
       condition: and
@@ -236,7 +239,7 @@ automation:
   - alias: "Master Bath Light Motion Off"
     trigger:
       platform: state
-      entity_id: binary_sensor.master_bath_multisensor
+      entity_id: binary_sensor.master_bath_multisensor_motion
       to: 'off'
       for:
         # 26 minutes + 4 minutes for motion on time = 30 minutes minumum
