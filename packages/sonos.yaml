@@ -58,19 +58,19 @@ script:
     sequence:
       - service: media_player.sonos_snapshot
         data:
-          entity_id: media_player.sonos_family_room
+          entity_id: media_player.sonos_family_rm
       - service: media_player.media_pause
         data:
-          entity_id: media_player.sonos_family_room
+          entity_id: media_player.sonos_family_rm
       - service: media_player.volume_set
         data_template:
-          entity_id: media_player.sonos_family_room
+          entity_id: media_player.sonos_family_rm
           volume_level: "{{ volume|default(0.5) }}"
       - service: tts.google_say
         data_template:
-          entity_id: media_player.sonos_family_room
+          entity_id: media_player.sonos_family_rm
           message: "{{ message }}"
       - delay: "{{ delay|default('00:00:05') }}"
       - service: media_player.sonos_restore
         data:
-          entity_id: media_player.sonos_family_room
+          entity_id: media_player.sonos_family_rm

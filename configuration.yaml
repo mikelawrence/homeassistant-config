@@ -24,7 +24,7 @@ frontend:
 config:
 
 http:
-  api_password: !secret ha_password
+  # api_password: !secret ha_password
   base_url: !secret ha_url
   ssl_certificate: /ssl/fullchain.pem
   ssl_key: /ssl/privkey.pem

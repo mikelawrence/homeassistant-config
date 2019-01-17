@@ -37,6 +37,12 @@ homeassistant:
     fan.master_bed_fan:
       friendly_name: "Master Bedroom Fan"
 
+    ################################################
+    ## Binary Sensor
+    ################################################
+    binary_sensor.master_bath_multisensor_motion:
+      device_class: motion
+
 ################################################################
 ## Group
 ################################################################
@@ -354,11 +360,11 @@ automation:
   # Turn off Master Bath Humidity high
   - alias: "Master Bath Humidity High Turn Off"
     trigger:
-      # humidity is below average humidity
+      # humidity is within 3% of average
       - platform: numeric_state
         entity_id: sensor.master_bath_multisensor_humidity
         value_template: "{{ states('sensor.master_bath_multisensor_humidity') | float - states('sensor.master_bath_multisensor_humidity_mean') | float }}"
-        below: 0.0
+        below: 3.0
     condition:
       # Master Bath Humidity High must be on
       condition: state

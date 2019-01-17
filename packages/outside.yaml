@@ -277,7 +277,7 @@ automation:
       entity_id: switch.house_porch_lights_back
 
   # turn on studio back porch lights due to house ISY994 Fast On
-  - alias: "House Porch Lights Back On"
+  - alias: "Studio Porch Lights Back On"
     trigger:
       - platform: event
         event_type: isy994_control
@@ -294,7 +294,7 @@ automation:
       entity_id: switch.studio_porch_lights
 
   # turn off studio back porch lights due to house ISY994 Fast Off
-  - alias: "House Porch Lights Back Off"
+  - alias: "Studio Porch Lights Back Off"
     trigger:
       - platform: event
         event_type: isy994_control

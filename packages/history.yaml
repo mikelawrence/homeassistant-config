@@ -26,12 +26,13 @@ history:
       - timer.master_bath_light_timer
       - timer.master_bath_vent_fan_timer
       - binary_sensor.master_bath_humidity_rising
-      - binary_sensor.any_motion
-      - binary_sensor.any_house_motion
-      - binary_sensor.any_studio_motion
+      # - binary_sensor.any_motion
+      # - binary_sensor.any_house_motion
+      # - binary_sensor.any_studio_motion
+      - group.house_motion
+      - binary_sensor.kitchen_multisensor_motion
       - binary_sensor.comp_room_motion
       # - binary_sensor.kitchen_motion
-      - binary_sensor.kitchen_multisensor_motion
       - binary_sensor.master_bath_multisensor_motion
       - binary_sensor.up_bath_motion
       - binary_sensor.up_sm_bed_motion
@@ -74,9 +75,6 @@ history:
       - sensor.house_roof_light_temperature
       - sensor.studio_roof_light_temperature
       - sensor.garage_roof_light_temperature
-      - sensor.downstairs_thermostat_humidity
-      - sensor.upstairs_thermostat_humidity
-      - sensor.studio_thermostat_humidity
       - sensor.master_bath_multisensor_temperature
       - sensor.master_bath_multisensor_humidity
       - sensor.master_bath_multisensor_humidity_mean

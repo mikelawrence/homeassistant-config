@@ -11,7 +11,7 @@ Here's my [Home Assistant](https://home-assistant.io/) configuration for my Hous
   * Three [Nest](https://www.home-assistant.io/components/nest/) thermostats.
   * [Davis Vantage Pro2](https://www.davisnet.com/solution/vantage-pro2/) connected to [weeWX](http://www.weewx.com/) which publishes to [Wunderground](https://www.wunderground.com/weather/us/tx/elgin/KTXELGIN7) and local MQTT server so HA can pick up current conditions.
 * Cameras
-  * Multiple [Unifi Video Cameras](https://www.home-assistant.io/components/camera.uvc/).
+  * Multiple Unifi Cameras and [Unifi Protect](https://www.home-assistant.io/components/camera.uvc/) using [ffmpeg camera](https://www.home-assistant.io/components/camera.ffmpeg/).
 * Custom MQTT devices
   * WiFi Gate Controller for controlling my [US Automatic](https://www.usautomatic.com/) gate opener.
     * KiCAD board design and software is available on [GitHub](https://github.com/mikelawrence/WiFi-Gate-Controller).
