@@ -109,6 +109,7 @@ group:
       - group.studio_loft
       - group.studio_climate
       - group.studio_media
+      - climate.studio
 
   outside_view:
     view: yes

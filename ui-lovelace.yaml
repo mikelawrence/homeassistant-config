@@ -1,0 +1,269 @@
+################################################################
+## Lovelace configuration
+################################################################
+
+title: Lawrence Home
+views:
+  - title: House
+    badges:
+      - device_tracker.mike_meta
+      - device_tracker.clara_meta
+      - device_tracker.mikey_meta
+      - device_tracker.bryan_meta
+      - device_tracker.jim_meta
+      - device_tracker.kasey_meta
+    cards:
+      - type: entities
+        title: House Mode
+        show_header_toggle: false
+        entities:
+          - switch.house_state
+          - input_boolean.guest_mode
+          - input_boolean.vacation_mode
+          - sensor.house_mode
+          - binary_sensor.house_back_door_sensor
+          - binary_sensor.house_front_door_sensor
+          - binary_sensor.people_home
+      - type: entities
+        title: Kitchen
+        show_header_toggle: false
+        entities:
+          - switch.kitchen_lights
+          - fan.kitchen_fan_front
+          - scene.kitchen_morning
+          - scene.kitchen_all_off
+      - type: entities
+        title: Family Room
+        show_header_toggle: false
+        entities:
+          - switch.family_room_light
+          - fan.family_room_fan
+          - scene.family_room_all_off
+      - type: entities
+        title: Computer Room
+        show_header_toggle: false
+        entities:
+          - switch.computer_room_light
+          - fan.computer_room_fan
+          - scene.computer_room_all_off
+      - type: entities
+        title: Downstairs Bathroom
+        show_header_toggle: false
+        entities:
+          - light.down_bath_light
+          - switch.down_bath_vent_fan
+      - type: entities
+        title: Master Bedroom
+        show_header_toggle: false
+        entities:
+          - light.master_bed_fan_light
+          - fan.master_bed_fan
+          - light.master_bed_lamp_mike
+          - light.master_bed_lamp_clara
+          - light.master_closet_light
+          - light.master_bath_light_door
+          - switch.master_bath_vent_fan
+      - type: entities
+        title: Mikey's Bedroom
+        show_header_toggle: false
+        entities:
+          - switch.up_sm_bed_light
+          - light.up_sm_bed_closet_light
+          - fan.up_sm_bed_fan
+      - type: entities
+        title: Bryan's Bedroom
+        show_header_toggle: false
+        entities:
+          - switch.up_lg_bed_light
+          - fan.up_lg_bed_fan
+      - type: entities
+        title: Utility Room
+        show_header_toggle: false
+        entities:
+          - light.utility_room_light_backdoor
+      - type: media-control
+        entity: media_player.sonos_family_rm
+      - type: media-control
+        entity: media_player.family_room
+      - type: media-control
+        entity: media_player.apple_tv_family_room
+      - type: thermostat
+        title: Downstairs
+        entity: climate.downstairs
+      - type: thermostat
+        title: Upstairs
+        entity: climate.upstairs
+      - type: entities
+        title: House Climate
+        show_header_toggle: false
+        entities:
+          - sensor.downstairs_cool_hours_yesterday
+          - sensor.upstairs_cool_hours_yesterday
+          - sensor.downstairs_heat_hours_yesterday
+          - sensor.upstairs_heat_hours_yesterday
+  - title: Studio
+    badges:
+      - device_tracker.mike_meta
+      - device_tracker.clara_meta
+      - device_tracker.mikey_meta
+      - device_tracker.bryan_meta
+      - device_tracker.jim_meta
+      - device_tracker.kasey_meta
+    cards:
+      - type: entities
+        title: Studio Mode
+        show_header_toggle: false
+        entities:
+          - switch.studio_state
+          - input_boolean.guest_mode
+          - input_boolean.vacation_mode
+          - sensor.studio_mode
+          - binary_sensor.studio_front_door_sensor
+          - binary_sensor.people_home
+      - type: entities
+        title: Studio
+        show_header_toggle: false
+        entities:
+          - light.studio_chandeliers
+          - switch.studio_shoplights
+          - switch.studio_shoplight_a
+          - switch.studio_shoplight_b
+          - switch.studio_shoplight_c
+          - switch.studio_shoplight_d
+          - fan.studio_fan
+          - light.studio_fan_light
+      - type: entities
+        title: Studi Kitchen
+        show_header_toggle: false
+        entities:
+          - switch.studio_kitchen_lights
+          - light.studio_kitchen_chandelier
+          - light.studio_kitchen_cabinet_lights
+          - light.studio_kitchen_sink_lights
+      - type: entities
+        title: Studio Bedroom
+        show_header_toggle: false
+        entities:
+          - light.studio_bed_fan_light
+          - fan.studio_bed_fan
+          - light.studio_bath_light
+      - type: entities
+        title: Studio Loft
+        show_header_toggle: false
+        entities:
+          - light.studio_loft_fan_light
+          - fan.studio_loft_fan
+      - type: media-control
+        entity: media_player.studio
+      - type: media-control
+        entity: media_player.apple_tv_studio
+      - type: media-control
+        entity: media_player.sonos_studio
+      - type: entities
+        title: House Climate
+        show_header_toggle: false
+        entities:
+          - sensor.studio_cool_hours_yesterday
+          - sensor.studio_heat_hours_yesterday
+      - type: thermostat
+        entity: climate.studio
+  - title: Outside
+    badges:
+      - device_tracker.mike_meta
+      - device_tracker.clara_meta
+      - device_tracker.mikey_meta
+      - device_tracker.bryan_meta
+      - device_tracker.jim_meta
+      - device_tracker.kasey_meta
+    cards:
+      - type: entities
+        title: Front Gate
+        show_header_toggle: false
+        entities:
+          - cover.front_gate
+      - type: entities
+        title: Frontyard Lights
+        show_header_toggle: false
+        entities:
+          - switch.house_porch_lights
+          - switch.house_porch_lights_front
+          - switch.house_flood_lights
+          - switch.house_flood_lights_front
+      - type: entities
+        title: Backyard Lights
+        show_header_toggle: false
+        entities:
+        - switch.house_backyard_lights
+        - switch.porch_lights_back
+        - switch.house_flood_lights_back
+        - switch.house_flood_lights_front
+        - switch.studio_porch_lights
+      - type: entities
+        title: Roof Floodlights
+        show_header_toggle: false
+        entities:
+          - input_number.roof_lights_transition_time
+          - light.roof_lights
+          - light.house_roof_light
+          - light.studio_roof_light
+          - light.garage_roof_light
+      - type: entities
+        title: Christmas Lights
+        show_header_toggle: false
+        entities:
+          - input_boolean.christmas_season
+          - switch.house_christmas_lights
+          - switch.studio_christmas_lights
+      - type: entities
+        title: Septic
+        show_header_toggle: false
+        entities:
+          - sensor.septic_status
+          - sensor.septic_minutes_yesterday
+          - sensor.septic_usage_yesterday
+  - title: Weather
+    icon: mdi:weather-lightning
+    cards:
+      # - type: history-graph
+      #   title: Outdoor Temperature
+      #   entities:
+      #     - sensor.weewx_temperature
+      - type: glance
+        title: Davis Weather Station
+        # show_header_toggle: false
+        entities:
+          - sensor.weewx_temperature
+          - sensor.weewx_dewpoint
+          - sensor.weewx_heat_index
+          - sensor.weewx_humidex
+          - sensor.weewx_windchill
+          - sensor.weewx_humidity
+          - sensor.weewx_barometer
+          - sensor.weewx_wind
+          - sensor.weewx_wind_dir
+          - sensor.weewx_gust
+          - sensor.weewx_gust_dir
+          - sensor.weewx_rain
+          - sensor.weewx_rain_rate
+          - sensor.weewx_rain_storm
+          - sensor.weewx_rain_month
+          - sensor.weewx_rain_year
+  - title: Cameras
+    icon: mdi:cctv
+    cards:
+      - type: picture-entity
+        entity: camera.front_road
+      - type: picture-entity
+        entity: camera.house_driveway
+      - type: picture-entity
+        entity: camera.garage_driveway
+      - type: picture-entity
+        entity: camera.studio_front
+      - type: picture-entity
+        entity: camera.garage_inside_left
+      - type: picture-entity
+        entity: camera.garage_inside_right
+      - type: picture-entity
+        entity: camera.studio_back
+      # - type: picture-entity
+      #   entity: camera.weather

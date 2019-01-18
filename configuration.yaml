@@ -23,6 +23,11 @@ frontend:
 # Enables configuration UI
 config:
 
+# enable Lovelace
+lovelace:
+  mode: yaml
+
+# setup html access
 http:
   # api_password: !secret ha_password
   base_url: !secret ha_url
@@ -38,8 +43,8 @@ updater:
 discovery:
   ignore:
    - samsung_tv
-   - directv
-   - plex_mediaserver
+   # - directv
+   # - plex_mediaserver
    - google_cast
    - roku
    - igd

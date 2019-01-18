@@ -40,13 +40,24 @@ homeassistant:
 group:
   # House Kitchen
   kitchen:
-    name: Kitchen
+    name: "Kitchen"
     control: hidden
     entities:
       - switch.kitchen_lights
       - fan.kitchen_fan_front
       - scene.kitchen_morning
       - scene.kitchen_all_off
+
+################################################################
+## Scene
+################################################################
+scene:
+  - name: "Kitchen All Off"
+    entities:
+      switch.kitchen_all_off: on    # ISY-994 scene
+  - name: "Kitchen Morning"
+    entities:
+      switch.kitchen_morning: on    # ISY-994 scene
 
 ################################################################
 ## Sensor
@@ -56,10 +67,10 @@ sensor:
     sensors:
       kitchen_multisensor_battery:
         friendly_name: "Kitchen Multisensor Battery"
-        value_template: '{{ states.zwave.kitchen_multisensor.attributes.battery_level | default(0) }}'
+        value_template: "{{ state_attr('zwave.kitchen_multisensor', 'battery_level') }}"
         unit_of_measurement: "%"
         icon_template: >-
-          {% set battery_level = states.zwave.kitchen_multisensor.attributes.battery_level | default(0) | int %}
+          {% set battery_level = state_attr('zwave.kitchen_multisensor', 'battery_level') | default(0) | int %}
           {% set battery_round = (battery_level / 10) | int * 10 %}
           {% if battery_round >= 100 %}
             mdi:battery
@@ -86,6 +97,6 @@ automation:
         entity_id: sensor.kitchen_multisensor_battery
         below: 5
     action:
-      service: notify.person2
+      service: notify.ios_mike_iphone_ios
       data:
-        message: "Kitchen Multisensor is at {{ states('sensor.kitchen_multisensor_battery') }}% battery, it uses two CR123A batteries"
+        message: "Kitchen Multisensor is at {{ states('sensor.kitchen_multisensor_battery') }}% battery, it uses two CR123A batteries."

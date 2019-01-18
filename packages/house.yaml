@@ -15,6 +15,8 @@ homeassistant:
     ################################################
     media_player.family_room:
       friendly_name: "DirecTV Family Room"
+    media_player.master_bed:
+      friendly_name: "DirecTV Master Bedroom"
     media_player.apple_tv_family_room:
       friendly_name: "Apple TV Family Room"
     media_player.sonos_family_rm:
@@ -143,8 +145,9 @@ group:
     control: hidden
     entities:
       - media_player.sonos_family_rm
-      - media_player.family_room
-      - media_player.apple_tv_family_room
+      # - media_player.family_room
+      # - media_player.apple_tv_family_room
+      - media_player.studio_tv
 
   # House Climate group
   house_climate:

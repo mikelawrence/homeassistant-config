@@ -19,6 +19,9 @@ camera:
     name: Studio Front
     input: -rtsp_transport tcp -i rtsp://192.168.1.2:7447/E6LRx34OlHAgzEsK
   - platform: ffmpeg
+    name: Studio Back
+    input: -rtsp_transport tcp -i rtsp://192.168.1.2:7447/jZneEC5I1oNqWTNt
+  - platform: ffmpeg
     name: Garage Inside Left
     input: -rtsp_transport tcp -i rtsp://192.168.1.2:7447/p4wfjQ1FzVT6roY1
   - platform: ffmpeg
