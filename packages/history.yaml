@@ -18,28 +18,34 @@ history:
       - device_tracker.bryan_meta
       - device_tracker.jim_meta
       - device_tracker.kasey_meta
+      - binary_sensor.master_bath_presence
+      - binary_sensor.master_bath_multisensor_motion
       - input_boolean.master_bath_light_stay_on
       - input_boolean.master_bath_light_manual_input
       - input_boolean.master_bath_humidity_high
-      - light.master_bath_light_door
+      - light.master_bath_light
       - switch.master_bath_vent_fan
       - timer.master_bath_light_timer
       - timer.master_bath_vent_fan_timer
       - binary_sensor.master_bath_humidity_rising
-      # - binary_sensor.any_motion
-      # - binary_sensor.any_house_motion
-      # - binary_sensor.any_studio_motion
+      - binary_sensor.studio_bath_presence
+      - binary_sensor.studio_bath_multisensor_motion
+      - input_boolean.studio_bath_light_stay_on
+      - input_boolean.studio_bath_light_manual_input
+      - input_boolean.studio_bath_humidity_high
+      - light.studio_bath_light
+      - switch.studio_bath_vent_fan
+      - timer.studio_bath_light_timer
+      - timer.studio_bath_vent_fan_timer
+      - binary_sensor.studio_bath_humidity_rising
+      - binary_sensor.studio_attic_multisensor_motion
       - group.house_motion
-      - binary_sensor.kitchen_multisensor_motion
       - binary_sensor.comp_room_motion
-      # - binary_sensor.kitchen_motion
-      - binary_sensor.master_bath_multisensor_motion
       - binary_sensor.up_bath_motion
       - binary_sensor.up_sm_bed_motion
       - binary_sensor.up_lg_bed_motion
-      - binary_sensor.studio_bath_motion
       - binary_sensor.garage_motion
-      - binary_sensor.spare_motion
+      - binary_sensor.studio_motion
       - binary_sensor.house_front_door_sensor
       - binary_sensor.house_back_door_sensor
       - binary_sensor.studio_front_door_sensor
@@ -79,6 +85,9 @@ history:
       - sensor.master_bath_multisensor_humidity
       - sensor.master_bath_multisensor_humidity_mean
       - sensor.master_bath_multisensor_luminance
-      - sensor.kitchen_multisensor_humidity
-      - sensor.kitchen_multisensor_luminance
-      - sensor.kitchen_multisensor_temperature
+      - sensor.studio_bath_multisensor_temperature
+      - sensor.studio_bath_multisensor_humidity
+      - sensor.studio_bath_multisensor_humidity_mean
+      - sensor.studio_bath_multisensor_luminance
+      - sensor.studio_attic_multisensor_temperature
+      - sensor.studio_attic_multisensor_humidity

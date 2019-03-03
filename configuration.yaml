@@ -14,8 +14,38 @@ homeassistant:
   unit_system: imperial
   # Pick yours from here: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
   time_zone: America/Chicago
+  # Use the new Home Assistant Auth Provider Only
+  # auth_providers:
+  #  - type: homeassistant
   # Packages directory
   packages: !include_dir_named packages
+
+################################################################
+## Persons
+################################################################
+person:
+  - name: Mike
+    id: mike
+    user_id: 6bda2db090014f1d8b603cdec67560a1
+    device_trackers:
+      - device_tracker.mike_iphone
+      - device_tracker.mike_iphone_ios
+  - name: Clara
+    id: clara
+    user_id: c3b3aa623b9f4261a277441618a415c5
+    device_trackers:
+      - device_tracker.clara_iphone
+      - device_tracker.clara_iphone_ios
+  - name: Mikey
+    id: mikey
+    device_trackers:
+      - device_tracker.mikey_iphone
+      - device_tracker.mikey_iphone_ios
+  - name: Bryan
+    id: bryan
+    device_trackers:
+      - device_tracker.bryan_iphone
+      - device_tracker.bryan_iphone_ios
 
 # Enables the frontend
 frontend:
@@ -23,16 +53,18 @@ frontend:
 # Enables configuration UI
 config:
 
-# enable Lovelace
+# Enables Lovelace YAML
 lovelace:
   mode: yaml
 
-# setup html access
-http:
-  # api_password: !secret ha_password
-  base_url: !secret ha_url
-  ssl_certificate: /ssl/fullchain.pem
-  ssl_key: /ssl/privkey.pem
+# Setup html access
+# http:
+#   base_url: !secret ha_url
+#   ssl_certificate: /ssl/fullchain.pem
+#   ssl_key: /ssl/privkey.pem
+
+# enable system health
+system_health:
 
 # Checks for available updates
 updater:
@@ -43,8 +75,9 @@ updater:
 discovery:
   ignore:
    - samsung_tv
-   # - directv
-   # - plex_mediaserver
+   - directv
+   - harmony
+   - plex_mediaserver
    - google_cast
    - roku
    - igd
@@ -64,8 +97,6 @@ python_script:
 # enable Haiku with SenseMe ceiling fans
 senseme:
   max_number_fans: 2
-  # include:
-  #   - "Studio Vault Fan"
   include:
     - name: "Studio Vault Fan"
       friendly_name: "Studio Fan"
@@ -78,17 +109,17 @@ nest:
   client_id: !secret nest_client_id
   client_secret: !secret nest_client_secret
 
-# ISY-994i integration
+# House ISY-994i integration
 isy994:
   host: http://192.168.1.203:80
   username: !secret isy_username
   password: !secret isy_password
   enable_climate: false
 
-# Enable MQTT
+# Enable MQTT (Server is on bigfish Unraid server)
 mqtt:
-  broker: 192.168.1.3
-  client_id: hassio
+  broker: mqtt-server.home
+  client_id: hassio-home
   discovery: true
   discovery_prefix: hass
 
@@ -114,8 +145,8 @@ device_tracker:
 
 # recorder configuration
 recorder:
-  db_url:  mysql://hass:hasspassword@192.168.1.200/homeassistant
-  purge_keep_days: 31
+  # db_url:  mysql://hass:hasspassword@192.168.1.200/homeassistant
+  purge_keep_days: 10
   purge_interval: 1
   exclude:
     domains:

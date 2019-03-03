@@ -258,7 +258,7 @@ automation:
       platform: event
       event_type: isy994_control
       event_data:
-        entity_id: switch.studio_front_porch_light
+        entity_id: switch.porch_light_studio_front
         control: 'DFON'
     action:
       service: switch.turn_on
@@ -270,14 +270,14 @@ automation:
       platform: event
       event_type: isy994_control
       event_data:
-        entity_id: switch.studio_front_porch_light
+        entity_id: switch.porch_light_studio_front
         control: 'DFOF'
     action:
       service: switch.turn_off
       entity_id: switch.house_porch_lights_back
 
-  # turn on studio back porch lights due to house ISY994 Fast On
-  - alias: "Studio Porch Lights Back On"
+  # turn on studio front porch lights due to house ISY994 Fast On
+  - alias: "Studio Porch Lights Front On"
     trigger:
       - platform: event
         event_type: isy994_control
@@ -291,10 +291,10 @@ automation:
           control: 'DFON'
     action:
       service: switch.turn_on
-      entity_id: switch.studio_porch_lights
+      entity_id: switch.studio_porch_lights_front
 
-  # turn off studio back porch lights due to house ISY994 Fast Off
-  - alias: "Studio Porch Lights Back Off"
+  # turn off studio front porch lights due to house ISY994 Fast Off
+  - alias: "Studio Porch Lights Front Off"
     trigger:
       - platform: event
         event_type: isy994_control
@@ -308,7 +308,60 @@ automation:
           control: 'DFOF'
     action:
       service: switch.turn_off
-      entity_id: switch.studio_porch_lights
+      entity_id: switch.studio_porch_lights_front
+
+  # turn on house back flood lights due to studio ISY994 Fast On
+  - alias: "House Flood Lights Back On"
+    trigger:
+      platform: event
+      event_type: isy994_control
+      event_data:
+        entity_id: switch.flood_light_studio_front
+        control: 'DFON'
+    action:
+      service: switch.turn_on
+      entity_id: switch.house_porch_lights_back
+
+  # turn off house back flood lights due to studio ISY994 Fast Off
+  - alias: "House Flood Lights Back Off"
+    trigger:
+      platform: event
+      event_type: isy994_control
+      event_data:
+        entity_id: switch.flood_light_studio_front
+        control: 'DFOF'
+    action:
+      service: switch.turn_off
+      entity_id: switch.house_porch_lights_back
+
+  # turn on studio flood lights due to house ISY994 Fast On
+  - alias: "Studio Porch Lights Front On"
+    trigger:
+      platform: event
+      event_type: isy994_control
+      event_data:
+        entity_id: switch.back_porch_light_backdoor
+        control: 'DFON'
+    action:
+      service: switch.turn_on
+      entity_id: switch.studio_flood_lights
+
+  # turn off studio flood lights due to house ISY994 Fast Off
+  - alias: "Studio Porch Lights Front Off"
+    trigger:
+      - platform: event
+        event_type: isy994_control
+        event_data:
+          entity_id: switch.master_bed_porch_light
+          control: 'DFOF'
+      - platform: event
+        event_type: isy994_control
+        event_data:
+          entity_id: light.studio_flood_lights
+          control: 'DFOF'
+    action:
+      service: switch.turn_off
+      entity_id: switch.studio_porch_lights_front
 
   # Front Gate Opened
   - id: front_gate_opened

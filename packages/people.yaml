@@ -17,6 +17,21 @@ homeassistant:
       friendly_name: 'Everybody Away'
 
     ################################################
+    ## Customize Person
+    ################################################
+    person.mike:
+      entity_picture: '/local/mike.jpg'
+
+    person.clara:
+      entity_picture: '/local/clara.jpg'
+
+    person.mikey:
+      entity_picture: '/local/mikey.jpg'
+
+    person.bryan:
+      entity_picture: '/local/bryan.jpg'
+
+    ################################################
     ## Customize Device Tracker
     ################################################
     device_tracker.mike_meta:

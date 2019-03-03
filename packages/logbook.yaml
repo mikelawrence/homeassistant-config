@@ -8,6 +8,7 @@ logbook:
       - switch
       - device_tracker
     entities:
+      - cover.front_gate
       - light.kitchen_light_hallway
       - light.kitchen_cabinet_light_hall
       - light.family_room_light_door
@@ -21,7 +22,7 @@ logbook:
       - light.up_lg_bed_ctrl
       - light.utility_room_light_kitchen
       - light.studio_bed_light_door
-      - light.studio_bed_ctrl__down_off_1
+      - light.studio_bed_ctrl_down_off_1
       - light.back_porch_light_back_door
       - binary_sensor.downstairs_thermostat_fan
       - binary_sensor.downstairs_thermostat_has_leaf
@@ -62,6 +63,8 @@ logbook:
       - media_player.apple_tv_family_room
       - media_player.apple_tv_studio
       - script.sonos_say
+      - script.sonos_studio_say
+      - script.sonos_family_room_say
       - script.nest_studio_thermostat_set_away
       - script.nest_studio_thermostat_set_home
       - script.nest_downstairs_thermostat_set_away

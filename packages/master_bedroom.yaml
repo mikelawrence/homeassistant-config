@@ -18,7 +18,7 @@ homeassistant:
       friendly_name: "Master Bedroom Lamp Clara's"
     light.master_closet_light_door:
       friendly_name: "Master Closet Light"
-    light.master_bath_light_door:
+    light.master_bath_light:
       friendly_name: "Master Bathroom Light"
 
     ################################################
@@ -57,7 +57,7 @@ group:
       - light.master_bed_lamp_mike
       - light.master_bed_lamp_clara
       - light.master_closet_light
-      - light.master_bath_light_door
+      - light.master_bath_light
       - switch.master_bath_vent_fan
       # - timer.master_bath_light_timer
       # - timer.master_bath_vent_fan_timer
@@ -86,9 +86,9 @@ input_boolean:
 ## Binary Sensor
 ################################################################
 binary_sensor:
-  # Look for a rising trend in Master Bath Humidity
   - platform: trend
     sensors:
+      # Look for a rising trend in Master Bath Humidity
       master_bath_humidity_rising:
         friendly_name: "Master Bath Humidity Rising"
         entity_id: sensor.master_bath_multisensor_humidity
@@ -96,6 +96,16 @@ binary_sensor:
         max_samples: 20
         sample_duration: 2100   # 35 minutes
         min_gradient: 0.01000   # rising 6% in 10 minutes
+  - platform: template
+    sensors:
+      # Master Bath presence
+      master_bath_presence:
+        friendly_name: "Master Bath Someone Present"
+        device_class: occupancy
+        delay_off:
+          minutes: 11
+        value_template: >-
+          {{ is_state('binary_sensor.master_bath_multisensor_motion', 'on') }}
 
 ################################################################
 ## Sensor
@@ -139,11 +149,11 @@ automation:
       - platform: event
         event_type: isy994_control
         event_data:
-          entity_id: light.master_bath_light_door
+          entity_id: light.master_bath_light
           control: 'DFON'
       # Master Bath Light turned off
       - platform: state
-        entity_id: light.master_bath_light_door
+        entity_id: light.master_bath_light
         to: 'off'
     action:
       # Change Master Bath Light Keep On input boolean
@@ -165,17 +175,17 @@ automation:
       - platform: event
         event_type: isy994_control
         event_data:
-          entity_id: light.master_bath_light_door
+          entity_id: light.master_bath_light
           control: 'DON'
       # Fade Stop event occurred on Master Bath Light Door
       - platform: event
         event_type: isy994_control
         event_data:
-          entity_id: light.master_bath_light_door
+          entity_id: light.master_bath_light
           control: 'FDSTOP'
       # Master Bath Light turned off
       - platform: state
-        entity_id: light.master_bath_light_door
+        entity_id: light.master_bath_light
         to: 'off'
     action:
       # Change Master Bath Light Keep On input boolean
@@ -188,7 +198,7 @@ automation:
       data:
         entity_id: input_boolean.master_bath_light_manual_input
 
-  # Turn Master Bath Light on when motion is detected durning bedtime
+  # Turn Master Bath Light on when motion is detected during bedtime
   # Will not turn light on if already on
   - alias: "Master Bath Light Bedtime Motion On"
     trigger:
@@ -200,7 +210,7 @@ automation:
       conditions:
         # Master Bath Light is off
         - condition: state
-          entity_id: light.master_bath_light_door
+          entity_id: light.master_bath_light
           state: 'off'
         # It must be bedtime
         - condition: or
@@ -226,7 +236,7 @@ automation:
       conditions:
         # Master Bath Light must be off
         - condition: state
-          entity_id: light.master_bath_light_door
+          entity_id: light.master_bath_light
           state: 'off'
         # It must be daytime
         - condition: and
@@ -263,7 +273,7 @@ automation:
           state: 'off'
         # Master Bath Light must be on
         - condition: state
-          entity_id: light.master_bath_light_door
+          entity_id: light.master_bath_light
           state: 'on'
     action:
       # turn off ISY994 Master Bath Light Scene
@@ -277,13 +287,13 @@ automation:
       - platform: event
         event_type: isy994_control
         event_data:
-          entity_id: light.master_bath_light_door
+          entity_id: light.master_bath_light
           control: 'DON'
       # Fade Stop event occurred on Master Bath Light Door
       - platform: event
         event_type: isy994_control
         event_data:
-          entity_id: light.master_bath_light_door
+          entity_id: light.master_bath_light
           control: 'FDSTOP'
     condition:
       # Master Bath Light Stay On must be ff
@@ -300,7 +310,7 @@ automation:
     trigger:
       # Master Bed Light turned off
       - platform: state
-        entity_id: light.master_bath_light_door
+        entity_id: light.master_bath_light
         to: 'off'
       # Master Bath Light Stay On turned on
       - platform: state
@@ -324,7 +334,7 @@ automation:
       conditions:
         # Master Bed Bath must be on
         - condition: state
-          entity_id: light.master_bath_light_door
+          entity_id: light.master_bath_light
           state: 'on'
         # Master Bath Light Stay On must be off
         - condition: state

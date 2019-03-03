@@ -6,6 +6,10 @@ title: Lawrence Home
 views:
   - title: House
     badges:
+      # - person.mike
+      # - person.clara
+      # - person.mikey
+      # - person.bryan
       - device_tracker.mike_meta
       - device_tracker.clara_meta
       - device_tracker.mikey_meta
@@ -38,14 +42,14 @@ views:
         entities:
           - switch.family_room_light
           - fan.family_room_fan
-          - scene.family_room_all_off
+          # - scene.family_room_all_off
       - type: entities
         title: Computer Room
         show_header_toggle: false
         entities:
           - switch.computer_room_light
           - fan.computer_room_fan
-          - scene.computer_room_all_off
+          # - scene.computer_room_all_off
       - type: entities
         title: Downstairs Bathroom
         show_header_toggle: false
@@ -61,7 +65,7 @@ views:
           - light.master_bed_lamp_mike
           - light.master_bed_lamp_clara
           - light.master_closet_light
-          - light.master_bath_light_door
+          - light.master_bath_light
           - switch.master_bath_vent_fan
       - type: entities
         title: Mikey's Bedroom
@@ -81,12 +85,12 @@ views:
         show_header_toggle: false
         entities:
           - light.utility_room_light_backdoor
-      - type: media-control
-        entity: media_player.sonos_family_rm
-      - type: media-control
-        entity: media_player.family_room
-      - type: media-control
-        entity: media_player.apple_tv_family_room
+      # - type: media-control
+      #   entity: media_player.sonos_family_rm
+      # - type: media-control
+      #   entity: media_player.family_room
+      # - type: media-control
+      #   entity: media_player.apple_tv_family_room
       - type: thermostat
         title: Downstairs
         entity: climate.downstairs
@@ -103,6 +107,10 @@ views:
           - sensor.upstairs_heat_hours_yesterday
   - title: Studio
     badges:
+      # - person.mike
+      # - person.clara
+      # - person.mikey
+      # - person.bryan
       - device_tracker.mike_meta
       - device_tracker.clara_meta
       - device_tracker.mikey_meta
@@ -133,7 +141,7 @@ views:
           - fan.studio_fan
           - light.studio_fan_light
       - type: entities
-        title: Studi Kitchen
+        title: Studio Kitchen
         show_header_toggle: false
         entities:
           - switch.studio_kitchen_lights
@@ -153,12 +161,12 @@ views:
         entities:
           - light.studio_loft_fan_light
           - fan.studio_loft_fan
-      - type: media-control
-        entity: media_player.studio
-      - type: media-control
-        entity: media_player.apple_tv_studio
-      - type: media-control
-        entity: media_player.sonos_studio
+      # - type: media-control
+      #   entity: media_player.studio
+      # - type: media-control
+      #   entity: media_player.apple_tv_studio
+      # - type: media-control
+      #   entity: media_player.sonos_studio
       - type: entities
         title: House Climate
         show_header_toggle: false
@@ -169,6 +177,10 @@ views:
         entity: climate.studio
   - title: Outside
     badges:
+      # - person.mike
+      # - person.clara
+      # - person.mikey
+      # - person.bryan
       - device_tracker.mike_meta
       - device_tracker.clara_meta
       - device_tracker.mikey_meta
@@ -194,10 +206,18 @@ views:
         show_header_toggle: false
         entities:
         - switch.house_backyard_lights
-        - switch.porch_lights_back
         - switch.house_flood_lights_back
         - switch.house_flood_lights_front
-        - switch.studio_porch_lights
+        - switch.studio_porch_lights_front
+      - type: entities
+        title: Garage
+        show_header_toggle: false
+        entities:
+        - switch.garage_light
+        - binary_sensor.garage_door_sensor
+        - cover.garage_door_1
+        - cover.garage_door_2
+        - cover.garage_door_3
       - type: entities
         title: Roof Floodlights
         show_header_toggle: false
@@ -206,7 +226,7 @@ views:
           - light.roof_lights
           - light.house_roof_light
           - light.studio_roof_light
-          - light.garage_roof_light
+          # - light.garage_roof_light
       - type: entities
         title: Christmas Lights
         show_header_toggle: false
@@ -223,6 +243,17 @@ views:
           - sensor.septic_usage_yesterday
   - title: Weather
     icon: mdi:weather-lightning
+    badges:
+      # - person.mike
+      # - person.clara
+      # - person.mikey
+      # - person.bryan
+      - device_tracker.mike_meta
+      - device_tracker.clara_meta
+      - device_tracker.mikey_meta
+      - device_tracker.bryan_meta
+      - device_tracker.jim_meta
+      - device_tracker.kasey_meta
     cards:
       # - type: history-graph
       #   title: Outdoor Temperature
@@ -250,6 +281,17 @@ views:
           - sensor.weewx_rain_year
   - title: Cameras
     icon: mdi:cctv
+    badges:
+      # - person.mike
+      # - person.clara
+      # - person.mikey
+      # - person.bryan
+      - device_tracker.mike_meta
+      - device_tracker.clara_meta
+      - device_tracker.mikey_meta
+      - device_tracker.bryan_meta
+      - device_tracker.jim_meta
+      - device_tracker.kasey_meta
     cards:
       - type: picture-entity
         entity: camera.front_road
@@ -267,3 +309,54 @@ views:
         entity: camera.studio_back
       # - type: picture-entity
       #   entity: camera.weather
+  - title: Devices
+    icon: mdi:lightbulb
+    badges:
+      # - person.mike
+      # - person.clara
+      # - person.mikey
+      # - person.bryan
+      - device_tracker.mike_meta
+      - device_tracker.clara_meta
+      - device_tracker.mikey_meta
+      - device_tracker.bryan_meta
+      - device_tracker.jim_meta
+      - device_tracker.kasey_meta
+    cards:
+      - type: entities
+        title: Motion Sensors
+        show_header_toggle: false
+        entities:
+          - binary_sensor.any_motion
+          - binary_sensor.any_house_motion
+          - binary_sensor.any_studio_motion
+          - binary_sensor.master_bath_multisensor_motion
+          - binary_sensor.comp_room_motion
+          - binary_sensor.up_bath_motion
+          - binary_sensor.up_sm_bed_motion
+          - binary_sensor.up_lg_bed_motion
+          - binary_sensor.studio_motion
+          - binary_sensor.studio_bath_multisensor_motion
+          - binary_sensor.studio_bath_presence
+          - binary_sensor.studio_attic_multisensor_motion
+          - binary_sensor.garage_motion
+          - sensor.studio_bath_multisensor_battery
+          - sensor.studio_attic_multisensor_battery
+          - binary_sensor.comp_room_motion_sensor_lb
+          - binary_sensor.up_bath_motion_sensor_lb
+          - binary_sensor.up_sm_bed_motion_sensor_lb
+          - binary_sensor.up_lg_bed_motion_sensor_lb
+          - binary_sensor.studio_motion_sensor_lb
+          - binary_sensor.garage_motion_sensor_lb
+      - type: entities
+        title: Door Sensors
+        show_header_toggle: false
+        entities:
+          - binary_sensor.house_front_door_sensor
+          - binary_sensor.house_back_door_sensor
+          - binary_sensor.studio_front_door_sensor
+          - binary_sensor.garage_door_sensor
+          - binary_sensor.house_front_door_sensor_hb
+          - binary_sensor.house_back_door_sensor_hb
+          - binary_sensor.studio_front_door_sensor_hb
+          - binary_sensor.garage_door_sensor_hb

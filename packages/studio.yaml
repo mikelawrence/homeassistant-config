@@ -36,7 +36,7 @@ homeassistant:
 ## Group
 ################################################################
 group:
-  # Studio ISY-994 group
+  # Studio group
   studio:
     name: Studio
     control: hidden
@@ -50,7 +50,7 @@ group:
       - fan.studio_fan
       - light.studio_fan_light
 
-  # Studio Kitchen ISY-994 group
+  # Studio Kitchen group
   studio_kitchen:
     name: Studio Kitchen
     control: hidden
@@ -60,16 +60,7 @@ group:
       - light.studio_kitchen_cabinet_lights
       - light.studio_kitchen_sink_lights
 
-  # Studio Bedroom ISY-994 group
-  studio_bed:
-    name: Studio Bedroom
-    control: hidden
-    entities:
-      - light.studio_bed_fan_light
-      - fan.studio_bed_fan
-      - light.studio_bath_light
-
-  # Studio Loft ISY-994 group
+  # Studio Loft group
   studio_loft:
     name: Studio Loft
     control: hidden
@@ -120,3 +111,34 @@ sensor:
     end: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
     duration:
       hours: 24
+
+###############################################################
+## Automation
+################################################################
+automation:
+  - initial_state: 'on'
+    alias: 'Studio Bath Multisensor Low Battery'
+    trigger:
+      - platform: numeric_state
+        entity_id: sensor.studio_bath_multisensor_battery
+        below: 10
+      - platform: numeric_state
+        entity_id: sensor.studio_bath_multisensor_battery
+        below: 5
+    action:
+      service: notify.ios_mike_iphone_ios
+      data:
+        message: "Studio Bath Multisensor is at {{ states('sensor.studio_bath_multisensor_battery') }}% battery, it uses two CR123A batteries."
+  - initial_state: 'on'
+    alias: 'Studio Attic Multisensor Low Battery'
+    trigger:
+      - platform: numeric_state
+        entity_id: sensor.studio_attic_multisensor_battery
+        below: 10
+      - platform: numeric_state
+        entity_id: sensor.studio_attic_multisensor_battery
+        below: 5
+    action:
+      service: notify.ios_mike_iphone_ios
+      data:
+        message: "Studio Attic Multisensor is at {{ states('sensor.studio_attic_multisensor_battery') }}% battery, it uses one CR123A batteries."

@@ -44,10 +44,10 @@ sensor:
       studio_mode:
         entity_id:
           - switch.studio_state
-          - binary_sensor.guest_active
+          - input_boolean.guest_mode
           - binary_sensor.vacation_active
         value_template: >-
-          {% if is_state('binary_sensor.guest_active', 'on') %}
+          {% if is_state('input_boolean.guest_mode', 'on') %}
             Guest
           {% elif is_state('switch.studio_state', 'on') %}
             Home
@@ -57,7 +57,7 @@ sensor:
             Away
           {% endif %}
         icon_template: >-
-          {% if is_state('binary_sensor.guest_active', 'on') %}
+          {% if is_state('input_boolean.guest_mode', 'on') %}
             mdi:account
           {% elif is_state('switch.studio_state', 'on') %}
             mdi:home
@@ -79,18 +79,16 @@ automation:
       # Nobody home
       - platform: state
         entity_id: binary_sensor.people_away
-        from: 'off'
         to: 'on'
         for: '00:15:00'
       # Switched to Vacation Mode
       - platform: state
         entity_id: input_boolean.vacation_mode
-        from: 'off'
         to: 'on'
     # Auto Away Mode does not happen in Guest Mode
     condition:
       condition: state
-      entity_id: binary_sensor.guest_active
+      entity_id: input_boolean.guest_mode
       state: 'off'
     action:
       - service: switch.turn_off
@@ -107,23 +105,22 @@ automation:
     trigger:
       platform: state
       entity_id: switch.studio_state
-      from: 'on'
       to: 'off'
     action:
       - service: logbook.log
         data_template:
           name: Studio
           message: manually switched to Away Mode
-      # - service: script.sonos_studio_say
-      #   data:
-      #     volume: 0.5
-      #     delay: '00:00:02'
-      #     message: 'Goodbye.'
-      # turn off Studio TV
-      - service: remote.turn_off
+      - service: script.sonos_studio_say
         data:
-          entity_id: remote.studio
-          activity: PowerOff
+          volume: 0.5
+          delay: '00:00:02'
+          message: 'Goodbye.'
+      # # turn off Studio TV
+      # - service: remote.turn_off
+      #   data:
+      #     entity_id: remote.studio
+      #     activity: PowerOff
 
   # Studio manually switched to Home Mode
   #   Either by HASS switch or KeypadLinc switch
@@ -132,15 +129,14 @@ automation:
     trigger:
       platform: state
       entity_id: switch.studio_state
-      from: 'off'
       to: 'on'
     action:
       - service: logbook.log
         data_template:
           name: Studio
           message: manually switched to Home Mode
-      # - service: script.sonos_studio_say
-      #   data:
-      #     volume: 0.5
-      #     delay: '00:00:02'
-      #     message: 'Hello.'
+      - service: script.sonos_studio_say
+        data:
+          volume: 0.5
+          delay: '00:00:02'
+          message: 'Hello.'

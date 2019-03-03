@@ -28,12 +28,6 @@ homeassistant:
     fan.kitchen_fan_front:
       friendly_name: "Kitchen Fan"
 
-    ################################################
-    ## Binary Sensor
-    ################################################
-    binary_sensor.kitchen_multisensor_motion:
-      device_class: motion
-
 ################################################################
 ## Group
 ################################################################
@@ -58,45 +52,3 @@ scene:
   - name: "Kitchen Morning"
     entities:
       switch.kitchen_morning: on    # ISY-994 scene
-
-################################################################
-## Sensor
-################################################################
-sensor:
-  - platform: template
-    sensors:
-      kitchen_multisensor_battery:
-        friendly_name: "Kitchen Multisensor Battery"
-        value_template: "{{ state_attr('zwave.kitchen_multisensor', 'battery_level') }}"
-        unit_of_measurement: "%"
-        icon_template: >-
-          {% set battery_level = state_attr('zwave.kitchen_multisensor', 'battery_level') | default(0) | int %}
-          {% set battery_round = (battery_level / 10) | int * 10 %}
-          {% if battery_round >= 100 %}
-            mdi:battery
-          {% elif battery_round > 0 %}
-            mdi:battery-{{ battery_round }}
-          {% else %}
-            mdi:battery-alert
-          {% endif %}
-
-###############################################################
-## Automation
-################################################################
-automation:
-  - initial_state: 'on'
-    alias: 'Kitchen Multisensor Low Battery'
-    trigger:
-      - platform: numeric_state
-        entity_id: sensor.kitchen_multisensor_battery
-        below: 15
-      - platform: numeric_state
-        entity_id: sensor.kitchen_multisensor_battery
-        below: 10
-      - platform: numeric_state
-        entity_id: sensor.kitchen_multisensor_battery
-        below: 5
-    action:
-      service: notify.ios_mike_iphone_ios
-      data:
-        message: "Kitchen Multisensor is at {{ states('sensor.kitchen_multisensor_battery') }}% battery, it uses two CR123A batteries."

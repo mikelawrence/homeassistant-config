@@ -63,7 +63,7 @@ homeassistant:
       icon: mdi:crosshairs
 
     sensor.weewx_rain:
-      friendly_name: "Rainfall"
+      friendly_name: "Rain"
       icon: mdi:water
 
     sensor.weewx_rain_rate:
@@ -75,11 +75,11 @@ homeassistant:
       icon: mdi:water
 
     sensor.weewx_rain_month:
-      friendly_name: "Monthly Rainfall"
+      friendly_name: "Monthly Rain"
       icon: mdi:water
 
     sensor.weewx_rain_year:
-      friendly_name: "Yearly Rainfall"
+      friendly_name: "Yearly Rain"
       icon: mdi:water
 
 ################################################

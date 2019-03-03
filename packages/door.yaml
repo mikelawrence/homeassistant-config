@@ -13,19 +13,19 @@ homeassistant:
       friendly_name: "House Front Door"
       device_class: door
     binary_sensor.house_front_door_sensor_hb:
-      friendly_name: "House Front Door Sensor Low Battery"
+      friendly_name: "House Front Door Sensor Battery"
       device_class: battery
     binary_sensor.house_back_door_sensor:
       friendly_name: "House Back Door"
       device_class: door
     binary_sensor.house_back_door_sensor_hb:
-      friendly_name: "House Back Door Sensor Low Battery"
+      friendly_name: "House Back Door Sensor Battery"
       device_class: battery
     binary_sensor.garage_door_sensor:
       friendly_name: "Garage Door"
       device_class: door
     binary_sensor.garage_door_sensor_hb:
-      friendly_name: "Garage Door Sensor Low Battery"
+      friendly_name: "Garage Door Sensor Battery"
       device_class: battery
 
 ################################################################
