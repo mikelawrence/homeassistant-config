@@ -87,6 +87,21 @@ group:
       - sensor.studio_heat_hours_yesterday
 
 ################################################################
+## Binary Sensor
+################################################################
+binary_sensor:
+  - platform: template
+    sensors:
+      # Studio Bath presence
+      studio_presence:
+        friendly_name: "Studio Someone Present"
+        device_class: occupancy
+        delay_off:
+          minutes: 11
+        value_template: >-
+          {{ is_state('binary_sensor.studio_multisensor_motion', 'on') }}
+
+################################################################
 ## Sensor
 ################################################################
 sensor:
@@ -116,19 +131,22 @@ sensor:
 ## Automation
 ################################################################
 automation:
+  # Studio Motion Detector Low Battery Alert
   - initial_state: 'on'
-    alias: 'Studio Bath Multisensor Low Battery'
+    alias: 'Studio Multisensor Low Battery'
     trigger:
       - platform: numeric_state
-        entity_id: sensor.studio_bath_multisensor_battery
+        entity_id: sensor.studio_multisensor_battery
         below: 10
       - platform: numeric_state
-        entity_id: sensor.studio_bath_multisensor_battery
+        entity_id: sensor.studio_multisensor_battery
         below: 5
     action:
       service: notify.ios_mike_iphone_ios
       data:
-        message: "Studio Bath Multisensor is at {{ states('sensor.studio_bath_multisensor_battery') }}% battery, it uses two CR123A batteries."
+        message: "Studio Multisensor is at {{ states('sensor.studio_multisensor_battery') }}% battery, it uses two CR123A batteries."
+
+  # Studio Attic Motion Detector Low Battery Alert
   - initial_state: 'on'
     alias: 'Studio Attic Multisensor Low Battery'
     trigger:

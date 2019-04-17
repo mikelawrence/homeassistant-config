@@ -6,16 +6,12 @@ title: Lawrence Home
 views:
   - title: House
     badges:
-      # - person.mike
-      # - person.clara
-      # - person.mikey
-      # - person.bryan
-      - device_tracker.mike_meta
-      - device_tracker.clara_meta
-      - device_tracker.mikey_meta
-      - device_tracker.bryan_meta
-      - device_tracker.jim_meta
-      - device_tracker.kasey_meta
+      - person.mike
+      - person.clara
+      - person.mikey
+      - person.bryan
+      - person.jim
+      - person.kasey
     cards:
       - type: entities
         title: House Mode
@@ -84,7 +80,7 @@ views:
         title: Utility Room
         show_header_toggle: false
         entities:
-          - light.utility_room_light_backdoor
+          - switch.utility_room_light
       # - type: media-control
       #   entity: media_player.sonos_family_rm
       # - type: media-control
@@ -107,16 +103,12 @@ views:
           - sensor.upstairs_heat_hours_yesterday
   - title: Studio
     badges:
-      # - person.mike
-      # - person.clara
-      # - person.mikey
-      # - person.bryan
-      - device_tracker.mike_meta
-      - device_tracker.clara_meta
-      - device_tracker.mikey_meta
-      - device_tracker.bryan_meta
-      - device_tracker.jim_meta
-      - device_tracker.kasey_meta
+      - person.mike
+      - person.clara
+      - person.mikey
+      - person.bryan
+      - person.jim
+      - person.kasey
     cards:
       - type: entities
         title: Studio Mode
@@ -177,16 +169,12 @@ views:
         entity: climate.studio
   - title: Outside
     badges:
-      # - person.mike
-      # - person.clara
-      # - person.mikey
-      # - person.bryan
-      - device_tracker.mike_meta
-      - device_tracker.clara_meta
-      - device_tracker.mikey_meta
-      - device_tracker.bryan_meta
-      - device_tracker.jim_meta
-      - device_tracker.kasey_meta
+      - person.mike
+      - person.clara
+      - person.mikey
+      - person.bryan
+      - person.jim
+      - person.kasey
     cards:
       - type: entities
         title: Front Gate
@@ -244,16 +232,12 @@ views:
   - title: Weather
     icon: mdi:weather-lightning
     badges:
-      # - person.mike
-      # - person.clara
-      # - person.mikey
-      # - person.bryan
-      - device_tracker.mike_meta
-      - device_tracker.clara_meta
-      - device_tracker.mikey_meta
-      - device_tracker.bryan_meta
-      - device_tracker.jim_meta
-      - device_tracker.kasey_meta
+      - person.mike
+      - person.clara
+      - person.mikey
+      - person.bryan
+      - person.jim
+      - person.kasey
     cards:
       # - type: history-graph
       #   title: Outdoor Temperature
@@ -282,16 +266,12 @@ views:
   - title: Cameras
     icon: mdi:cctv
     badges:
-      # - person.mike
-      # - person.clara
-      # - person.mikey
-      # - person.bryan
-      - device_tracker.mike_meta
-      - device_tracker.clara_meta
-      - device_tracker.mikey_meta
-      - device_tracker.bryan_meta
-      - device_tracker.jim_meta
-      - device_tracker.kasey_meta
+      - person.mike
+      - person.clara
+      - person.mikey
+      - person.bryan
+      - person.jim
+      - person.kasey
     cards:
       - type: picture-entity
         entity: camera.front_road
@@ -312,16 +292,12 @@ views:
   - title: Devices
     icon: mdi:lightbulb
     badges:
-      # - person.mike
-      # - person.clara
-      # - person.mikey
-      # - person.bryan
-      - device_tracker.mike_meta
-      - device_tracker.clara_meta
-      - device_tracker.mikey_meta
-      - device_tracker.bryan_meta
-      - device_tracker.jim_meta
-      - device_tracker.kasey_meta
+      - person.mike
+      - person.clara
+      - person.mikey
+      - person.bryan
+      - person.jim
+      - person.kasey
     cards:
       - type: entities
         title: Motion Sensors
@@ -335,11 +311,13 @@ views:
           - binary_sensor.up_bath_motion
           - binary_sensor.up_sm_bed_motion
           - binary_sensor.up_lg_bed_motion
-          - binary_sensor.studio_motion
+          - binary_sensor.studio_multisensor_motion
+          - binary_sensor.studio_presence
           - binary_sensor.studio_bath_multisensor_motion
           - binary_sensor.studio_bath_presence
           - binary_sensor.studio_attic_multisensor_motion
           - binary_sensor.garage_motion
+          - sensor.studio_multisensor_battery
           - sensor.studio_bath_multisensor_battery
           - sensor.studio_attic_multisensor_battery
           - binary_sensor.comp_room_motion_sensor_lb

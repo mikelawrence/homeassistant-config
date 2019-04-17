@@ -8,16 +8,12 @@ history:
       - sensor.house_mode
       - sensor.studio_mode
       - binary_sensor.people_home
-      - device_tracker.mike_meta
-      # - device_tracker.mike_iphone
-      # - device_tracker.mike_iphone_ios
-      - device_tracker.clara_meta
-      # - device_tracker.clara_iphone
-      # - device_tracker.clara_iphone_ios
-      - device_tracker.mikey_meta
-      - device_tracker.bryan_meta
-      - device_tracker.jim_meta
-      - device_tracker.kasey_meta
+      - person.mike
+      - person.clara
+      - person.mikey
+      - person.bryan
+      - person.jim
+      - person.kasey
       - binary_sensor.master_bath_presence
       - binary_sensor.master_bath_multisensor_motion
       - input_boolean.master_bath_light_stay_on
@@ -28,6 +24,8 @@ history:
       - timer.master_bath_light_timer
       - timer.master_bath_vent_fan_timer
       - binary_sensor.master_bath_humidity_rising
+      - binary_sensor.studio_presence
+      - binary_sensor.studio_multisensor_motion
       - binary_sensor.studio_bath_presence
       - binary_sensor.studio_bath_multisensor_motion
       - input_boolean.studio_bath_light_stay_on

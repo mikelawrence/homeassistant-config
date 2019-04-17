@@ -11,15 +11,9 @@ homeassistant:
     ################################################
     ## Binary Sensor
     ################################################
-    # binary_sensor.kitchen_motion_sensor_lb:
-    #   friendly_name: "Kitchen Motion Sensor Low Battery"
-    #   device_class: battery
     binary_sensor.comp_room_motion_sensor_lb:
       friendly_name: "Computer Room Motion Sensor Battery"
       device_class: battery
-    # binary_sensor.master_bath_motion_sensor_lb:
-    #   friendly_name: "Master Bathroom Motion Sensor Low Battery"
-    #   device_class: battery
     binary_sensor.up_bath_motion_sensor_lb:
       friendly_name: "Upstairs Bathroom Motion Sensor Battery"
       device_class: battery
@@ -32,28 +26,25 @@ homeassistant:
     binary_sensor.garage_motion_sensor_lb:
       friendly_name: "Garage Motion Sensor Battery"
       device_class: battery
+    binary_sensor.studio_multisensor_motion:
+      device_class: motion
+    binary_sensor.studio_bath_multisensor_motion:
+      device_class: motion
+
 
 ################################################################
 ## Input Boolean
 ################################################################
 input_boolean:
   # used as a state variables for motion detection
-  # kitchen_motion_state:
-  #   initial: off
   comp_room_motion_state:
     initial: off
-  # master_bath_motion_state:
-  #   initial: off
   up_bath_motion_state:
     initial: off
   up_sm_bed_motion_state:
     initial: off
   up_lg_bed_motion_state:
     initial: off
-  studio_motion_state:
-    initial: off
-  # studio_bath_motion_state:
-  #   initial: off
   garage_motion_state:
     initial: off
   spare_motion_state:
@@ -89,24 +80,12 @@ binary_sensor:
         device_class: motion
         value_template: >-
           {{ is_state('binary_sensor.studio_motion', 'on') }}
-      # # Kitchen motion
-      # kitchen_motion:
-      #   friendly_name: "Kitchen Motion"
-      #   device_class: motion
-      #   value_template: >-
-      #     {{ is_state('input_boolean.kitchen_motion_state', 'on') }}
       # Computer Room motion
       comp_room_motion:
         friendly_name: "Computer Room Motion"
         device_class: motion
         value_template: >-
           {{ is_state('input_boolean.comp_room_motion_state', 'on') }}
-      # # Master Bathroom motion
-      # master_bath_motion:
-      #   friendly_name: "Master Bathroom Motion"
-      #   device_class: motion
-      #   value_template: >-
-      #     {{ is_state('input_boolean.master_bath_motion_state', 'on') }}
       # Upstairs Bathroom motion
       up_bath_motion:
         friendly_name: "Upstairs Bathroom Motion"
@@ -125,12 +104,6 @@ binary_sensor:
         device_class: motion
         value_template: >-
           {{ is_state('input_boolean.up_lg_bed_motion_state', 'on') }}
-      # Studio motion
-      studio_motion:
-        friendly_name: "Studio Motion"
-        device_class: motion
-        value_template: >-
-          {{ is_state('input_boolean.studio_motion_state', 'on') }}
       # Garage motion
       garage_motion:
         friendly_name: "Garage Motion"
@@ -171,10 +144,12 @@ group:
       - binary_sensor.up_bath_motion
       - binary_sensor.up_sm_bed_motion
       - binary_sensor.up_lg_bed_motion
-      - binary_sensor.studio_motion
+      - binary_sensor.studio_presence
+      - binary_sensor.studio_multisensor_motion
       - binary_sensor.studio_bath_presence
       - binary_sensor.studio_bath_multisensor_motion
       - binary_sensor.garage_motion
+      - sensor.studio_multisensor_battery
       - sensor.studio_bath_multisensor_battery
       - binary_sensor.comp_room_motion_sensor_lb
       - binary_sensor.up_bath_motion_sensor_lb
@@ -211,13 +186,6 @@ alert:
   up_lg_bed_motion_sensor_low_battery:
     name: "Upstairs Large Bedroom Motion Sensor Low Battery!"
     entity_id: binary_sensor.up_lg_bed_motion_sensor_lb
-    repeat:
-      - 1440
-    notifiers:
-      - ios_mike_iphone_ios
-  studio_motion_sensor_low_battery:
-    name: "Studio Motion Sensor Low Battery!"
-    entity_id: binary_sensor.studio_motion_sensor_lb
     repeat:
       - 1440
     notifiers:
@@ -326,29 +294,6 @@ automation:
       service: input_boolean.turn_off
       data:
         entity_id: input_boolean.up_lg_bed_motion_stat
-  - alias: "Studio Motion Detect ON"
-    trigger:
-      platform: event
-      event_type: isy994_control
-      event_data:
-        entity_id: binary_sensor.studio_motion_sensor
-        control: 'DON'
-    action:
-      service: input_boolean.turn_on
-      data:
-        entity_id: input_boolean.studio_motion_state
-  - alias: "Studio Motion Detect OFF"
-    trigger:
-      platform: state
-      entity_id: input_boolean.studio_motion_state
-      from: 'off'
-      to: 'on'
-      for:
-        minutes: 15
-    action:
-      service: input_boolean.turn_off
-      data:
-        entity_id: input_boolean.studio_motion_state
   - alias: "Garage Motion Detect ON"
     trigger:
       platform: event
@@ -372,29 +317,6 @@ automation:
       service: input_boolean.turn_off
       data:
         entity_id: input_boolean.garage_motion_state
-  - alias: "Spare Motion Detect ON"
-    trigger:
-      platform: event
-      event_type: isy994_control
-      event_data:
-        entity_id: binary_sensor.spare_motion_sensor
-        control: 'DON'
-    action:
-      service: input_boolean.turn_on
-      data:
-        entity_id: input_boolean.spare_motion_state
-  - alias: "Spare Motion Detect OFF"
-    trigger:
-      platform: state
-      entity_id: input_boolean.spare_motion_state
-      from: 'off'
-      to: 'on'
-      for:
-        minutes: 15
-    action:
-      service: input_boolean.turn_off
-      data:
-        entity_id: input_boolean.spare_motion_state
   - alias: "Computer Room Motion Sensor Low Battery"
     #initial_state: 'on'
     trigger:
@@ -438,17 +360,6 @@ automation:
       - service: persistent_notification.create
         data_template:
           message: 'Time to replace battery in Upstairs Large Bedroom Motion Sensor.'
-          title: "Low Battery Detected"
-  - alias: "Studio Motion Sensor Low Battery"
-    #initial_state: 'on'
-    trigger:
-      - platform: state
-        entity_id: binary_sensor.studio_motion_sensor_lb
-        to: 'on'
-    action:
-      - service: persistent_notification.create
-        data_template:
-          message: 'Time to replace battery in Studio Motion Sensor.'
           title: "Low Battery Detected"
   - alias: "Garage Motion Sensor Low Battery"
     #initial_state: 'on'

@@ -8,92 +8,57 @@
 homeassistant:
   customize:
     ################################################
-    ## Customize Binary sensors
-    ################################################
-    binary_sensor.people_home:
-      friendly_name: 'Somebody Home'
-
-    binary_sensor.people_away:
-      friendly_name: 'Everybody Away'
-
-    ################################################
     ## Customize Person
     ################################################
     person.mike:
       entity_picture: '/local/mike.jpg'
-
     person.clara:
       entity_picture: '/local/clara.jpg'
-
     person.mikey:
       entity_picture: '/local/mikey.jpg'
-
     person.bryan:
       entity_picture: '/local/bryan.jpg'
+    person.jim:
+      entity_picture: '/local/jim.jpg'
+    person.kasey:
+      entity_picture: '/local/kasey.jpg'
 
     ################################################
     ## Customize Device Tracker
     ################################################
-    device_tracker.mike_meta:
-      friendly_name: 'Mike'
-      entity_picture: '/local/mike.jpg'
-
     device_tracker.mike_iphone:
       friendly_name: 'Mike iPhone (WiFi)'
       icon: mdi:wifi
-
     device_tracker.mike_iphone_ios:
       friendly_name: 'Mike iPhone (iOS)'
       icon: mdi:apple-ios
-
     device_tracker.mike_laptop:
       friendly_name: 'Mike Laptop (WiFi)'
       icon: mdi:wifi
-
-    device_tracker.clara_meta:
-      friendly_name: 'Clara'
-      entity_picture: '/local/clara.jpg'
-
     device_tracker.clara_iphone:
       friendly_name: 'Clara iPhone (WiFi)'
       icon: mdi:wifi
-
     device_tracker.clara_iphone_ios:
       friendly_name: 'Clara iPhone (iOS)'
       icon: mdi:apple-ios
-
-    device_tracker.mikey_meta:
-      friendly_name: 'Mikey'
-      entity_picture: '/local/mikey.jpg'
-
     device_tracker.mikey_iphone:
       friendly_name: 'Mikey iPhone (WiFi)'
       icon: mdi:wifi
-
     device_tracker.mikey_iphone_ios:
       friendly_name: 'Mikey iPhone (iOS)'
       icon: mdi:apple-ios
-
-    device_tracker.bryan_meta:
-      friendly_name: 'Bryan'
-      entity_picture: '/local/bryan.jpg'
-
     device_tracker.bryan_iphone:
       friendly_name: 'Bryan iPhone (WiFi)'
       icon: mdi:wifi
-
     device_tracker.bryan_iphone_ios:
       friendly_name: 'Bryan iPhone (iOS)'
       icon: mdi:apple-ios
-
     device_tracker.dan_iphone:
       friendly_name: 'Dan iPhone (WiFi)'
       icon: mdi:wifi
-
     device_tracker.jim_phone:
       friendly_name: 'Jim Android (WiFi)'
       icon: mdi:wifi
-
     device_tracker.kasey_phone:
       friendly_name: 'Kasey Android (WiFi)'
       icon: mdi:wifi
@@ -113,61 +78,29 @@ homeassistant:
       friendly_name: 'People Status'
       icon: mdi:human-male-female
 
-    group.family:
-      friendly_name: 'Family'
-      icon: mdi:human-male-female
-
-    group.person_mike:
-      friendly_name: 'Mike'
-      icon: mdi:human-male
-
-    group.person_clara:
-      friendly_name: 'Clara'
-      icon: mdi:human-female
-
-    group.person_mikey:
-      friendly_name: 'Mikey'
-      icon: mdi:human-male
-
-    group.person_bryan:
-      friendly_name: 'Bryan'
-      icon: mdi:human-male
+    ################################################
+    ## Customize Binary sensors
+    ################################################
+    binary_sensor.people_home:
+      friendly_name: 'Somebody Home'
+    binary_sensor.people_away:
+      friendly_name: 'Everybody Away'
 
 ################################################################
-## Group (Device Trackers only)
+## Group (Persons or Device Trackers only)
 ################################################################
 group:
-  # Device Trackers placed in here will be included in household_home status
+  # Device Trackers placed in here will be included in household status
   # Including a group of Device Trackers is also valid
   household:
     control: hidden
     entities:
-      - device_tracker.mike_meta
-      - device_tracker.mike_iphone
-      - device_tracker.mike_iphone_ios
-      - device_tracker.clara_meta
-      - device_tracker.clara_iphone
-      - device_tracker.clara_iphone_ios
-      - device_tracker.mikey_meta
-      - device_tracker.mikey_iphone
-      - device_tracker.mikey_iphone_ios
-      - device_tracker.bryan_meta
-      - device_tracker.bryan_iphone
-      - device_tracker.bryan_iphone_ios
-      - device_tracker.jim_meta
-      - device_tracker.jim_phone
-      - device_tracker.kasey_meta
-      - device_tracker.kasey_phone
-
-  family:
-    control: hidden
-    entities:
-      - device_tracker.mike_meta
-      - device_tracker.clara_meta
-      - device_tracker.mikey_meta
-      - device_tracker.bryan_meta
-      - device_tracker.jim_meta
-      - device_tracker.kasey_meta
+      - person.mike
+      - person.clara
+      - person.mikey
+      - person.bryan
+      - person.jim
+      - person.kasey
 
   guests:
     control: hidden
@@ -179,7 +112,6 @@ group:
     entities:
       - binary_sensor.people_home
       - binary_sensor.people_away
-      - group.family
       - group.guests
 
 ################################################################
@@ -198,64 +130,9 @@ binary_sensor:
         value_template: "{{ is_state('binary_sensor.people_home', 'off') }}"
 
 ################################################################
-## Automation
-################################################################
-automation:
-  - id: update_meta_tracker
-    alias: "Update Device Meta Tracker"
-    initial_state: 'on'
-    trigger:
-      # Delayed Away action for router-based trackers
-      - platform: state
-        entity_id:
-          - device_tracker.mike_iphone
-          - device_tracker.clara_iphone
-          - device_tracker.mikey_iphone
-          - device_tracker.bryan_iphone
-          - device_tracker.jim_phone
-          - device_tracker.kasey_phone
-        from: 'home'
-        #for: '00:02:00'
-      # Immediate Home action for router-based trackers
-      - platform: state
-        entity_id:
-          - device_tracker.mike_iphone
-          - device_tracker.clara_iphone
-          - device_tracker.mikey_iphone
-          - device_tracker.bryan_iphone
-          - device_tracker.jim_phone
-          - device_tracker.kasey_phone
-        to: 'home'
-      # Immediate action for IOS application trackers
-      - platform: state
-        entity_id:
-          - device_tracker.mike_iphone_ios
-          - device_tracker.clara_iphone_ios
-    action:
-      - service: script.update_tracker
-        data_template:
-          entityid: '{{ trigger.entity_id }}'
-          fromstate: '{{ trigger.from_state.state }}'
-          tostate: '{{ trigger.to_state.state }}'
-
-################################################################
 ## Script
 ################################################################
 script:
-  update_tracker:
-    alias: "Update tracker"
-    sequence:
-      # - condition: template
-      #   value_template: '{{fromstate != tostate}}'
-      - service: python_script.meta_device_tracker
-        data_template:
-          entity_id: '{{ entityid }}'
-      # - service: logbook.log
-      #   data_template:
-      #     name: 'Tracker updated: '
-      #     message: >-
-      #       {{ states[entityid.split('.')[0]][entityid.split('.')[1]].name }} is {{ tostate }}.
-
   request_location_update:
     alias: "Request Location Update"
     sequence:

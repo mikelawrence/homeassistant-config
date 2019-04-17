@@ -413,3 +413,18 @@ automation:
       # Cancel Studio Bath Vent Fan Timer because the vent fan turned off
       service: timer.cancel
       entity_id: timer.studio_bath_vent_fan_timer
+
+  # Studio Bathroom Motion Detector Low Battery Alert
+  - initial_state: 'on'
+    alias: 'Studio Bath Multisensor Low Battery'
+    trigger:
+      - platform: numeric_state
+        entity_id: sensor.studio_bath_multisensor_battery
+        below: 10
+      - platform: numeric_state
+        entity_id: sensor.studio_bath_multisensor_battery
+        below: 5
+    action:
+      service: notify.ios_mike_iphone_ios
+      data:
+        message: "Studio Bath Multisensor is at {{ states('sensor.studio_bath_multisensor_battery') }}% battery, it uses two CR123A batteries."

@@ -72,7 +72,6 @@ logbook:
       - script.nest_upstairs_thermostat_set_away
       - script.nest_upstairs_thermostat_set_away
       - script.nest_upstairs_thermostat_set_away
-      - script.update_tracker
       - sensor.master_bath_multisensor_alarm_level
       - sensor.master_bath_multisensor_alarm_type
       - sensor.master_bath_multisensor_burglar

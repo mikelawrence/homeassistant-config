@@ -20,6 +20,42 @@ homeassistant:
   # Packages directory
   packages: !include_dir_named packages
 
+  customize:
+    ################################################
+    #  unhide the all_* groups
+    ################################################
+    group.all_scripts:
+      control: hidden
+      hidden: false
+    
+    group.all_automations:
+      control: hidden
+      hidden: false
+
+    group.all_scenes:
+      control: hidden
+      hidden: false
+
+    group.all_lights:
+      control: hidden
+      hidden: false
+
+    group.all_switches:
+      control: hidden
+      hidden: false
+
+    group.all_fans:
+      control: hidden
+      hidden: false
+
+    group.all_covers:
+      control: hidden
+      hidden: false
+
+    group.all_devices:
+      control: hidden
+      hidden: false
+
 ################################################################
 ## Persons
 ################################################################
@@ -46,6 +82,14 @@ person:
     device_trackers:
       - device_tracker.bryan_iphone
       - device_tracker.bryan_iphone_ios
+  - name: Jim
+    id: jim
+    device_trackers:
+      - device_tracker.jim_phone
+  - name: Kasey
+    id: kasey
+    device_trackers:
+      - device_tracker.kasey_phone
 
 # Enables the frontend
 frontend:
@@ -82,17 +126,14 @@ discovery:
    - roku
    - igd
 
-# Enable ios app
-ios:
+# Live streams
+stream:
 
 # Allows you to issue voice commands from the frontend in enabled browsers
 conversation:
 
 # Track the sun
 sun:
-
-# Enable Python scripts
-python_script:
 
 # enable Haiku with SenseMe ceiling fans
 senseme:

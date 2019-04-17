@@ -181,6 +181,12 @@ binary_sensor:
         delay_on: '03:00:00'
         value_template: "{{ is_state('device_tracker.septic_controller', 'away') }}"
 
+      # Turns on when Septic Controller has not been Idle for too long
+      septic_controller_not_idle:
+        friendly_name: "Septic controller not Idle for too long"
+        delay_on: '01:00:00'
+        value_template: "{{ not is_state('sensor.septic_status', 'Idle') }}"
+
 ################################################################
 ## Automation
 ################################################################
@@ -287,7 +293,7 @@ automation:
       - platform: event
         event_type: isy994_control
         event_data:
-          entity_id: light.back_porch_light_backdoor
+          entity_id: switch.back_porch_light_backdoor
           control: 'DFON'
     action:
       service: switch.turn_on
@@ -304,7 +310,7 @@ automation:
       - platform: event
         event_type: isy994_control
         event_data:
-          entity_id: light.back_porch_light_backdoor
+          entity_id: switch.back_porch_light_backdoor
           control: 'DFOF'
     action:
       service: switch.turn_off
@@ -483,13 +489,25 @@ alert:
     notifiers:
       - ios_mike_iphone_ios
 
+
+  # Septic Controller not Idle for too long
+  septic_controller_not_idle:
+    name: "Septic controller is not 'Idle'"
+    entity_id: binary_sensor.septic_controller_not_idle
+    repeat:
+      - 30
+      - 60
+      - 1400
+    state: 'on'
+    notifiers:
+      - ios_mike_iphone_ios
+
   # Septic Controller override float
   septic_override_pump_occurred:
     name: 'Septic Override Pump On!'
     entity_id: sensor.septic_status
     state: 'Override Pump On'
-    repeat:
-      - 5
+    repeat: 5
     notifiers:
       - ios_mike_iphone_ios
 
@@ -498,11 +516,7 @@ alert:
     name: 'Septic Alarm: SSR Overtemp!'
     entity_id: sensor.septic_status
     state: 'Overtemp Alarm On'
-    repeat:
-      - 15
-      - 30
-      - 60
-      - 1440
+    repeat: 5
     notifiers:
       - ios_mike_iphone_ios
 
@@ -515,7 +529,6 @@ alert:
       - 15
       - 30
       - 60
-      - 1440
     notifiers:
       - ios_mike_iphone_ios
 
@@ -524,11 +537,7 @@ alert:
     name: 'Septic Alarm: Air Pump Pressure Fail!'
     entity_id: sensor.septic_status
     state: 'Air Pump Alarm On'
-    repeat:
-      - 15
-      - 30
-      - 60
-      - 1440
+    repeat: 5
     notifiers:
       - ios_mike_iphone_ios
 
@@ -537,7 +546,6 @@ alert:
     name: 'Septic Alarm: Bleach Level Low!'
     entity_id: sensor.septic_status
     state: 'Bleach Alarm On'
-    repeat:
-      - 1440
+    repeat: 5
     notifiers:
       - ios_mike_iphone_ios

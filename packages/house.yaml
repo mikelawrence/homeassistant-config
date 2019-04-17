@@ -58,7 +58,7 @@ homeassistant:
       friendly_name: "Family Room Light"
       icon: mdi:lightbulb
     switch.down_bath_vent_fan:
-      friendly_name: "Downstairs Bathroom Fan"
+      friendly_name: "Downstairs Bathroom Vent Fan"
       icon: mdi:fan
     switch.up_sm_bed_light:
       friendly_name: "Mikey Bedroom Light"
