@@ -44,29 +44,3 @@ axis:
     password: !secret axis_password
     include:
       - camera
-
-################################################################
-## Group
-################################################################
-group:
-  camera_front_road:
-    entities:
-      - camera.front_road
-  camera_house_driveway:
-    entities:
-      - camera.house_driveway
-  camera_garage_driveway:
-    entities:
-      - camera.garage_driveway
-  camera_studio_front:
-    entities:
-      - camera.studio_front
-  camera_garage_inside_left:
-    entities:
-      - camera.garage_inside_left
-  camera_garage_inside_right:
-    entities:
-      - camera.garage_inside_right
-  camera_weather:
-    entities:
-      - camera.weather

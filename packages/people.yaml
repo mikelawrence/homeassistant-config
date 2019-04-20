@@ -70,14 +70,6 @@ homeassistant:
       friendly_name: 'Household'
       icon: mdi:home
 
-    group.guests:
-      friendly_name: 'Guests'
-      icon: mdi:human-male-female
-
-    group.people_status:
-      friendly_name: 'People Status'
-      icon: mdi:human-male-female
-
     ################################################
     ## Customize Binary sensors
     ################################################
@@ -93,7 +85,6 @@ group:
   # Device Trackers placed in here will be included in household status
   # Including a group of Device Trackers is also valid
   household:
-    control: hidden
     entities:
       - person.mike
       - person.clara
@@ -101,18 +92,6 @@ group:
       - person.bryan
       - person.jim
       - person.kasey
-
-  guests:
-    control: hidden
-    entities:
-      - device_tracker.dan_iphone
-
-  people_status:
-    control: hidden
-    entities:
-      - binary_sensor.people_home
-      - binary_sensor.people_away
-      - group.guests
 
 ################################################################
 ## Binary Sensor

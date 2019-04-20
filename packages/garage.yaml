@@ -32,17 +32,3 @@ homeassistant:
     switch.garage_light:
       friendly_name: "Garage Light"
       icon: mdi:lightbulb
-
-################################################################
-## Group
-################################################################
-group:
-  garage:
-    name: Garage
-    control: hidden
-    entities:
-      - switch.garage_light
-      - binary_sensor.garage_door_sensor
-      - cover.garage_door_1
-      - cover.garage_door_2
-      - cover.garage_door_3

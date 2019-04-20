@@ -9,13 +9,6 @@
 homeassistant:
   customize:
     ################################################
-    ## Group
-    ################################################
-    group.house_mode:
-      friendly_name: "House Mode"
-      icon: mdi:home-variant
-
-    ################################################
     ## Switch
     ################################################
     # ISY-994 HA.switch "Program Switches"
@@ -36,21 +29,6 @@ homeassistant:
     ################################################
     sensor.house_mode:
       friendly_name: "House Mode"
-
-################################################################
-## Group
-################################################################
-group:
-  house_mode:
-    control: hidden
-    entities:
-      - switch.house_state
-      - input_boolean.guest_mode
-      - input_boolean.vacation_mode
-      - sensor.house_mode
-      - binary_sensor.house_back_door_sensor
-      - binary_sensor.house_front_door_sensor
-      - binary_sensor.people_home
 
 ################################################################
 ## Input Boolean

@@ -9,31 +9,10 @@
 homeassistant:
   customize:
     ################################################
-    ## Group
-    ################################################
-    group.studio_mode:
-      friendly_name: "Studio Mode"
-      icon: mdi:home-variant
-
-    ################################################
     ## Sensor
     ################################################
     sensor.studio_mode:
       friendly_name: "Studio Mode"
-
-################################################################
-## Group
-################################################################
-group:
-  studio_mode:
-    control: hidden
-    entities:
-      - switch.studio_state
-      - input_boolean.guest_mode
-      - input_boolean.vacation_mode
-      - sensor.studio_mode
-      - binary_sensor.studio_front_door_sensor
-      - binary_sensor.people_home
 
 ################################################################
 ## Sensor

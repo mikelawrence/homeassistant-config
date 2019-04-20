@@ -33,60 +33,6 @@ homeassistant:
       friendly_name: "Studio Harmony Remote"
 
 ################################################################
-## Group
-################################################################
-group:
-  # Studio group
-  studio:
-    name: Studio
-    control: hidden
-    entities:
-      - light.studio_chandeliers
-      - switch.studio_shoplights
-      - switch.studio_shoplight_a
-      - switch.studio_shoplight_b
-      - switch.studio_shoplight_c
-      - switch.studio_shoplight_d
-      - fan.studio_fan
-      - light.studio_fan_light
-
-  # Studio Kitchen group
-  studio_kitchen:
-    name: Studio Kitchen
-    control: hidden
-    entities:
-      - switch.studio_kitchen_lights
-      - light.studio_kitchen_chandelier
-      - light.studio_kitchen_cabinet_lights
-      - light.studio_kitchen_sink_lights
-
-  # Studio Loft group
-  studio_loft:
-    name: Studio Loft
-    control: hidden
-    entities:
-      - light.studio_loft_fan_light
-      - fan.studio_loft_fan
-
-  # Studio Media Players
-  studio_media:
-    name: Studio Media
-    control: hidden
-    entities:
-      - media_player.studio
-      - media_player.apple_tv_studio
-      - media_player.sonos_studio
-
-  # Studio Climate group
-  studio_climate:
-    name: Studio Climate
-    control: hidden
-    entities:
-      - climate.studio
-      - sensor.studio_cool_hours_yesterday
-      - sensor.studio_heat_hours_yesterday
-
-################################################################
 ## Binary Sensor
 ################################################################
 binary_sensor:

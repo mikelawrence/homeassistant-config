@@ -44,25 +44,6 @@ homeassistant:
       device_class: motion
 
 ################################################################
-## Group
-################################################################
-group:
-  # House Master Bedroom
-  master_bed_room:
-    name: Master Bedroom
-    control: hidden
-    entities:
-      - light.master_bed_fan_light
-      - fan.master_bed_fan
-      - light.master_bed_lamp_mike
-      - light.master_bed_lamp_clara
-      - light.master_closet_light
-      - light.master_bath_light
-      - switch.master_bath_vent_fan
-      # - timer.master_bath_light_timer
-      # - timer.master_bath_vent_fan_timer
-
-################################################################
 ## Input Boolean
 ################################################################
 input_boolean:

@@ -131,33 +131,6 @@ group:
       - binary_sensor.up_sm_bed_motion
       - binary_sensor.up_lg_bed_motion
 
-  motion_sensors:
-    name: Motion Sensors
-    control: hidden
-    entities:
-      - binary_sensor.any_motion
-      - binary_sensor.any_house_motion
-      - binary_sensor.any_studio_motion
-      - binary_sensor.master_bath_presence
-      - binary_sensor.master_bath_multisensor_motion
-      - binary_sensor.comp_room_motion
-      - binary_sensor.up_bath_motion
-      - binary_sensor.up_sm_bed_motion
-      - binary_sensor.up_lg_bed_motion
-      - binary_sensor.studio_presence
-      - binary_sensor.studio_multisensor_motion
-      - binary_sensor.studio_bath_presence
-      - binary_sensor.studio_bath_multisensor_motion
-      - binary_sensor.garage_motion
-      - sensor.studio_multisensor_battery
-      - sensor.studio_bath_multisensor_battery
-      - binary_sensor.comp_room_motion_sensor_lb
-      - binary_sensor.up_bath_motion_sensor_lb
-      - binary_sensor.up_sm_bed_motion_sensor_lb
-      - binary_sensor.up_lg_bed_motion_sensor_lb
-      - binary_sensor.studio_motion_sensor_lb
-      - binary_sensor.garage_motion_sensor_lb
-
 ################################################################
 ## Alert
 ################################################################

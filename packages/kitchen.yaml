@@ -29,20 +29,6 @@ homeassistant:
       friendly_name: "Kitchen Fan"
 
 ################################################################
-## Group
-################################################################
-group:
-  # House Kitchen
-  kitchen:
-    name: "Kitchen"
-    control: hidden
-    entities:
-      - switch.kitchen_lights
-      - fan.kitchen_fan_front
-      - scene.kitchen_morning
-      - scene.kitchen_all_off
-
-################################################################
 ## Scene
 ################################################################
 scene:

@@ -9,13 +9,6 @@
 homeassistant:
   customize:
     ################################################
-    #  Group
-    ################################################
-    group.weewx:
-      friendly_name: "Davis Weather Station"
-      icon: mdi:weather-lightning
-
-    ################################################
     #  Sensor
     ################################################
     sensor.weewx_temperature:
@@ -81,30 +74,6 @@ homeassistant:
     sensor.weewx_rain_year:
       friendly_name: "Yearly Rain"
       icon: mdi:water
-
-################################################
-#  Group
-################################################
-group:
-  weewx:
-   entities:
-     - sensor.weewx_temperature
-     - sensor.weewx_dewpoint
-     - sensor.weewx_heat_index
-     - sensor.weewx_humidex
-     - sensor.weewx_windchill
-     - sensor.weewx_humidity
-     - sensor.weewx_barometer
-     - sensor.weewx_wind
-     - sensor.weewx_wind_dir
-     - sensor.weewx_gust
-     - sensor.weewx_gust_dir
-     - sensor.weewx_rain
-     - sensor.weewx_rain_rate
-     - sensor.weewx_rain_storm
-     - sensor.weewx_rain_month
-     - sensor.weewx_rain_year
-
 
 ################################################
 #  Sensor

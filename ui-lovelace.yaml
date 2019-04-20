@@ -1,7 +1,6 @@
 ################################################################
 ## Lovelace configuration
 ################################################################
-
 title: Lawrence Home
 views:
   - title: House
@@ -38,6 +37,7 @@ views:
         entities:
           - switch.family_room_light
           - fan.family_room_fan
+          - scene.family_room_movie
           # - scene.family_room_all_off
       - type: entities
         title: Computer Room
@@ -338,3 +338,12 @@ views:
           - binary_sensor.house_back_door_sensor_hb
           - binary_sensor.studio_front_door_sensor_hb
           - binary_sensor.garage_door_sensor_hb
+      - type: entities
+        title: Z-Wave
+        show_header_toggle: false
+        entities:
+          - zwave.master_bath_multisensor
+          - zwave.studio_multisensor
+          - zwave.studio_bath_multisensor
+          - zwave.studio_attic_multisensor
+

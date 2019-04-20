@@ -43,68 +43,6 @@ homeassistant:
       friendly_name: "All House Backyard Lights"
       icon: mdi:lightbulb
 
-################################################################
-## Group
-################################################################
-group:
-  # Front Gate
-  front_gate:
-    name: Front Gate
-    control: hidden
-    entities:
-      - cover.front_gate
-
-  # Frontyard ISY-994 group
-  frontyard_lights:
-    name: Frontyard Lights
-    control: hidden
-    entities:
-      - switch.house_porch_lights
-      - switch.house_porch_lights_front
-      - switch.house_flood_lights
-      - switch.house_flood_lights_front
-
-  # Backyard ISY-994 group
-  backyard_lights:
-    name: Backyard Lights
-    control: hidden
-    entities:
-      - switch.house_backyard_lights
-      - switch.house_porch_lights_backyard
-      - switch.house_porch_lights_back
-      - switch.house_porch_lights_studio
-      - switch.house_flood_lights_backyard
-      - switch.house_flood_lights_front
-
-  # Roof RGB Floodlights
-  roof_floodlights:
-    name: Roof Floodlights
-    control: hidden
-    entities:
-      - input_number.roof_lights_transition_time
-      - light.roof_lights
-      - light.house_roof_light
-      - light.studio_roof_light
-      - light.garage_roof_light
-
-  # Christmas Lights
-  christmas_lights:
-    name: Christmas Lights
-    control: hidden
-    entities:
-      - input_boolean.christmas_season
-      - switch.house_christmas_lights
-      - switch.studio_christmas_lights
-
-  # Septic Controller
-  septic:
-    name: Septic
-    control: hidden
-    entities:
-      - sensor.septic_status
-      - sensor.septic_minutes_yesterday
-      - sensor.septic_usage_yesterday
-
 ##################################################
 ## input_number
 ##################################################

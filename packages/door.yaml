@@ -29,23 +29,6 @@ homeassistant:
       device_class: battery
 
 ################################################################
-## Group
-################################################################
-group:
-  door_sensors:
-    name: Door Sensors
-    control: hidden
-    entities:
-      - binary_sensor.house_front_door_sensor
-      - binary_sensor.house_back_door_sensor
-      - binary_sensor.studio_front_door_sensor
-      - binary_sensor.garage_door_sensor
-      - binary_sensor.house_front_door_sensor_hb
-      - binary_sensor.house_back_door_sensor_hb
-      - binary_sensor.studio_front_door_sensor_hb
-      - binary_sensor.garage_door_sensor_hb
-
-################################################################
 ## Alert
 ################################################################
 alert:
