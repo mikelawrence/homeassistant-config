@@ -39,6 +39,7 @@ history:
       - binary_sensor.studio_attic_multisensor_motion
       - group.house_motion
       - binary_sensor.comp_room_motion
+      - binary_sensor.computer_room_multisensor_motion
       - binary_sensor.up_bath_motion
       - binary_sensor.up_sm_bed_motion
       - binary_sensor.up_lg_bed_motion

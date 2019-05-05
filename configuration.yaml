@@ -171,7 +171,8 @@ mqtt_shareclient:
 
 # Google Text to Speech
 tts:
-  - platform: google
+  - platform: google_translate
+    service_name: google_say
 
 device_tracker:
   # Unifi device tracker configuration

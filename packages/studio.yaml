@@ -21,12 +21,6 @@ homeassistant:
       friendly_name: "Sonos Studio"
 
     ################################################
-    ## Fan
-    ################################################
-    fan.studio_fan:
-      friendly_name: "Studio Fan"
-
-    ################################################
     ## Remote
     ################################################
     remote.studio:
@@ -72,37 +66,3 @@ sensor:
     end: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
     duration:
       hours: 24
-
-###############################################################
-## Automation
-################################################################
-automation:
-  # Studio Motion Detector Low Battery Alert
-  - initial_state: 'on'
-    alias: 'Studio Multisensor Low Battery'
-    trigger:
-      - platform: numeric_state
-        entity_id: sensor.studio_multisensor_battery
-        below: 10
-      - platform: numeric_state
-        entity_id: sensor.studio_multisensor_battery
-        below: 5
-    action:
-      service: notify.ios_mike_iphone_ios
-      data:
-        message: "Studio Multisensor is at {{ states('sensor.studio_multisensor_battery') }}% battery, it uses two CR123A batteries."
-
-  # Studio Attic Motion Detector Low Battery Alert
-  - initial_state: 'on'
-    alias: 'Studio Attic Multisensor Low Battery'
-    trigger:
-      - platform: numeric_state
-        entity_id: sensor.studio_attic_multisensor_battery
-        below: 10
-      - platform: numeric_state
-        entity_id: sensor.studio_attic_multisensor_battery
-        below: 5
-    action:
-      service: notify.ios_mike_iphone_ios
-      data:
-        message: "Studio Attic Multisensor is at {{ states('sensor.studio_attic_multisensor_battery') }}% battery, it uses one CR123A batteries."

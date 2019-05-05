@@ -37,46 +37,28 @@ homeassistant:
     ################################################
     light.down_bath_light:
       friendly_name: "Downstairs Bathroom Light"
-    light.family_room_fan_light:
-      friendly_name: "Family Room Light"
-    light.stairs_light_downstairs:
-      friendly_name: "Stairs Light"
-    light.utility_room_light_backdoor:
-      friendly_name: "Utility Room Light"
-    light.up_bath_light_door:
+    light.up_bath_light:
       friendly_name: "Upstairs Bathroom Light"
+    light.up_lg_bed_light:
+      friendly_name: "Bryan Bedroom Light"
+    light.up_sm_bed_light:
+      friendly_name: "Mikey Bedroom Light"
     light.up_sm_bed_closet_light:
       friendly_name: "Mikey Closet Light"
 
     ################################################
     ## Switch
     ################################################
-    switch.computer_room_light:
-      friendly_name: "Computer Room Light"
-      icon: mdi:lightbulb
-    switch.family_room_light:
-      friendly_name: "Family Room Light"
-      icon: mdi:lightbulb
     switch.family_room_movie:
-      friendly_name: "Family Room Movie Mode"
+      friendly_name: "Movie Mode"
       icon: mdi:movie-roll
     switch.down_bath_vent_fan:
       friendly_name: "Downstairs Bathroom Vent Fan"
       icon: mdi:fan
-    switch.up_sm_bed_light:
-      friendly_name: "Mikey Bedroom Light"
-      icon: mdi:lightbulb
-    switch.up_lg_bed_light:
-      friendly_name: "Bryan Bedroom Light"
-      icon: mdi:lightbulb
 
     ################################################
     ## Fan
     ################################################
-    fan.family_room_fan:
-      friendly_name: "Family Room Fan"
-    fan.computer_room_fan:
-      friendly_name: "Computer Room Fan"
     fan.up_lg_bed_fan:
       friendly_name: "Bryan Bedroom Fan"
     fan.up_sm_bed_fan:
@@ -140,6 +122,6 @@ sensor:
 ## Scene
 ################################################################
 scene:
-  - name: "Family Room Movie"
+  - name: "Movie Mode"
     entities:
       switch.family_room_movie: on    # ISY-994 scene

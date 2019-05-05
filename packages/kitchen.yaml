@@ -8,14 +8,6 @@
 homeassistant:
   customize:
     ################################################
-    ## Light
-    ################################################
-    light.kitchen_light_backdoor:
-      friendly_name: "Kitchen Light"
-    light.kitchen_cabinet_light_sink:
-      friendly_name: "Kitchen Cabinet Lights"
-
-    ################################################
     ## Switch
     ################################################
     switch.kitchen_lights:

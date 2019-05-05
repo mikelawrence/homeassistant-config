@@ -2,43 +2,68 @@
 ## Packages / homekit
 ##   Handles Homekit setup
 ################################################################
-
-################################################################
-# Current Pincode 401-28-964
-################################################################
 homekit:
   filter:
     include_entities:
       # Kitchen
-      - switch.kitchen_lights
+      - switch.kitchen_lights_scene
       - fan.kitchen_fan_front
+      - switch.kitchen_morning_scene
       # Family Room
-      - switch.family_room_light
+      - switch.family_room_light_scene
       - fan.family_room_fan
+      - scene.movie_mode
+      # Computer Room
+      - switch.computer_room_light_scene
+      - fan.computer_room_fan
+      # Master Bathroom
+      - light.master_bath_light
+      - switch.master_bath_vent_fan
       # Master Bedroom
-      - switch.master_bed_light
+      - switch.master_bed_light_scene
       - fan.master_bed_fan
       # Studio
       - switch.studio_state           # Home/Away for Studio
       - switch.studio_chandeliers
       - switch.studio_shoplights
       - fan.studio_fan
-      # Backyard
-      - switch.backyard_lights
+      # Garage
+      - switch.garage_light_scene
+      - cover.garage_door_1
+      - cover.garage_door_2
+      - cover.garage_door_3
+      # Outside
+      - cover.front_gate
+      - switch.house_flood_lights
+      - switch.house_porch_lights
 
   entity_config:
     # Kitchen
-    switch.kitchen_lights:
+    switch.kitchen_lights_scene:
       name: "Kitchen Light"
     switch.kitchen_fan_front:
       name: "Kitchen Fan"
+    switch.kitchen_morning_scene:
+      name: "Kitchen Morning"
     # Family Room
-    switch.family_room_light:
+    switch.family_room_light_scene:
       name: "Family Room Light"
     fan.family_room_fan:
       name: "Family Room Fan"
+    scene.movie_mode:
+      name: "Movie Mode"
+    # Computer Room
+    switch.computer_room_light_scene:
+      name: "Computer Room Light"
+    fan.computer_room_fan:
+      name: "Computer Room Fan"
+    # Master Bathroom
+    light.master_bath_light:
+      name: "Master Bathroom Light"
+    switch.master_bath_vent_fan:
+      name: "Master Bathroom Vent Fan"
     # Master Bedroom
-    switch.master_bed_light:
+    switch.master_bed_light_scene:
       name: "Master Bedroom Light"
     fan.master_bed_fan:
       name: "Master Bedroom Fan"
@@ -51,6 +76,19 @@ homekit:
       name: "Studio Shoplight"
     fan.studio:
       name: "Studio Fan"
-    # Backyard
-    switch.backyard_lights:
-      name: "Backyard Light"
+    # Garage
+    switch.garage_light_scene:
+      name: "Garage Light"
+    cover.garage_door_1:
+      name: "Garage Door 1"
+    cover.garage_door_2:
+      name: "Garage Door 2"
+    cover.garage_door_3:
+      name: "Garage Door 3"
+    # Outside
+    cover.front_gate:
+      name: "Front Gate"
+    switch.house_flood_lights:
+      name: "Flood Lights"
+    switch.house_porch_lights:
+      name: "Porch Lights"

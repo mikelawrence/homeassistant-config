@@ -10,14 +10,12 @@ homeassistant:
     ################################################
     ## ISY994 Lights
     ################################################
-    light.master_bed_fan_light:
+    light.master_bed_light:
       friendly_name: "Master Bedroom Light"
     light.master_bed_lamp_mike:
       friendly_name: "Master Bedroom Lamp Mike's"
     light.master_bed_lamp_clara:
       friendly_name: "Master Bedroom Lamp Clara's"
-    light.master_closet_light_door:
-      friendly_name: "Master Closet Light"
     light.master_bath_light:
       friendly_name: "Master Bathroom Light"
 

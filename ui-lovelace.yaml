@@ -27,7 +27,7 @@ views:
         title: Kitchen
         show_header_toggle: false
         entities:
-          - switch.kitchen_lights
+          - switch.kitchen_lights_scene
           - fan.kitchen_fan_front
           - scene.kitchen_morning
           - scene.kitchen_all_off
@@ -35,17 +35,15 @@ views:
         title: Family Room
         show_header_toggle: false
         entities:
-          - switch.family_room_light
+          - light.family_room_light
           - fan.family_room_fan
-          - scene.family_room_movie
-          # - scene.family_room_all_off
+          - scene.movie_mode
       - type: entities
         title: Computer Room
         show_header_toggle: false
         entities:
-          - switch.computer_room_light
+          - light.computer_room_light
           - fan.computer_room_fan
-          # - scene.computer_room_all_off
       - type: entities
         title: Downstairs Bathroom
         show_header_toggle: false
@@ -56,7 +54,7 @@ views:
         title: Master Bedroom
         show_header_toggle: false
         entities:
-          - light.master_bed_fan_light
+          - light.master_bed_light
           - fan.master_bed_fan
           - light.master_bed_lamp_mike
           - light.master_bed_lamp_clara
@@ -67,20 +65,20 @@ views:
         title: Mikey's Bedroom
         show_header_toggle: false
         entities:
-          - switch.up_sm_bed_light
-          - light.up_sm_bed_closet_light
+          - light.up_sm_bed_light
           - fan.up_sm_bed_fan
+          - light.up_sm_bed_closet_light
       - type: entities
         title: Bryan's Bedroom
         show_header_toggle: false
         entities:
-          - switch.up_lg_bed_light
+          - light.up_lg_bed_light
           - fan.up_lg_bed_fan
       - type: entities
         title: Utility Room
         show_header_toggle: false
         entities:
-          - switch.utility_room_light
+          - light.utility_room_light
       # - type: media-control
       #   entity: media_player.sonos_family_rm
       # - type: media-control
@@ -144,14 +142,14 @@ views:
         title: Studio Bedroom
         show_header_toggle: false
         entities:
-          - light.studio_bed_fan_light
+          - light.studio_bed_light
           - fan.studio_bed_fan
           - light.studio_bath_light
       - type: entities
         title: Studio Loft
         show_header_toggle: false
         entities:
-          - light.studio_loft_fan_light
+          - light.studio_loft_light
           - fan.studio_loft_fan
       # - type: media-control
       #   entity: media_player.studio
@@ -182,21 +180,13 @@ views:
         entities:
           - cover.front_gate
       - type: entities
-        title: Frontyard Lights
+        title: Outside Lights
         show_header_toggle: false
         entities:
           - switch.house_porch_lights
-          - switch.house_porch_lights_front
+          - switch.studio_porch_lights
           - switch.house_flood_lights
-          - switch.house_flood_lights_front
-      - type: entities
-        title: Backyard Lights
-        show_header_toggle: false
-        entities:
-        - switch.house_backyard_lights
-        - switch.house_flood_lights_back
-        - switch.house_flood_lights_front
-        - switch.studio_porch_lights_front
+          - switch.studio_flood_lights
       - type: entities
         title: Garage
         show_header_toggle: false
@@ -308,6 +298,7 @@ views:
           - binary_sensor.any_studio_motion
           - binary_sensor.master_bath_multisensor_motion
           - binary_sensor.comp_room_motion
+          - binary_sensor.computer_room_multisensor_motion
           - binary_sensor.up_bath_motion
           - binary_sensor.up_sm_bed_motion
           - binary_sensor.up_lg_bed_motion
@@ -317,6 +308,7 @@ views:
           - binary_sensor.studio_bath_presence
           - binary_sensor.studio_attic_multisensor_motion
           - binary_sensor.garage_motion
+          - sensor.computer_room_multisensor_battery
           - sensor.studio_multisensor_battery
           - sensor.studio_bath_multisensor_battery
           - sensor.studio_attic_multisensor_battery
@@ -343,7 +335,4 @@ views:
         show_header_toggle: false
         entities:
           - zwave.master_bath_multisensor
-          - zwave.studio_multisensor
-          - zwave.studio_bath_multisensor
-          - zwave.studio_attic_multisensor
-
+          - zwave.computer_room_multisensor
