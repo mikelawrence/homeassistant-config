@@ -2,94 +2,142 @@
 ##  logbook
 ##################################################
 logbook:
-  exclude:
-    domains:
-      - group
-      - switch
-      - device_tracker
-    entities:
-      - cover.front_gate
-      - light.kitchen_light_hallway
-      - light.kitchen_cabinet_light_hall
-      - light.family_room_light_door
-      - light.down_hall_light_bedroom
-      - light.stairs_light_upstairs
-      - light.master_bed_light_door
-      - light.master_bed_ctrl_door
-      - light.master_bed_light_bed
-      - light.computer_room_light_door
-      - light.up_sm_bed_ctrl
-      - light.up_lg_bed_ctrl
-      - light.utility_room_light_kitchen
-      - light.studio_bed_light_door
-      - light.studio_bed_ctrl_down_off_1
-      - light.back_porch_light_back_door
-      - binary_sensor.downstairs_thermostat_fan
-      - binary_sensor.downstairs_thermostat_has_leaf
-      - binary_sensor.downstairs_thermostat_is_locked
-      - binary_sensor.downstairs_thermostat_is_using_emergency_heat
-      - binary_sensor.downstairs_thermostat_online
-      - binary_sensor.upstairs_thermostat_fan
-      - binary_sensor.upstairs_thermostat_has_leaf
-      - binary_sensor.upstairs_thermostat_is_locked
-      - binary_sensor.upstairs_thermostat_is_using_emergency_heat
-      - binary_sensor.upstairs_thermostat_online
-      - binary_sensor.studio_thermostat_fan
-      - binary_sensor.studio_thermostat_has_leaf
-      - binary_sensor.studio_thermostat_is_locked
-      - binary_sensor.studio_thermostat_is_using_emergency_heat
-      - binary_sensor.studio_thermostat_online
-      - binary_sensor.studio_motion_sensor
-      - binary_sensor.studio_bath_motion_sensor
-      - binary_sensor.kitchen_motion_sensor
-      - binary_sensor.comp_room_motion_sensor
-      - binary_sensor.master_bath_motion_sensor
-      - binary_sensor.up_bath_motion_sensor
-      - binary_sensor.up_lg_bed_motion_sensor
-      - binary_sensor.up_sm_bed_motion_sensor
-      - binary_sensor.garage_motion_sensor
-      - binary_sensor.spare_motion_sensor
-      - binary_sensor.studio_motion_sensor_dsk
-      - binary_sensor.studio_bath_motion_sensor_dsk
-      - binary_sensor.kitchen_motion_sensor_dsk
-      - binary_sensor.comp_room_motion_sensor_dsk
-      - binary_sensor.master_bath_motion_sensor_dsk
-      - binary_sensor.up_bath_motion_sensor_dsk
-      - binary_sensor.up_lg_bed_motion_sensor_dsk
-      - binary_sensor.up_sm_bed_motion_sensor_dsk
-      - binary_sensor.garage_motion_sensor_dsk
-      - media_player.sonos_family_rm
-      - media_player.sonos_studio
-      - media_player.apple_tv_family_room
-      - media_player.apple_tv_studio
-      - script.sonos_say
-      - script.sonos_studio_say
-      - script.sonos_family_room_say
-      - script.nest_studio_thermostat_set_away
-      - script.nest_studio_thermostat_set_home
-      - script.nest_downstairs_thermostat_set_away
-      - script.nest_downstairs_thermostat_set_away
-      - script.nest_upstairs_thermostat_set_away
-      - script.nest_upstairs_thermostat_set_away
-      - script.nest_upstairs_thermostat_set_away
-      - sensor.master_bath_multisensor_alarm_level
-      - sensor.master_bath_multisensor_alarm_type
-      - sensor.master_bath_multisensor_burglar
-      - sensor.master_bath_multisensor_sourcenodeid
-
   include:
     entities:
-      - switch.master_bath_vent_fan
-      - switch.master_bed_porch_light
-      - switch.down_bath_vent_fan
+      # - binary_sensor.master_bath_presence
+      # - binary_sensor.master_bath_multisensor_motion
+      # - input_boolean.master_bath_light_stay_on
+      # - input_boolean.master_bath_light_manual_input
+      # - input_boolean.master_bath_humidity_high
+      # - light.master_bath_light
+      # - switch.master_bath_vent_fan
+      # - timer.master_bath_light_timer
+      # - timer.master_bath_vent_fan_timer
+      # - binary_sensor.master_bath_humidity_rising
+
+      - automation.studio_bath_humidity_high_turn_off
+      - automation.studio_bath_humidity_high_turn_on
+      - automation.studio_bath_light_auto_off
+      - automation.studio_bath_light_bedtime_motion_on
+      - automation.studio_bath_light_daytime_motion_on
+      - automation.studio_bath_light_manual_input
+      - automation.studio_bath_light_motion_off
+      - automation.studio_bath_light_stay_on      
+      - automation.studio_bath_light_timer_cancel
+      - automation.studio_bath_light_timer_start
+      - automation.studio_bathroom_presence_motion_on
+      - automation.studio_bathroom_presence_motion_off
+      - automation.studio_bath_multisensor_low_battery
+      - automation.studio_bath_vent_fan_auto_off
+      - automation.studio_bath_vent_fan_auto_on
+      - automation.studio_bath_vent_fan_timer_cancel
+      - automation.studio_bath_vent_fan_timer_start
+      - automation.studio_bathroom_tts_test_off
+      - automation.studio_bathroom_tts_test_on
+
+      - input_boolean.studio_bath_presence
+      - binary_sensor.studio_bath_multisensor_motion
+      - input_boolean.studio_bath_light_stay_on
+      - input_boolean.studio_bath_light_manual_input
+      - input_boolean.studio_bath_humidity_high
+      - light.studio_bath_light
       - switch.studio_bath_vent_fan
-      - switch.studio_fans
-      - switch.studio_shoplights
-      - device_tracker.mike_meta
-      - device_tracker.clara_meta
-      - device_tracker.mikey_meta
-      - device_tracker.bryan_meta
-      - device_tracker.jim_meta
-      - device_tracker.kasey_meta
-      - device_tracker.septic_controller
-      - device_tracker.front_gate_controller
+      - timer.studio_bath_light_timer
+      - timer.studio_bath_vent_fan_timer
+      - binary_sensor.studio_bath_humidity_rising
+
+##################################################
+##  logbook
+##################################################
+# logbook:
+#   exclude:
+#     domains:
+#       - group
+#       - switch
+#       - device_tracker
+#     entities:
+#       - cover.front_gate
+#       - light.kitchen_light_hallway
+#       - light.kitchen_cabinet_light_hall
+#       - light.family_room_light_door
+#       - light.down_hall_light_bedroom
+#       - light.stairs_light_upstairs
+#       - light.master_bed_light_door
+#       - light.master_bed_ctrl_door
+#       - light.master_bed_light_bed
+#       - light.computer_room_light_door
+#       - light.up_sm_bed_ctrl
+#       - light.up_lg_bed_ctrl
+#       - light.utility_room_light_kitchen
+#       - light.studio_bed_light_door
+#       - light.studio_bed_ctrl_down_off_1
+#       - light.back_porch_light_back_door
+#       - binary_sensor.downstairs_thermostat_fan
+#       - binary_sensor.downstairs_thermostat_has_leaf
+#       - binary_sensor.downstairs_thermostat_is_locked
+#       - binary_sensor.downstairs_thermostat_is_using_emergency_heat
+#       - binary_sensor.downstairs_thermostat_online
+#       - binary_sensor.upstairs_thermostat_fan
+#       - binary_sensor.upstairs_thermostat_has_leaf
+#       - binary_sensor.upstairs_thermostat_is_locked
+#       - binary_sensor.upstairs_thermostat_is_using_emergency_heat
+#       - binary_sensor.upstairs_thermostat_online
+#       - binary_sensor.studio_thermostat_fan
+#       - binary_sensor.studio_thermostat_has_leaf
+#       - binary_sensor.studio_thermostat_is_locked
+#       - binary_sensor.studio_thermostat_is_using_emergency_heat
+#       - binary_sensor.studio_thermostat_online
+#       - binary_sensor.studio_motion_sensor
+#       - binary_sensor.studio_bath_motion_sensor
+#       - binary_sensor.kitchen_motion_sensor
+#       - binary_sensor.comp_room_motion_sensor
+#       - binary_sensor.master_bath_motion_sensor
+#       - binary_sensor.up_bath_motion_sensor
+#       - binary_sensor.up_lg_bed_motion_sensor
+#       - binary_sensor.up_sm_bed_motion_sensor
+#       - binary_sensor.garage_motion_sensor
+#       - binary_sensor.spare_motion_sensor
+#       - binary_sensor.studio_motion_sensor_dsk
+#       - binary_sensor.studio_bath_motion_sensor_dsk
+#       - binary_sensor.kitchen_motion_sensor_dsk
+#       - binary_sensor.comp_room_motion_sensor_dsk
+#       - binary_sensor.master_bath_motion_sensor_dsk
+#       - binary_sensor.up_bath_motion_sensor_dsk
+#       - binary_sensor.up_lg_bed_motion_sensor_dsk
+#       - binary_sensor.up_sm_bed_motion_sensor_dsk
+#       - binary_sensor.garage_motion_sensor_dsk
+#       - media_player.family_room
+#       - media_player.studio
+#       - media_player.studio_bathroom
+#       - media_player.studio_apple_tv
+#       - script.sonos_say
+#       - script.sonos_studio_say
+#       - script.sonos_family_room_say
+#       - script.nest_studio_thermostat_set_away
+#       - script.nest_studio_thermostat_set_home
+#       - script.nest_downstairs_thermostat_set_away
+#       - script.nest_downstairs_thermostat_set_away
+#       - script.nest_upstairs_thermostat_set_away
+#       - script.nest_upstairs_thermostat_set_away
+#       - script.nest_upstairs_thermostat_set_away
+#       - sensor.master_bath_multisensor_alarm_level
+#       - sensor.master_bath_multisensor_alarm_type
+#       - sensor.master_bath_multisensor_burglar
+#       - sensor.master_bath_multisensor_sourcenodeid
+
+#   include:
+#     entities:
+#       - switch.master_bath_vent_fan
+#       - switch.master_bed_porch_light
+#       - switch.down_bath_vent_fan
+#       - switch.studio_bath_vent_fan
+#       - switch.studio_fans
+#       - switch.studio_shoplights
+#       - device_tracker.mike_meta
+#       - device_tracker.clara_meta
+#       - device_tracker.mikey_meta
+#       - device_tracker.bryan_meta
+#       - device_tracker.jim_meta
+#       - device_tracker.kasey_meta
+#       - device_tracker.septic_controller
+#       - device_tracker.front_gate_controller

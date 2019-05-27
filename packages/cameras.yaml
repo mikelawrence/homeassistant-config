@@ -28,12 +28,6 @@ camera:
     name: Garage Inside Right
     input: -rtsp_transport tcp -i rtsp://192.168.1.2:7447/HjNaVPRNgfJo5buH
 
-#   # enable Unifi Video Cameras
-#   - platform: uvc
-#     nvr: 192.168.1.2
-#     password: !secret uvc_password
-#     key: !secret uvc_api_key
-
 ################################################################
 ## Axis
 ################################################################

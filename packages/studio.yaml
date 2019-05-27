@@ -13,18 +13,18 @@ homeassistant:
     ################################################
     ## Media Player
     ################################################
-    media_player.studio:
-      friendly_name: "DirecTV Studio"
-    media_player.apple_tv_studio:
+    media_player.studio_apple_tv:
       friendly_name: "Apple TV Studio"
-    media_player.sonos_studio:
+    media_player.studio:
       friendly_name: "Sonos Studio"
+    media_player.studio_bathroom:
+      friendly_name: "Sonos Studio Bathroom"
 
     ################################################
     ## Remote
     ################################################
     remote.studio:
-      friendly_name: "Studio Harmony Remote"
+      friendly_name: "Harmony Remote Studio"
 
 ################################################################
 ## Binary Sensor

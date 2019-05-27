@@ -21,6 +21,10 @@ input_boolean:
   studio_bath_humidity_high:
     name: "Studio Bath Humidity High"
     # initial: off
+  # When true the someone is in the Studio Bath, tracks motion detector
+  # Not intended as input from user
+  studio_bath_presence:
+    name: "Studio Bath Someone Present"
 
 ################################################################
 ## Binary Sensor
@@ -36,16 +40,6 @@ binary_sensor:
         max_samples: 20
         sample_duration: 2100   # 35 minutes
         min_gradient: 0.01000   # rising 6% in 10 minutes
-  - platform: template
-    sensors:
-      # Studio Bath presence
-      studio_bath_presence:
-        friendly_name: "Studio Bath Someone Present"
-        device_class: occupancy
-        delay_off:
-          minutes: 11
-        value_template: >-
-          {{ is_state('binary_sensor.studio_bath_multisensor_motion', 'on') }}
 
 ################################################################
 ## Sensor
@@ -138,7 +132,7 @@ automation:
       data:
         entity_id: input_boolean.studio_bath_light_manual_input
 
-  # Turn Studio Bath Light on when motion is detected durning bedtime
+  # Turn Studio Bath Light on when motion is detected during bedtime
   # Will not turn light on if already on
   - alias: "Studio Bath Light Bedtime Motion On"
     trigger:
@@ -160,9 +154,9 @@ automation:
             - condition: sun
               before: sunrise
     action:
-      # Turn on ISY994 Studio Bath Light Nighttime Scene
+      # Turn on ISY994 Studio Bath Light Night Scene
       service: homeassistant.turn_on
-      entity_id: switch.studio_bath_light_nighttime
+      entity_id: switch.studio_bath_light_night_scene
 
   # Turn Studio Bath Light on when motion is detected during daytime
   # Will not turn light on if already on
@@ -188,7 +182,7 @@ automation:
     action:
       # turn on ISY994 Studio Bath Light Daytime Scene
       service: 'homeassistant.turn_on'
-      entity_id: switch.studio_bath_light
+      entity_id: switch.studio_bath_light_scene
 
   # Turn Studio Bath Light off when motion has not been detected long enough
   # Will not turn light off if already off
@@ -218,7 +212,32 @@ automation:
     action:
       # turn off ISY994 Studio Bath Light Scene
       service: homeassistant.turn_off
-      entity_id: switch.studio_bath_light
+      entity_id: switch.studio_bath_light_scene
+
+  # Turn Studio Bath Presence on when motion is detected
+  - alias: "Studio Bath Presence Motion On"
+    trigger:
+      platform: state
+      entity_id: binary_sensor.studio_bath_multisensor_motion
+      to: 'on'
+    action:
+      # turn on Studio Bath Presence 
+      service: 'homeassistant.turn_on'
+      entity_id: input_boolean.studio_bath_presence
+
+  # Turn Studio Bath Presence off when motion has not been detected long enough
+  - alias: "Studio Bath Presence Motion Off"
+    trigger:
+      platform: state
+      entity_id: binary_sensor.studio_bath_multisensor_motion
+      to: 'off'
+      for:
+        # 26 minutes + 4 minutes for motion on time = 30 minutes minumum
+        minutes: 26
+    action:
+      # turn off Studio Bath Presence 
+      service: homeassistant.turn_off
+      entity_id: input_boolean.studio_bath_presence
 
   # Start Studio Bath Light Auto off timer when manually turned on
   - alias: "Studio Bath Light Timer Start"
@@ -283,7 +302,7 @@ automation:
     action:
       # turn off ISY994 Studio Bath Light scene
       service: homeassistant.turn_off
-      entity_id: switch.studio_bath_light
+      entity_id: switch.studio_bath_light_scene
 
   # Turn on Studio Bath Humidity high
   - alias: "Studio Bath Humidity High Turn On"
@@ -401,7 +420,7 @@ automation:
       service: timer.cancel
       entity_id: timer.studio_bath_vent_fan_timer
 
-  # Studio Bathroom Motion Detector Low Battery Alert
+  # Studio Bath Motion Detector Low Battery Alert
   - initial_state: 'on'
     alias: 'Studio Bath Multisensor Low Battery'
     trigger:

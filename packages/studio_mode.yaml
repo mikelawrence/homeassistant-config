@@ -90,16 +90,16 @@ automation:
         data_template:
           name: Studio
           message: manually switched to Away Mode
-      - service: script.sonos_studio_say
+      - service: script.sonos_studio_all_say
         data:
           volume: 0.5
           delay: '00:00:02'
           message: 'Goodbye.'
-      # # turn off Studio TV
-      # - service: remote.turn_off
-      #   data:
-      #     entity_id: remote.studio
-      #     activity: PowerOff
+      # turn off Studio TV
+      - service: remote.turn_off
+        data:
+          entity_id: remote.studio
+          activity: PowerOff
 
   # Studio manually switched to Home Mode
   #   Either by HASS switch or KeypadLinc switch
@@ -114,7 +114,7 @@ automation:
         data_template:
           name: Studio
           message: manually switched to Home Mode
-      - service: script.sonos_studio_say
+      - service: script.sonos_studio_all_say
         data:
           volume: 0.5
           delay: '00:00:02'

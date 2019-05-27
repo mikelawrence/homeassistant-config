@@ -11,18 +11,6 @@
 homeassistant:
   customize:
     ################################################
-    ## Media Player
-    ################################################
-    media_player.family_room:
-      friendly_name: "DirecTV Family Room"
-    media_player.master_bed:
-      friendly_name: "DirecTV Master Bedroom"
-    media_player.apple_tv_family_room:
-      friendly_name: "Apple TV Family Room"
-    media_player.sonos_family_rm:
-      friendly_name: "Sonos Family Room"
-
-    ################################################
     ## Binary Sensor
     ################################################
     binary_sensor.house_back_door_sensor:
@@ -65,10 +53,18 @@ homeassistant:
       friendly_name: "Mikey Bedroom Fan"
 
     ################################################
+    ## Media Player
+    ################################################
+    media_player.family_room_apple_tv:
+      friendly_name: "Apple TV Family Room"
+    media_player.family_room:
+      friendly_name: "Sonos Family Room"
+
+    ################################################
     ## Remote
     ################################################
     remote.family_room:
-      friendly_name: "Family Room Harmony Remote"
+      friendly_name: "Harmony Remote Family Room"
 
 ################################################################
 ## Sensor

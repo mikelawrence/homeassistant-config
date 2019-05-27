@@ -80,7 +80,7 @@ views:
         entities:
           - light.utility_room_light
       # - type: media-control
-      #   entity: media_player.sonos_family_rm
+      #   entity: media_player.family_room
       # - type: media-control
       #   entity: media_player.family_room
       # - type: media-control
@@ -156,7 +156,7 @@ views:
       # - type: media-control
       #   entity: media_player.apple_tv_studio
       # - type: media-control
-      #   entity: media_player.sonos_studio
+      #   entity: media_player.studio
       - type: entities
         title: House Climate
         show_header_toggle: false
@@ -185,8 +185,7 @@ views:
         entities:
           - switch.house_porch_lights
           - switch.studio_porch_lights
-          - switch.house_flood_lights
-          - switch.studio_flood_lights
+          - input_boolean.flood_lights
       - type: entities
         title: Garage
         show_header_toggle: false
@@ -204,7 +203,6 @@ views:
           - light.roof_lights
           - light.house_roof_light
           - light.studio_roof_light
-          # - light.garage_roof_light
       - type: entities
         title: Christmas Lights
         show_header_toggle: false

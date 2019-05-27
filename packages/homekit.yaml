@@ -5,30 +5,40 @@
 homekit:
   filter:
     include_entities:
+      # House
+      - switch.house_state              # Home/Away for House
       # Kitchen
       - switch.kitchen_lights_scene
       - fan.kitchen_fan_front
-      - switch.kitchen_morning_scene
+      - scene.kitchen_morning
       # Family Room
-      - switch.family_room_light_scene
+      - light.family_room_light
       - fan.family_room_fan
       - scene.movie_mode
       # Computer Room
-      - switch.computer_room_light_scene
+      - light.computer_room_light
       - fan.computer_room_fan
       # Master Bathroom
       - light.master_bath_light
       - switch.master_bath_vent_fan
       # Master Bedroom
-      - switch.master_bed_light_scene
+      - light.master_bed_light
       - fan.master_bed_fan
       # Studio
-      - switch.studio_state           # Home/Away for Studio
-      - switch.studio_chandeliers
+      - switch.studio_state             # Home/Away for Studio
+      - light.studio_chandeliers
       - switch.studio_shoplights
       - fan.studio_fan
+      # Studio Bedroom
+      - light.studio_bed_light
+      - fan.studio_bed_fan
+      - light.studio_bath_light
+      - switch.studio_bath_vent_fan
+      # Studio Loft
+      - light.studio_loft_light
+      - fan.studio_loft_fan
       # Garage
-      - switch.garage_light_scene
+      - switch.garage_light
       - cover.garage_door_1
       - cover.garage_door_2
       - cover.garage_door_3
@@ -36,24 +46,29 @@ homekit:
       - cover.front_gate
       - switch.house_flood_lights
       - switch.house_porch_lights
+      - switch.studio_flood_lights
+      - switch.studio_porch_lights
 
   entity_config:
+    # House
+    switch.house_state:
+      name: "House"
     # Kitchen
     switch.kitchen_lights_scene:
       name: "Kitchen Light"
     switch.kitchen_fan_front:
       name: "Kitchen Fan"
-    switch.kitchen_morning_scene:
+    scene.kitchen_morning:
       name: "Kitchen Morning"
     # Family Room
-    switch.family_room_light_scene:
+    light.family_room_light:
       name: "Family Room Light"
     fan.family_room_fan:
       name: "Family Room Fan"
     scene.movie_mode:
       name: "Movie Mode"
     # Computer Room
-    switch.computer_room_light_scene:
+    light.computer_room_light:
       name: "Computer Room Light"
     fan.computer_room_fan:
       name: "Computer Room Fan"
@@ -63,19 +78,33 @@ homekit:
     switch.master_bath_vent_fan:
       name: "Master Bathroom Vent Fan"
     # Master Bedroom
-    switch.master_bed_light_scene:
+    light.master_bed_light:
       name: "Master Bedroom Light"
     fan.master_bed_fan:
       name: "Master Bedroom Fan"
     # Studio
     switch.studio_state:
       name: "Studio"
-    switch.studio_chandeliers:
+    light.studio_chandeliers:
       name: "Studio Light"
     switch.studio_shoplights:
-      name: "Studio Shoplight"
+      name: "Studio Shoplights"
     fan.studio:
       name: "Studio Fan"
+    # Studio Bedroom
+    light.studio_bed_light:
+      name: "Studio Bedroom Light"
+    fan.studio_bed_fan:
+      name: "Studio Bedroom Fan"
+    light.studio_bath_light:
+      name: "Studio Bathroom Light"
+    switch.studio_bath_vent_fan:
+      name: "Studio Bathroom Fan"
+    # Studio Loft
+    light.studio_loft_light:
+      name: "Studio Loft Light"
+    fan.studio_loft_fan:
+      name: "Studio Loft Fan"
     # Garage
     switch.garage_light_scene:
       name: "Garage Light"
@@ -89,6 +118,10 @@ homekit:
     cover.front_gate:
       name: "Front Gate"
     switch.house_flood_lights:
-      name: "Flood Lights"
+      name: "House Flood Lights"
     switch.house_porch_lights:
-      name: "Porch Lights"
+      name: "House Porch Lights"
+    switch.studio_flood_lights:
+      name: "Studio Flood Lights"
+    switch.studio_porch_lights:
+      name: "Studio Porch Lights"

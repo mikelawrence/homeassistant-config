@@ -17,17 +17,14 @@ homeassistant:
     light.master_bed_lamp_clara:
       friendly_name: "Master Bedroom Lamp Clara's"
     light.master_bath_light:
-      friendly_name: "Master Bathroom Light"
+      friendly_name: "Master Bath Light"
 
     ################################################
     ## ISY994 Switches
     ################################################
     switch.master_bath_vent_fan:
-      friendly_name: "Master Bathroom Vent Fan"
+      friendly_name: "Master Bath Vent Fan"
       icon: mdi:fan
-    switch.master_bed_porch_light:
-      friendly_name: "Back Porch Light"
-      icon: mdi:lightbulb
 
     ################################################
     ## ISY994 Fans
@@ -60,6 +57,10 @@ input_boolean:
   master_bath_humidity_high:
     name: "Master Bath Humidity High"
     initial: off
+  # When true the someone is in the Master Bath, tracks motion detector
+  # Not intended as input from user
+  master_bath_presence:
+    name: "Master Bath Someone Present"
 
 ################################################################
 ## Binary Sensor
@@ -75,16 +76,6 @@ binary_sensor:
         max_samples: 20
         sample_duration: 2100   # 35 minutes
         min_gradient: 0.01000   # rising 6% in 10 minutes
-  - platform: template
-    sensors:
-      # Master Bath presence
-      master_bath_presence:
-        friendly_name: "Master Bath Someone Present"
-        device_class: occupancy
-        delay_off:
-          minutes: 11
-        value_template: >-
-          {{ is_state('binary_sensor.master_bath_multisensor_motion', 'on') }}
 
 ################################################################
 ## Sensor
@@ -146,17 +137,17 @@ automation:
         entity_id: input_boolean.master_bath_light_stay_on
 
   # Handle Master Bath Light Manual Input
-  # Turn on with 'DON' or 'FDSTOP' events from Master Bath Light Door
-  # Turn off when Master Bath Light Door status changes to off
+  # Turn on with 'DON' or 'FDSTOP' events from Master Bath Light
+  # Turn off when Master Bath Light status changes to off
   - alias: "Master Bath Light Manual Input"
     trigger:
-      # On event occurred on Master Bath Light Door
+      # On event occurred on Master Bath Light
       - platform: event
         event_type: isy994_control
         event_data:
           entity_id: light.master_bath_light
           control: 'DON'
-      # Fade Stop event occurred on Master Bath Light Door
+      # Fade Stop event occurred on Master Bath Light
       - platform: event
         event_type: isy994_control
         event_data:
@@ -199,9 +190,9 @@ automation:
             - condition: sun
               before: sunrise
     action:
-      # Turn on ISY994 Master Bath Light Nighttime Scene
+      # Turn on ISY994 Master Bath Light Night Scene
       service: homeassistant.turn_on
-      entity_id: switch.master_bath_light_nighttime
+      entity_id: switch.master_bath_light_night_scene
 
   # Turn Master Bath Light on when motion is detected during daytime
   # Will not turn light on if already on
@@ -227,7 +218,7 @@ automation:
     action:
       # turn on ISY994 Master Bath Light Daytime Scene
       service_template: 'homeassistant.turn_{{trigger.to_state.state}}'
-      entity_id: switch.master_bath_light
+      entity_id: switch.master_bath_light_scene
 
   # Turn Master Bath Light off when motion has not been detected long enough
   # Will not turn light off if already off
@@ -257,7 +248,32 @@ automation:
     action:
       # turn off ISY994 Master Bath Light Scene
       service: homeassistant.turn_off
-      entity_id: switch.master_bath_light
+      entity_id: switch.master_bath_light_scene
+
+  # Turn Master Bath Presence on when motion is detected
+  - alias: "Master Bath Presence Motion On"
+    trigger:
+      platform: state
+      entity_id: binary_sensor.master_bath_multisensor_motion
+      to: 'on'
+    action:
+      # turn on Master Bath Presence 
+      service: 'homeassistant.turn_on'
+      entity_id: input_boolean.master_bath_presence
+
+  # Turn Master Bath Presence off when motion has not been detected long enough
+  - alias: "Master Bath Presence Motion Off"
+    trigger:
+      platform: state
+      entity_id: binary_sensor.master_bath_multisensor_motion
+      to: 'off'
+      for:
+        # 26 minutes + 4 minutes for motion on time = 30 minutes minumum
+        minutes: 26
+    action:
+      # turn off Master Bath Presence 
+      service: homeassistant.turn_off
+      entity_id: input_boolean.master_bath_presence
 
   # Start Master Bath Light Auto off timer when manually turned on
   - alias: "Master Bath Light Timer Start"
@@ -322,7 +338,7 @@ automation:
     action:
       # turn off ISY994 Master Bath Light scene
       service: homeassistant.turn_off
-      entity_id: switch.master_bath_light
+      entity_id: switch.master_bath_light_scene
 
   # Turn on Master Bath Humidity high
   - alias: "Master Bath Humidity High Turn On"

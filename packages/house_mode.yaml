@@ -140,8 +140,14 @@ automation:
       entity_id: input_boolean.guest_mode
       state: 'off'
     action:
+      # Set ISY-994 House to Away
       - service: switch.turn_off
         entity_id: switch.house_state
+      # turn off Family Room TV
+      - service: remote.turn_off
+        data:
+          entity_id: remote.family_room
+          activity: PowerOff
       - service: logbook.log
         data_template:
           name: House
@@ -161,7 +167,7 @@ automation:
         data_template:
           name: House
           message: manually switched to Away Mode
-      - service: script.sonos_family_room_say
+      - service: script.sonos_house_all_say
         data:
           volume: 0.5
           delay: '00:00:02'
@@ -181,7 +187,7 @@ automation:
         data_template:
           name: House
           message: manually switched to Home Mode
-      - service: script.sonos_family_room_say
+      - service: script.sonos_house_all_say
         data:
           volume: 0.5
           delay: '00:00:02'
