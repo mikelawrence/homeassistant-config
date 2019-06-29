@@ -126,3 +126,4 @@ cloud:
         name: "House Flood Lights"
       switch.studio_porch_lights:
         name: "Studio Porch Lights"
+        

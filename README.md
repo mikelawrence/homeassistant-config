@@ -1,7 +1,9 @@
 # House Home Assistant Configuration
+
 Here's my [Home Assistant](https://home-assistant.io/) configuration for my House. I am using the easy to install [Hass.io](https://www.home-assistant.io/hassio/) running on a [Raspberry Pi](https://www.raspberrypi.org/products/raspberry-pi-3-model-b/).
 
 ## Some of the devices and services that I use with HA
+
 * Lots of SmartHome [Insteon](https://www.smarthome.com/insteon.html) devices controlled through ISY-994i.
 * [ISY-994i](https://www.home-assistant.io/components/isy994/) for Insteon control.
 * Presence detection.
@@ -19,6 +21,8 @@ Here's my [Home Assistant](https://home-assistant.io/) configuration for my Hous
     * KiCAD board design and software is available on [GitHub](https://github.com/mikelawrence/WiFi-Septic-Controller).
   * Raspberry Pi RGBW LED Controller HAT for controlling a high power RGB LED Floodlight.
     * KiCAD board design and software is available on [GitHub](https://github.com/mikelawrence/RPi-HAT-RGBW-LED-Controller).
+  * Raspberry Pi Thermocouple pHat used to monitor Refrigerator temperatures.
+    * KiCAD board design and software is available on [GitHub](https://github.com/mikelawrence/RPi-pHat-Thermocouple).
 * Custom components (see [homeassistant-custom-components](https://github.com/mikelawrence/homeassistant-custom-components) repository)
   * Haiku with SenseME fan and light component
   * MQTT_sharing component for multiple Home Assistant instances

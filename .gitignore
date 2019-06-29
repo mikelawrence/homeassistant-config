@@ -25,6 +25,7 @@ secrets.yaml
 # directories
 .cloud
 .storage
+.vscode
 custom_components
 deps
 tts

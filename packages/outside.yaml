@@ -139,23 +139,16 @@ automation:
       # if guest mode is enabled don't say anything when guests might be sleeping
       condition: or
       conditions:
+        # guest mode disabled
         - condition: state
-          # guest mode disabled
           entity_id: input_boolean.guest_mode
           state: 'off'
-        - condition: and
-          conditions:
-            # guest mode enabled
-            - condition: state
-              entity_id: input_boolean.guest_mode
-              state: 'on'
-            # sleeptime (10PM to 8AM)
-            - condition: or
-              conditions:
-                - condition: time
-                  after: '21:00:00'
-                - condition: time
-                  before: '8:00:00'
+        # after 10PM
+        - condition: time
+          after: '21:00:00'
+        # before 9AM
+        - condition: time
+          before: '9:00:00'
     action:
       - service: script.sonos_studio_all_say
         data:

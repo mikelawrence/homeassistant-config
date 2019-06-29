@@ -27,7 +27,7 @@ homeassistant:
     group.all_scripts:
       control: hidden
       hidden: false
-    
+
     group.all_automations:
       control: hidden
       hidden: false
@@ -122,6 +122,7 @@ updater:
 discovery:
   ignore:
    - samsung_tv
+   - apple_tv
    - directv
    - plex_mediaserver
    - google_cast
@@ -160,11 +161,11 @@ isy994:
   enable_climate: false
 
 # Enable MQTT (Server is on bigfish Unraid server)
-mqtt:
-  broker: mqtt-server.home
-  client_id: hassio-home
-  discovery: true
-  discovery_prefix: hass
+# mqtt:
+#   broker: mqtt-server.home
+#   client_id: hassio-home
+#   discovery: true
+#   discovery_prefix: hass
 
 # Enable MQTT Sharing between Hassio instances.
 # This is a client to the hosting instance.
@@ -216,3 +217,19 @@ sensor:
     unit_of_measurement: "°C"
     scan_interval: 60
     value_template: '{{ value | multiply(0.001) | round(1) }}'
+
+input_boolean:
+  talk_family_room:
+
+automation:
+  - id: talk_family_room_changed
+    alias: Talk Family Room Changed
+    trigger:
+      platform: state
+      entity_id: input_boolean.talk_family_room
+    action:
+      - service: script.sonos_family_room_say
+        data:
+          volume: 0.5
+          delay: '00:00:02'
+          message: 'Talk Family Room'

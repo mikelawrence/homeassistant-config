@@ -8,25 +8,25 @@
 camera:
   - platform: ffmpeg
     name: Front Road
-    input: -rtsp_transport tcp -i rtsp://192.168.1.2:7447/7nD3vnKDZyjvA2Ov
+    input: -rtsp_transport tcp -i rtsp://192.168.1.2:7447/1UugJ8DTCxtbwuVG
   - platform: ffmpeg
     name: House Driveway
-    input: -rtsp_transport tcp -i rtsp://192.168.1.2:7447/jVrArc7T0qhkU0CT
+    input: -rtsp_transport tcp -i rtsp://192.168.1.2:7447/IhImIjHBZL2mSVLg
   - platform: ffmpeg
     name: Garage Driveway
-    input: -rtsp_transport tcp -i rtsp://192.168.1.2:7447/yQgbgAOREtaAdzYc
+    input: -rtsp_transport tcp -i rtsp://192.168.1.2:7447/UxgckU4btrThbyXp
   - platform: ffmpeg
     name: Studio Front
-    input: -rtsp_transport tcp -i rtsp://192.168.1.2:7447/E6LRx34OlHAgzEsK
+    input: -rtsp_transport tcp -i rtsp://192.168.1.2:7447/UhmRtUK8BX448L17
   - platform: ffmpeg
     name: Studio Back
-    input: -rtsp_transport tcp -i rtsp://192.168.1.2:7447/jZneEC5I1oNqWTNt
+    input: -rtsp_transport tcp -i rtsp://192.168.1.2:7447/N7BnyKH82ed9pn0u
   - platform: ffmpeg
     name: Garage Inside Left
-    input: -rtsp_transport tcp -i rtsp://192.168.1.2:7447/p4wfjQ1FzVT6roY1
+    input: -rtsp_transport tcp -i rtsp://192.168.1.2:7447/AtRDH0hQAmEaCh4s
   - platform: ffmpeg
     name: Garage Inside Right
-    input: -rtsp_transport tcp -i rtsp://192.168.1.2:7447/HjNaVPRNgfJo5buH
+    input: -rtsp_transport tcp -i rtsp://192.168.1.2:7447/XD3HLWaip7kvJWFf
 
 ################################################################
 ## Axis

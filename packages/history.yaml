@@ -69,6 +69,7 @@ history:
       - sensor.house_roof_light_rssi
       - sensor.studio_roof_light_rssi
       - sensor.garage_roof_light_rssi
+      - sensor.studio_fridge_monitor_rssi
       - sensor.downstairs_thermostat_temperature
       - sensor.upstairs_thermostat_temperature
       - sensor.studio_thermostat_temperature
@@ -80,6 +81,9 @@ history:
       - sensor.house_roof_light_temperature
       - sensor.studio_roof_light_temperature
       - sensor.garage_roof_light_temperature
+      - sensor.studio_fridge_temperature
+      - sensor.studio_freezer_temperature
+      - sensor.studio_fridge_monitor_temperature
       - sensor.master_bath_multisensor_temperature
       - sensor.master_bath_multisensor_humidity
       - sensor.master_bath_multisensor_humidity_mean

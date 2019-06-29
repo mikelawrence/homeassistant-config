@@ -12,12 +12,18 @@ views:
       - person.jim
       - person.kasey
     cards:
+      # - type: entities
+      #   title: Sonos Speak
+      #   show_header_toggle: false
+      #   entities:
+      #     - input_boolean.talk_family_room
       - type: entities
         title: House Mode
         show_header_toggle: false
         entities:
           - switch.house_state
           - input_boolean.guest_mode
+          - input_boolean.party_mode
           - input_boolean.vacation_mode
           - sensor.house_mode
           - binary_sensor.house_back_door_sensor
@@ -86,10 +92,8 @@ views:
       # - type: media-control
       #   entity: media_player.apple_tv_family_room
       - type: thermostat
-        title: Downstairs
         entity: climate.downstairs
       - type: thermostat
-        title: Upstairs
         entity: climate.upstairs
       - type: entities
         title: House Climate
@@ -114,6 +118,7 @@ views:
         entities:
           - switch.studio_state
           - input_boolean.guest_mode
+          - input_boolean.party_mode
           - input_boolean.vacation_mode
           - sensor.studio_mode
           - binary_sensor.studio_front_door_sensor
@@ -199,7 +204,8 @@ views:
         title: Roof Floodlights
         show_header_toggle: false
         entities:
-          - input_number.roof_lights_transition_time
+          - entity: input_number.roof_lights_transition_time
+            name: Cycle
           - light.roof_lights
           - light.house_roof_light
           - light.studio_roof_light
@@ -210,15 +216,7 @@ views:
           - input_boolean.christmas_season
           - switch.house_christmas_lights
           - switch.studio_christmas_lights
-      - type: entities
-        title: Septic
-        show_header_toggle: false
-        entities:
-          - sensor.septic_status
-          - sensor.septic_minutes_yesterday
-          - sensor.septic_usage_yesterday
-  - title: Weather
-    icon: mdi:weather-lightning
+  - title: Sensors
     badges:
       - person.mike
       - person.clara
@@ -227,30 +225,58 @@ views:
       - person.jim
       - person.kasey
     cards:
-      # - type: history-graph
-      #   title: Outdoor Temperature
-      #   entities:
-      #     - sensor.weewx_temperature
-      - type: glance
+      - type: entities
         title: Davis Weather Station
-        # show_header_toggle: false
+        show_header_toggle: false
         entities:
-          - sensor.weewx_temperature
-          - sensor.weewx_dewpoint
-          - sensor.weewx_heat_index
-          - sensor.weewx_humidex
-          - sensor.weewx_windchill
-          - sensor.weewx_humidity
-          - sensor.weewx_barometer
-          - sensor.weewx_wind
-          - sensor.weewx_wind_dir
-          - sensor.weewx_gust
-          - sensor.weewx_gust_dir
-          - sensor.weewx_rain
-          - sensor.weewx_rain_rate
-          - sensor.weewx_rain_storm
-          - sensor.weewx_rain_month
-          - sensor.weewx_rain_year
+          - entity: sensor.weewx_temperature
+          - entity: sensor.weewx_dewpoint
+          - entity: sensor.weewx_heat_index
+          - entity: sensor.weewx_humidex
+          - entity: sensor.weewx_windchill
+          - entity: sensor.weewx_humidity
+          - entity: sensor.weewx_barometer
+          - entity: sensor.weewx_wind
+          - entity: sensor.weewx_wind_dir
+          - entity: sensor.weewx_gust
+          - entity: sensor.weewx_gust_dir
+          - entity: sensor.weewx_rain
+          - entity: sensor.weewx_rain_rate
+          - entity: sensor.weewx_rain_storm
+          - entity: sensor.weewx_rain_month
+          - entity: sensor.weewx_rain_year
+      - type: entities
+        title: Septic
+        show_header_toggle: false
+        entities:
+          - entity: sensor.septic_status
+            name: Status
+          - entity: binary_sensor.septic_pump
+            name: Pump
+          - entity: binary_sensor.septic_alarm
+            name: Alarm
+          - entity: sensor.septic_minutes_yesterday
+            name: Pump Time Yesterday
+          - entity: sensor.septic_usage_yesterday
+            name: Usage Yesterday
+          - entity: binary_sensor.septic_controller_not_idle
+            name: "Not Idle too Long"
+          - entity: binary_sensor.septic_controller_not_on_network
+            name: "Not on Network"
+      - type: entities
+        title: Studio Refridgerator
+        show_header_toggle: false
+        entities:
+          - entity: switch.studio_fridge_monitor_alarm_disable
+            name: Alarm Disable
+          - entity: binary_sensor.studio_fridge_monitor_alarm
+            name: Over Temp Alarm
+          - entity: sensor.studio_fridge_monitor_temperature
+            name: Board Temp
+          - entity: sensor.studio_fridge_temperature
+            name: Fridge Temp
+          - entity: sensor.studio_freezer_temperature
+            name: Freezer Temp
   - title: Cameras
     icon: mdi:cctv
     badges:

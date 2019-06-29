@@ -42,6 +42,10 @@ input_boolean:
     name: "Vacation Mode"
     icon: mdi:beach
 
+  party_mode:
+    name: "Party Mode"
+    icon: mdi:bomb
+
 ################################################################
 ## Binary Sensor
 ################################################################

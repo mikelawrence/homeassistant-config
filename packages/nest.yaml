@@ -53,9 +53,13 @@ automation:
       - platform: state
         entity_id: switch.studio_state
         to: 'off'
-      # Guest Mode turned off
+      # Guest Mode switched to off
       - platform: state
         entity_id: input_boolean.guest_mode
+        to: 'off'
+      # Party Mode switched to off
+      - platform: state
+        entity_id: input_boolean.party_mode
         to: 'off'
       # Studio Nest Thermostat switched from ECO Mode
       - platform: state
@@ -72,6 +76,9 @@ automation:
         - condition: state
           entity_id: input_boolean.guest_mode
           state: 'off'
+        - condition: state
+          entity_id: input_boolean.party_mode
+          state: 'off'
     action:
       service: script.nest_studio_thermostat_set_away
 
@@ -82,13 +89,15 @@ automation:
     trigger:
       platform: state
       entity_id: switch.house_state
-      from: 'on'
       to: 'off'
     condition:
       condition: and
       conditions:
         - condition: state
           entity_id: input_boolean.guest_mode
+          state: 'off'
+        - condition: state
+          entity_id: input_boolean.party_mode
           state: 'off'
         - condition: state
           entity_id: binary_sensor.vacation_active
@@ -104,7 +113,6 @@ automation:
     trigger:
       platform: state
       entity_id: switch.studio_state
-      from: 'off'
       to: 'on'
     condition:
       condition: and
@@ -125,7 +133,6 @@ automation:
     trigger:
       platform: state
       entity_id: switch.house_state
-      from: 'off'
       to: 'on'
     condition:
       condition: and
@@ -154,10 +161,19 @@ automation:
         entity_id: input_boolean.guest_mode
         from: 'off'
         to: 'on'
+      - platform: state
+        entity_id: input_boolean.party_mode
+        from: 'off'
+        to: 'on'
     condition:
-      condition: state
-      entity_id: input_boolean.guest_mode
-      state: 'on'
+      condition: or
+      conditions:
+        - condition: state
+          entity_id: input_boolean.guest_mode
+          state: 'on'
+        - condition: state
+          entity_id: input_boolean.party_mode
+          state: 'on'
     action:
       - service: script.nest_studio_thermostat_set_home
       - service: logbook.log
@@ -165,7 +181,7 @@ automation:
           name: Studio Nest Thermostat
           message: forced back to Auto Mode because Guest Mode is enabled
 
-  # Keep Downstairs Nest Thermostat in Auto mode when Guest Mode is enabled or Somebody is home
+  # Keep Downstairs Nest Thermostat in Auto mode when Guest or Party Mode is enabled or House is no longer empty
   - id: nest_downstairs_auto_mode
     alias: "Downstairs Nest thermostat stay in Auto Mode"
     initial_state: 'on'
@@ -179,11 +195,22 @@ automation:
         entity_id: input_boolean.guest_mode
         from: 'off'
         to: 'on'
+      - platform: state
+        entity_id: input_boolean.party_mode
+        from: 'off'
+        to: 'on'
+      - platform: state
+        entity_id: binary_sensor.people_home
+        from: 'off'
+        to: 'on'
     condition:
       condition: or
       conditions:
         - condition: state
           entity_id: input_boolean.guest_mode
+          state: 'on'
+        - condition: state
+          entity_id: input_boolean.party_mode
           state: 'on'
         - condition: state
           entity_id: binary_sensor.people_home
@@ -193,9 +220,9 @@ automation:
       - service: logbook.log
         data_template:
           name: Downstairs Nest Thermostat
-          message: forced back to Auto Mode because Guest Mode is enabled or somebody is home
+          message: forced back to Auto Mode because Guest/Party Mode is enabled or somebody is home
 
-  # Keep Upstairs Nest Thermostat in Auto mode when Guest Mode is enabled
+  # Keep Upstairs Nest Thermostat in Auto mode when Guest or Party Mode is enabled
   - id: nest_upstairs_guest_mode
     alias: "Upstairs Nest thermostat stay in Auto Mode"
     initial_state: 'on'
@@ -209,18 +236,32 @@ automation:
         entity_id: input_boolean.guest_mode
         from: 'off'
         to: 'on'
+      - platform: state
+        entity_id: input_boolean.party_mode
+        from: 'off'
+        to: 'on'
+      - platform: state
+        entity_id: binary_sensor.people_home
+        from: 'off'
+        to: 'on'
     condition:
       condition: or
       conditions:
         - condition: state
           entity_id: input_boolean.guest_mode
           state: 'on'
+        - condition: state
+          entity_id: input_boolean.party_mode
+          state: 'on'
+        - condition: state
+          entity_id: input_boolean.people_home
+          state: 'on'
     action:
       - service: script.nest_upstairs_thermostat_set_home
       - service: logbook.log
         data_template:
           name: Upstairs Nest Thermostat
-          message: forced back to Auto Mode because Guest Mode is enabled or somebody is home
+          message: forced back to Auto Mode because Guest/Party Mode is enabled
 
   # Automatically set Studio thermostat to Away mode at night
   - id: nest_studio_auto_away_night
@@ -234,6 +275,9 @@ automation:
       conditions:
         - condition: state
           entity_id: input_boolean.guest_mode
+          state: 'off'
+        - condition: state
+          entity_id: input_boolean.party_mode
           state: 'off'
         - condition: state
           entity_id: binary_sensor.vacation_active
@@ -292,6 +336,35 @@ script:
           name: "Studio Nest Thermostat"
           message: "set to Home Mode"
 
+  # Set Studio Nest thermostat to Party mode
+  nest_studio_thermostat_set_party:
+    alias: "Set Studio Nest Thermostat to Party Mode"
+    sequence:
+      - service: script.turn_off
+        data:
+          entity_id: script.nest_studio_thermostat_set_away
+      - service: script.turn_off
+        data:
+          entity_id: script.nest_studio_thermostat_set_home
+      - delay: "00:01:00"
+      - service: climate.set_away_mode
+        data_template:
+          entity_id: climate.studio
+          away_mode: 'false'
+      - service: climate.set_operation_mode
+        data_template:
+          entity_id: climate.studio
+          operation_mode: 'auto'
+      - service: climate.set_temperature
+        data_template:
+          entity_id: climate.studio
+          target_temp_high: 73
+          target_temp_low: 70
+      - service: logbook.log
+        data_template:
+          name: "Studio Nest Thermostat"
+          message: "set to Party Mode"
+
   # Set Downstairs Nest thermostat to Away mode
   nest_downstairs_thermostat_set_away:
     alias: "Set Downstairs Nest Thermostat to Away Mode"
@@ -339,6 +412,35 @@ script:
           name: "Downstairs Nest Thermostat"
           message: "set to Home Mode"
 
+  # Set Downstairs Nest thermostat to Party mode
+  nest_downstairs_thermostat_set_party:
+    alias: "Set Downstairs Nest Thermostat to Party Mode"
+    sequence:
+      - service: script.turn_off
+        data:
+          entity_id: script.nest_downstairs_thermostat_set_away
+      - service: script.turn_off
+        data:
+          entity_id: script.nest_downstairs_thermostat_set_home
+      - delay: "00:01:00"
+      - service: climate.set_away_mode
+        data_template:
+          entity_id: climate.downstairs
+          away_mode: 'false'
+      - service: climate.set_operation_mode
+        data_template:
+          entity_id: climate.downstairs
+          operation_mode: 'auto'
+      - service: climate.set_temperature
+        data_template:
+          entity_id: climate.downstairs
+          target_temp_high: 73
+          target_temp_low: 70
+      - service: logbook.log
+        data_template:
+          name: "Downstairs Nest Thermostat"
+          message: "set to Party Mode"
+
   # Set Upstairs Nest thermostat to Away mode
   nest_upstairs_thermostat_set_away:
     alias: "Set Upstairs Nest Thermostat to Away Mode"
@@ -385,3 +487,32 @@ script:
         data_template:
           name: "Upstairs Nest Thermostat"
           message: "set to Home Mode"
+
+  # Set Upstairs Nest thermostat to Party mode
+  nest_upstairs_thermostat_set_party:
+    alias: "Set Upstairs Nest Thermostat to Party Mode"
+    sequence:
+      - service: script.turn_off
+        data:
+          entity_id: script.nest_upstairs_thermostat_set_away
+      - service: script.turn_off
+        data:
+          entity_id: script.nest_upstairs_thermostat_set_home
+      - delay: "00:01:00"
+      - service: climate.set_away_mode
+        data_template:
+          entity_id: climate.upstairs
+          away_mode: 'false'
+      - service: climate.set_operation_mode
+        data_template:
+          entity_id: climate.upstairs
+          operation_mode: 'auto'
+      - service: climate.set_temperature
+        data_template:
+          entity_id: climate.upstairs
+          target_temp_high: 73
+          target_temp_low: 70
+      - service: logbook.log
+        data_template:
+          name: "Upstairs Nest Thermostat"
+          message: "set to Party Mode"
