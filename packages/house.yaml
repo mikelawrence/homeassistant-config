@@ -74,7 +74,7 @@ sensor:
   - platform: history_stats
     name: Downstairs Cool Hours Yesterday
     entity_id: sensor.downstairs_thermostat_hvac_state
-    state: 'cooling'
+    state: 'cool'
     type: time
     # all of yesterday
     end: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
@@ -85,7 +85,7 @@ sensor:
   - platform: history_stats
     name: Downstairs Heat Hours Yesterday
     entity_id: sensor.downstairs_thermostat_hvac_state
-    state: 'heating'
+    state: 'heat'
     type: time
     # all of yesterday
     end: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
@@ -96,7 +96,7 @@ sensor:
   - platform: history_stats
     name: Upstairs Cool Hours Yesterday
     entity_id: sensor.upstairs_thermostat_hvac_state
-    state: 'cooling'
+    state: 'cool'
     type: time
     # all of yesterday
     end: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
@@ -107,7 +107,7 @@ sensor:
   - platform: history_stats
     name: Upstairs Heat Hours Yesterday
     entity_id: sensor.upstairs_thermostat_hvac_state
-    state: 'heating'
+    state: 'heat'
     type: time
     # all of yesterday
     end: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'

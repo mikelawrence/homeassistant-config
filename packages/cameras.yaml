@@ -27,14 +27,3 @@ camera:
   - platform: ffmpeg
     name: Garage Inside Right
     input: -rtsp_transport tcp -i rtsp://192.168.1.2:7447/XD3HLWaip7kvJWFf
-
-################################################################
-## Axis
-################################################################
-axis:
-  weather:
-    host: 192.168.1.204
-    username: !secret axis_username
-    password: !secret axis_password
-    include:
-      - camera

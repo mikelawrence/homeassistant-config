@@ -3,20 +3,18 @@
 ################################################################
 
 homeassistant:
-  # Name of the location where Home Assistant is running
-  name: House
-  # Location required to calculate the time the sun rises and sets
-  latitude: !secret latitude
-  longitude: !secret longitude
-  # Impacts weather/sunrise data (altitude above sea level in meters)
-  elevation: 175.87
-  # metric for Metric, imperial for Imperial
-  unit_system: imperial
-  # Pick yours from here: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
-  time_zone: America/Chicago
-  # Use the new Home Assistant Auth Provider Only
-  # auth_providers:
-  #  - type: homeassistant
+  # # Name of the location where Home Assistant is running
+  # name: House
+  # # Location required to calculate the time the sun rises and sets
+  # latitude: !secret latitude
+  # longitude: !secret longitude
+  # # Impacts weather/sunrise data (altitude above sea level in meters)
+  # elevation: 175.87
+  # # metric for Metric, imperial for Imperial
+  # unit_system: imperial
+  # # Pick yours from here: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+  # time_zone: America/Chicago
+
   # Packages directory
   packages: !include_dir_named packages
 
@@ -56,42 +54,10 @@ homeassistant:
       control: hidden
       hidden: false
 
-################################################################
-## Persons
-################################################################
+# Enable person tracking
 person:
-  - name: Mike
-    id: mike
-    user_id: 6bda2db090014f1d8b603cdec67560a1
-    device_trackers:
-      - device_tracker.mike_iphone
-      - device_tracker.mike_iphone_ios
-  - name: Clara
-    id: clara
-    user_id: c3b3aa623b9f4261a277441618a415c5
-    device_trackers:
-      - device_tracker.clara_iphone
-      - device_tracker.clara_iphone_ios
-  - name: Mikey
-    id: mikey
-    device_trackers:
-      - device_tracker.mikey_iphone
-      - device_tracker.mikey_iphone_ios
-  - name: Bryan
-    id: bryan
-    device_trackers:
-      - device_tracker.bryan_iphone
-      - device_tracker.bryan_iphone_ios
-  - name: Jim
-    id: jim
-    device_trackers:
-      - device_tracker.jim_phone
-  - name: Kasey
-    id: kasey
-    device_trackers:
-      - device_tracker.kasey_phone
 
-# Enables the colud
+# Enables the cloud
 cloud:
 
 # Enables the frontend
@@ -118,7 +84,7 @@ updater:
   # Optional, allows Home Assistant developers to focus on popular components.
   include_used_components: true
 
-# Discover some devices automatically
+# Prevent discovery of some devices
 discovery:
   ignore:
    - samsung_tv
@@ -148,7 +114,7 @@ senseme:
 #exclude:
   #  - "Studio Beam Fan"
 
-# nest
+# Enable nest
 nest:
   client_id: !secret nest_client_id
   client_secret: !secret nest_client_secret
@@ -160,12 +126,15 @@ isy994:
   password: !secret isy_password
   enable_climate: false
 
-# Enable MQTT (Server is on bigfish Unraid server)
-# mqtt:
-#   broker: mqtt-server.home
-#   client_id: hassio-home
-#   discovery: true
-#   discovery_prefix: hass
+# Enable influx configuration
+influxdb:
+  host: 192.168.1.200
+  port: 8086
+  database: homeassistant
+  username: homeassistant
+  password: !secret influxdb_password
+  max_retries: 3
+  default_measurement: state
 
 # Enable MQTT Sharing between Hassio instances.
 # This is a client to the hosting instance.
@@ -177,21 +146,28 @@ tts:
   - platform: google_translate
     service_name: google_say
 
-device_tracker:
-  # Unifi device tracker configuration
-  - platform: unifi
-    host: 192.168.1.2
-    username: !secret unifi_username
-    password: !secret unifi_password
-    verify_ssl: false
-    interval_seconds: 10
-    consider_home: 300
-    track_new_devices: no
+# device_tracker:
+#   # Unifi device tracker configuration
+#   - platform: unifi
+#     host: 192.168.1.2
+#     username: !secret unifi_username
+#     password: !secret unifi_password
+#     verify_ssl: false
+#     interval_seconds: 10
+#     consider_home: 300
+#     track_new_devices: no
+
+# Log Severities: notset, debug, info, warn, warning, error, fatal, critical
+logger:
+  default: error
+  logs:
+    homeassistant.components.mqtt: warning
+    custom_components.senseme: error
 
 # recorder configuration
 recorder:
   # db_url:  mysql://hass:hasspassword@192.168.1.200/homeassistant
-  purge_keep_days: 10
+  purge_keep_days: 2
   purge_interval: 1
   exclude:
     domains:
@@ -202,34 +178,34 @@ recorder:
       - sun.sun
       - sensor.date
 
-# Z-Wave
-zwave:
-  usb_path: /dev/ttyACM0
-  network_key: "0xD2, 0x7D, 0x39, 0xC0, 0xD0, 0xE4, 0xA5, 0x81, 0xEF, 0x91, 0x76, 0x67, 0x37, 0xB5, 0xF0, 0xE0"
+# # Z-Wave
+# zwave:
+#   usb_path: /dev/ttyACM0
+#   network_key: "0xD2, 0x7D, 0x39, 0xC0, 0xD0, 0xE4, 0xA5, 0x81, 0xEF, 0x91, 0x76, 0x67, 0x37, 0xB5, 0xF0, 0xE0"
 
-sensor:
-  - platform: yr
-  # temperature of Hassio Raspberri Pi
-  - platform: command_line
-    name: Hassio House Temperature
-    command: "cat /sys/class/thermal/thermal_zone0/temp"
-    # If errors occur, remove degree symbol below
-    unit_of_measurement: "°C"
-    scan_interval: 60
-    value_template: '{{ value | multiply(0.001) | round(1) }}'
+# sensor:
+#   - platform: yr
+#   # temperature of Hassio Raspberri Pi
+#   - platform: command_line
+#     name: Hassio House Temperature
+#     command: "cat /sys/class/thermal/thermal_zone0/temp"
+#     # If errors occur, remove degree symbol below
+#     unit_of_measurement: "°C"
+#     scan_interval: 60
+#     value_template: '{{ value | multiply(0.001) | round(1) }}'
 
 input_boolean:
-  talk_family_room:
+  talk_studio:
 
 automation:
-  - id: talk_family_room_changed
-    alias: Talk Family Room Changed
+  - id: talk_studio_changed
+    alias: Talk Studio Changed
     trigger:
       platform: state
-      entity_id: input_boolean.talk_family_room
+      entity_id: input_boolean.talk_studio
     action:
-      - service: script.sonos_family_room_say
+      - service: script.sonos_studio_say
         data:
           volume: 0.5
           delay: '00:00:02'
-          message: 'Talk Family Room'
+          message: 'Talk Studio'

@@ -16,20 +16,6 @@ homeassistant:
       friendly_name: "House Home"
       icon: mdi:home
 
-    ################################################
-    ## Binary Sensor
-    ################################################
-    input_boolean.guest_mode:
-      friendly_name: "Guest Mode Active"
-    binary_sensor.vacation_active:
-      friendly_name: "Vacation Mode Active"
-
-    ################################################
-    ## Sensor
-    ################################################
-    sensor.house_mode:
-      friendly_name: "House Mode"
-
 ################################################################
 ## Input Boolean
 ################################################################
@@ -38,13 +24,13 @@ input_boolean:
     name: "Guest Mode"
     icon: mdi:account
 
+  boys_home:
+    name: "Boys Home"
+    icon: mdi:human-male-male
+
   vacation_mode:
     name: "Vacation Mode"
     icon: mdi:beach
-
-  party_mode:
-    name: "Party Mode"
-    icon: mdi:bomb
 
 ################################################################
 ## Binary Sensor
@@ -52,12 +38,30 @@ input_boolean:
 binary_sensor:
   - platform: template
     sensors:
-      # this sensor is on when in vacation mode
-      #   guest_mode must be off
+      # this sensor is on when vacation mode is on
       vacation_active:
+        friendly_name: "Vacation Active"
         value_template: >-
-          {{ is_state('input_boolean.guest_mode', 'off') and
-             is_state('input_boolean.vacation_mode', 'on') }}
+          {{ is_state('input_boolean.vacation_mode', 'on') }}
+  - platform: template
+    sensors:
+      # this sensor is on when guest mode is active but 
+      #   only if vacation mode is not active
+      guest_active:
+        friendly_name: "Guest Active"
+        value_template: >-
+          {{ is_state('input_boolean.guest_mode', 'on') and
+             is_state('binary_sensor.vacation_active', 'off') }}
+  - platform: template
+    sensors:
+      # this sensor is on when guest modes is active or
+      #   boys home is on and vacation mode is off
+      boys_active:
+        friendly_name: "Boys Active"
+        value_template: >-
+          {{ is_state('binary_sensor.guest_active', 'on') or
+            (is_state('input_boolean.boys_home', 'on') and
+             is_state('binary_sensor.vacation_active', 'off')) }}
 
 ################################################################
 ## Sensor
@@ -66,6 +70,7 @@ sensor:
   - platform: template
     sensors:
       house_mode:
+        friendly_name: "House Mode"
         entity_id:
           - switch.house_state
           - input_boolean.guest_mode

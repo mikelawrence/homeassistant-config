@@ -1,0 +1,45 @@
+################################################################
+## Packages / Christmas Lights
+################################################################
+
+##################################################
+## input_boolean
+##################################################
+input_boolean:
+  christmas_season:
+    name: Christmas Lights Auto On
+    icon: mdi:pine-tree
+
+################################################################
+## Automation
+################################################################
+automation:
+  # Christmas lights are turned on at just the right time after sunset
+  - id: christmas_lights_auto_on
+    alias: "Christmas Lights Automatic On"
+    trigger:
+      platform: numeric_state
+      entity_id: sun.sun
+      value_template: "{{ state.attributes.elevation }}"
+      below: -5.0
+    condition:
+      condition: state
+      entity_id: input_boolean.christmas_season
+      state: 'on'
+    action:
+      - service: homeassistant.turn_on
+        entity_id: switch.house_christmas_lights
+      - service: homeassistant.turn_on
+        entity_id: switch.studio_christmas_lights
+
+  # Christmas lights go off at 2:00AM
+  - id: christmas_lights_auto_off
+    alias: "Christmas Lights Automatic Off"
+    trigger:
+      platform: time
+      at: "02:00:00"
+    action:
+      - service: homeassistant.turn_off
+        entity_id: switch.house_christmas_lights
+      - service: homeassistant.turn_off
+        entity_id: switch.studio_christmas_lights

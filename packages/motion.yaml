@@ -139,54 +139,76 @@ sensor:
       # Extract Computer Room Multisensor battery level from Z-Wave attribute
       computer_room_multisensor_battery:
         friendly_name: "Computer Room Multisensor Battery"
-        value_template: "{{ state_attr('zwave.computer_room_multisensor', 'battery_level') }}"
+        # {{ states.input_datetime.bedtime.attributes.timestamp | int | timestamp_custom("%H:%M",False) }}
+        value_template: "{{ (states.zwave.computer_room_multisensor.attributes|default({})).battery_level|default(50) }}"
+        # "{{ state_attr('zwave.computer_room_multisensor', 'battery_level') }}"
         unit_of_measurement: "%"
         device_class: battery
-
-################################################################
-## Alert
-################################################################
-alert:
-  comp_room_motion_sensor_low_battery:
-    name: "Computer Room Motion Sensor Low Battery!"
-    entity_id: binary_sensor.comp_room_motion_sensor_lb
-    repeat:
-      - 1440
-    notifiers:
-      - ios_mike_iphone_ios
-  up_bath_motion_sensor_low_battery:
-    name: "Upstairs Bath Motion Sensor Low Battery!"
-    entity_id: binary_sensor.up_bath_motion_sensor_lb
-    repeat:
-      - 1440
-    notifiers:
-      - ios_mike_iphone_ios
-  up_sm_bed_motion_sensor_low_battery:
-    name: "Upstairs Small Bedroom Motion Sensor Low Battery!"
-    entity_id: binary_sensor.up_sm_bed_motion_sensor_lb
-    repeat:
-      - 1440
-    notifiers:
-      - ios_mike_iphone_ios
-  up_lg_bed_motion_sensor_low_battery:
-    name: "Upstairs Large Bedroom Motion Sensor Low Battery!"
-    entity_id: binary_sensor.up_lg_bed_motion_sensor_lb
-    repeat:
-      - 1440
-    notifiers:
-      - ios_mike_iphone_ios
-  garage_motion_sensor_low_battery:
-    name: "Garage Motion Sensor Low Battery!"
-    entity_id: binary_sensor.garage_motion_sensor_lb
-    repeat:
-      - 1440
-    notifiers:
-      - ios_mike_iphone_ios
 
 ################################################################
 ## Automation
 ################################################################
 automation:
+  - alias: "Computer Room Motion Sensor Low Battery"
+    #initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.comp_room_motion_sensor_lb
+        to: 'on'
+    action:
+      - service: persistent_notification.create
+        data_template:
+          message: 'Time to replace battery in Computer Room Motion Sensor.'
+          title: "Low Battery Detected"
+          
+  - alias: "Upstairs Bath Motion Sensor Low Battery"
+    #initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.up_bath_motion_sensor_lb
+        to: 'on'
+    action:
+      - service: persistent_notification.create
+        data_template:
+          message: 'Time to replace battery in Upstairs Bath Motion Sensor.'
+          title: "Low Battery Detected"
+          
+  - alias: "Upstairs Small Bedroom Motion Sensor Low Battery"
+    #initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.up_sm_bed_motion_sensor_lb
+        to: 'on'
+    action:
+      - service: persistent_notification.create
+        data_template:
+          message: 'Time to replace battery in Upstairs Small Bedroom Motion Sensor.'
+          title: "Low Battery Detected"
+          
+  - alias: "Upstairs Large Bedroom Motion Sensor Low Battery"
+    #initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.up_lg_bed_motion_sensor_lb
+        to: 'on'
+    action:
+      - service: persistent_notification.create
+        data_template:
+          message: 'Time to replace battery in Upstairs Large Bedroom Motion Sensor.'
+          title: "Low Battery Detected"
+          
+  - alias: "Garage Motion Sensor Low Battery"
+    #initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.garage_motion_sensor_lb
+        to: 'on'
+    action:
+      - service: persistent_notification.create
+        data_template:
+          message: 'Time to replace battery in Garage Motion Sensor.'
+          title: "Low Battery Detected"
+
   # Computer Room Motion Detector Low Battery Alert
   - initial_state: 'on'
     alias: 'Computer Room Multisensor Low Battery'
@@ -198,9 +220,15 @@ automation:
         entity_id: sensor.computer_room_multisensor_battery
         below: 5
     action:
-      service: notify.ios_mike_iphone_ios
-      data:
-        message: "Computer Room Multisensor is at {{ states('sensor.computer_room_multisensor_battery') }}% battery, it uses one CR123A battery."
+      - service: notify.sensor_alerts
+        data_template:
+          title: "Low Battery Detected"
+          message: "Computer Room Multisensor is at {{ states('sensor.computer_room_multisensor_battery') }}% battery, it uses one CR123A battery."
+      - service: persistent_notification.create
+        data_template:
+          title: "Low Battery Detected"
+          message: "Computer Room Multisensor is at {{ states('sensor.computer_room_multisensor_battery') }}% battery, it uses one CR123A battery."
+
   # Studio Motion Detector Low Battery Alert
   - initial_state: 'on'
     alias: 'Studio Multisensor Low Battery'
@@ -212,9 +240,15 @@ automation:
         entity_id: sensor.studio_multisensor_battery
         below: 5
     action:
-      service: notify.ios_mike_iphone_ios
-      data:
-        message: "Studio Multisensor is at {{ states('sensor.studio_multisensor_battery') }}% battery, it uses two CR123A batteries."
+      - service: notify.sensor_alerts
+        data_template:
+          title: "Low Battery Detected"
+          message: "Studio Multisensor is at {{ states('sensor.studio_multisensor_battery') }}% battery, it uses two CR123A batteries."
+      - service: persistent_notification.create
+        data_template:
+          title: "Low Battery Detected"
+          message: "Studio Multisensor is at {{ states('sensor.studio_multisensor_battery') }}% battery, it uses two CR123A batteries."
+
   # Studio Attic Motion Detector Low Battery Alert
   - initial_state: 'on'
     alias: 'Studio Attic Multisensor Low Battery'
@@ -226,10 +260,15 @@ automation:
         entity_id: sensor.studio_attic_multisensor_battery
         below: 5
     action:
-      service: notify.ios_mike_iphone_ios
-      data:
-        message: "Studio Attic Multisensor is at {{ states('sensor.studio_attic_multisensor_battery') }}% battery, it uses one CR123A battery."
-  
+      - service: notify.sensor_alerts
+        data_template:
+          title: "Low Battery Detected"
+          message: "Studio Attic Multisensor is at {{ states('sensor.studio_attic_multisensor_battery') }}% battery, it uses one CR123A battery."
+      - service: persistent_notification.create
+        data_template:
+          title: "Low Battery Detected"
+          message: "Studio Attic Multisensor is at {{ states('sensor.studio_attic_multisensor_battery') }}% battery, it uses one CR123A battery."
+    
   - alias: "Computer Room Motion Detect ON"
     trigger:
       platform: event
@@ -241,6 +280,7 @@ automation:
       service: input_boolean.turn_on
       data:
         entity_id: input_boolean.comp_room_motion_state
+        
   - alias: "Computer Room Motion Detect OFF"
     trigger:
       platform: state
@@ -253,6 +293,7 @@ automation:
       service: input_boolean.turn_off
       data:
         entity_id: input_boolean.comp_room_motion_state
+        
   - alias: "Upstairs Bath Motion Detect ON"
     trigger:
       platform: event
@@ -264,6 +305,7 @@ automation:
       service: input_boolean.turn_on
       data:
         entity_id: input_boolean.up_bath_motion_state
+        
   - alias: "Upstairs Bath Motion Detect OFF"
     trigger:
       platform: state
@@ -276,6 +318,7 @@ automation:
       service: input_boolean.turn_off
       data:
         entity_id: input_boolean.up_bath_motion_state
+        
   - alias: "Upstairs Small Bedroom Motion Detect ON"
     trigger:
       platform: event
@@ -287,6 +330,7 @@ automation:
       service: input_boolean.turn_on
       data:
         entity_id: input_boolean.up_sm_bed_motion_state
+        
   - alias: "Upstairs Small Bedroom Motion Detect OFF"
     trigger:
       platform: state
@@ -299,6 +343,7 @@ automation:
       service: input_boolean.turn_off
       data:
         entity_id: input_boolean.up_sm_bed_motion_state
+        
   - alias: "Upstairs Large Bedroom Motion Detect ON"
     trigger:
       platform: event
@@ -310,6 +355,7 @@ automation:
       service: input_boolean.turn_on
       data:
         entity_id: input_boolean.up_lg_bed_motion_state
+        
   - alias: "Upstairs Large Bedroom Motion Detect OFF"
     trigger:
       platform: state
@@ -322,6 +368,7 @@ automation:
       service: input_boolean.turn_off
       data:
         entity_id: input_boolean.up_lg_bed_motion_stat
+        
   - alias: "Garage Motion Detect ON"
     trigger:
       platform: event
@@ -333,6 +380,7 @@ automation:
       service: input_boolean.turn_on
       data:
         entity_id: input_boolean.garage_motion_state
+        
   - alias: "Garage Motion Detect OFF"
     trigger:
       platform: state
@@ -345,58 +393,3 @@ automation:
       service: input_boolean.turn_off
       data:
         entity_id: input_boolean.garage_motion_state
-  - alias: "Computer Room Motion Sensor Low Battery"
-    #initial_state: 'on'
-    trigger:
-      - platform: state
-        entity_id: binary_sensor.comp_room_motion_sensor_lb
-        to: 'on'
-    action:
-      - service: persistent_notification.create
-        data_template:
-          message: 'Time to replace battery in Computer Room Motion Sensor.'
-          title: "Low Battery Detected"
-  - alias: "Upstairs Bath Motion Sensor Low Battery"
-    #initial_state: 'on'
-    trigger:
-      - platform: state
-        entity_id: binary_sensor.up_bath_motion_sensor_lb
-        to: 'on'
-    action:
-      - service: persistent_notification.create
-        data_template:
-          message: 'Time to replace battery in Upstairs Bath Motion Sensor.'
-          title: "Low Battery Detected"
-  - alias: "Upstairs Small Bedroom Motion Sensor Low Battery"
-    #initial_state: 'on'
-    trigger:
-      - platform: state
-        entity_id: binary_sensor.up_sm_bed_motion_sensor_lb
-        to: 'on'
-    action:
-      - service: persistent_notification.create
-        data_template:
-          message: 'Time to replace battery in Upstairs Small Bedroom Motion Sensor.'
-          title: "Low Battery Detected"
-  - alias: "Upstairs Large Bedroom Motion Sensor Low Battery"
-    #initial_state: 'on'
-    trigger:
-      - platform: state
-        entity_id: binary_sensor.up_lg_bed_motion_sensor_lb
-        to: 'on'
-    action:
-      - service: persistent_notification.create
-        data_template:
-          message: 'Time to replace battery in Upstairs Large Bedroom Motion Sensor.'
-          title: "Low Battery Detected"
-  - alias: "Garage Motion Sensor Low Battery"
-    #initial_state: 'on'
-    trigger:
-      - platform: state
-        entity_id: binary_sensor.garage_motion_sensor_lb
-        to: 'on'
-    action:
-      - service: persistent_notification.create
-        data_template:
-          message: 'Time to replace battery in Garage Motion Sensor.'
-          title: "Low Battery Detected"

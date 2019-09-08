@@ -1,0 +1,39 @@
+################################################################
+## Packages / Flood Lights
+################################################################
+
+################################################################
+## Customize
+################################################################
+homeassistant:
+  customize:
+    ################################################
+    ## Switch
+    ################################################
+    switch.house_flood_lights:
+      friendly_name: "House Flood Lights"
+      icon: mdi:spotlight-beam
+
+##################################################
+## input_boolean
+##################################################
+input_boolean:
+  flood_lights:
+    name: "Flood Lights"
+    icon: mdi:spotlight-beam
+
+################################################################
+## Automation
+################################################################
+automation:
+  # Turn Flood Lights on/off
+  - id: sync_flood_lights
+    alias: "Share Flood Lights between House and Studio"
+    trigger:
+      platform: state
+      entity_id: input_boolean.flood_lights
+    action:
+      - service_template: 'homeassistant.turn_{{trigger.to_state.state}}'
+        entity_id: switch.house_flood_lights
+      - service_template: 'homeassistant.turn_{{trigger.to_state.state}}'
+        entity_id: switch.studio_flood_lights

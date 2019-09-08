@@ -1,0 +1,55 @@
+################################################################
+## Packages / Roof Lights
+################################################################
+
+##################################################
+## input_number
+##################################################
+input_number:
+  roof_lights_transition_time:
+    name: "Roof Lights Transition Time"
+    min: 1
+    max: 300
+    step: 1
+
+################################################################
+## Automation
+################################################################
+automation:
+  # Handle Roof Lights transition time
+  - id: roof_lights_transition_time
+    alias: "Roof Lights Transition Time Send MQTT"
+    trigger:
+      platform: state
+      entity_id: input_number.roof_lights_transition_time
+    action:
+      # - service: light.turn_on
+      #   data_template:
+      #     entity_id: "light.roof_lights"
+      #     transition: "{{ trigger.to_state.state }}"
+      - service: mqtt.publish
+        data_template:
+          topic: "hass/light/roof_lights/rgblight/set"
+          payload: '{"transition": {{ trigger.to_state.state | int }}}'
+
+  # Roof lights are turned on at just the right time after sunset
+  - id: roof_lights_auto_on
+    alias: "Roof Lights Automatic On"
+    trigger:
+      platform: numeric_state
+      entity_id: sun.sun
+      value_template: "{{ state.attributes.elevation }}"
+      below: -5.0
+    action:
+      - service: homeassistant.turn_on
+        entity_id: light.roof_lights
+
+  # Roof lights go off at 2:00AM
+  - id: roof_lights_auto_off
+    alias: "Roof Lights Automatic Off"
+    trigger:
+      platform: time
+      at: "02:00:00"
+    action:
+      - service: homeassistant.turn_off
+        entity_id: light.roof_lights

@@ -15,28 +15,28 @@ history:
       - person.jim
       - person.kasey
       - input_boolean.master_bath_presence
-      - binary_sensor.master_bath_multisensor_motion
-      - input_boolean.master_bath_light_stay_on
-      - input_boolean.master_bath_light_manual_input
-      - input_boolean.master_bath_humidity_high
-      - light.master_bath_light
-      - switch.master_bath_vent_fan
-      - timer.master_bath_light_timer
-      - timer.master_bath_vent_fan_timer
-      - binary_sensor.master_bath_humidity_rising
+      # - binary_sensor.master_bath_multisensor_motion
+      # - input_boolean.master_bath_light_stay_on
+      # - input_boolean.master_bath_light_manual_input
+      # - input_boolean.master_bath_humidity_high
+      # - light.master_bath_light
+      # - switch.master_bath_vent_fan
+      # - timer.master_bath_light_timer
+      # - timer.master_bath_vent_fan_timer
+      # - binary_sensor.master_bath_humidity_rising
       - input_boolean.studio_presence
-      - binary_sensor.studio_multisensor_motion
+      # - binary_sensor.studio_multisensor_motion
       - binary_sensor.studio_bath_presence
-      - binary_sensor.studio_bath_multisensor_motion
-      - input_boolean.studio_bath_light_stay_on
-      - input_boolean.studio_bath_light_manual_input
-      - input_boolean.studio_bath_humidity_high
-      - light.studio_bath_light
-      - switch.studio_bath_vent_fan
-      - timer.studio_bath_light_timer
-      - timer.studio_bath_vent_fan_timer
-      - binary_sensor.studio_bath_humidity_rising
-      - binary_sensor.studio_attic_multisensor_motion
+      # - binary_sensor.studio_bath_multisensor_motion
+      # - input_boolean.studio_bath_light_stay_on
+      # - input_boolean.studio_bath_light_manual_input
+      # - input_boolean.studio_bath_humidity_high
+      # - light.studio_bath_light
+      # - switch.studio_bath_vent_fan
+      # - timer.studio_bath_light_timer
+      # - timer.studio_bath_vent_fan_timer
+      # - binary_sensor.studio_bath_humidity_rising
+      # - binary_sensor.studio_attic_multisensor_motion
       - group.house_motion
       - binary_sensor.comp_room_motion
       - binary_sensor.computer_room_multisensor_motion
@@ -45,6 +45,11 @@ history:
       - binary_sensor.up_lg_bed_motion
       - binary_sensor.garage_motion
       - binary_sensor.studio_motion
+      - binary_sensor.house_fridge_door
+      - binary_sensor.house_freezer_door
+      - binary_sensor.studio_fridge_door
+      - binary_sensor.studio_freezer_door
+      - binary_sensor.garage_freezer_door
       - binary_sensor.house_front_door_sensor
       - binary_sensor.house_back_door_sensor
       - binary_sensor.studio_front_door_sensor
@@ -58,32 +63,49 @@ history:
       - sensor.front_gate_status
       - sensor.septic_status
       - binary_sensor.septic_pump
-      - sensor.upstairs_thermostat_operation_mode
-      - sensor.upstairs_thermostat_hvac_state
+      - binary_sensor.downstairs_thermostat_eco
       - sensor.downstairs_thermostat_operation_mode
       - sensor.downstairs_thermostat_hvac_state
+      - binary_sensor.upstairs_thermostat_eco
+      - sensor.upstairs_thermostat_operation_mode
+      - sensor.upstairs_thermostat_hvac_state
+      - binary_sensor.studio_thermostat_eco
       - sensor.studio_thermostat_operation_mode
       - sensor.studio_thermostat_hvac_state
-      - sensor.front_gate_rssi
-      - sensor.septic_rssi
-      - sensor.house_roof_light_rssi
-      - sensor.studio_roof_light_rssi
-      - sensor.garage_roof_light_rssi
-      - sensor.studio_fridge_monitor_rssi
-      - sensor.downstairs_thermostat_temperature
-      - sensor.upstairs_thermostat_temperature
-      - sensor.studio_thermostat_temperature
-      - sensor.front_gate_temperature
-      - sensor.septic_temperature
-      - sensor.weewx_temperature
-      - sensor.hassio_house_temperature
-      - sensor.hassio_studio_temperature
-      - sensor.house_roof_light_temperature
-      - sensor.studio_roof_light_temperature
-      - sensor.garage_roof_light_temperature
-      - sensor.studio_fridge_temperature
-      - sensor.studio_freezer_temperature
-      - sensor.studio_fridge_monitor_temperature
+      # - sensor.front_gate_rssi
+      # - sensor.septic_rssi
+      # - sensor.house_roof_light_rssi
+      # - sensor.studio_roof_light_rssi
+      # - sensor.garage_roof_light_rssi
+      # - sensor.house_fridge_monitor_rssi
+      # - sensor.studio_fridge_monitor_rssi
+      # - sensor.garage_freezer_monitor_rssi
+      # - sensor.downstairs_thermostat_temperature
+      # - sensor.upstairs_thermostat_temperature
+      # - sensor.studio_thermostat_temperature
+      # - sensor.front_gate_temperature
+      # - sensor.septic_temperature
+      # - sensor.weewx_temperature
+      # - sensor.hassio_house_temperature
+      # - sensor.hassio_studio_temperature
+      # - sensor.house_roof_light_temperature
+      # - sensor.studio_roof_light_temperature
+      # - sensor.garage_roof_light_temperature
+      # - sensor.house_fridge_temperature
+      # - sensor.house_fridge_average
+      # - sensor.house_fridge_delta
+      # - sensor.house_freezer_temperature
+      # - sensor.house_freezer_average
+      # - sensor.house_freezer_delta
+      # - sensor.studio_fridge_temperature
+      # - sensor.studio_fridge_average
+      # - sensor.studio_fridge_delta
+      # - sensor.studio_freezer_temperature
+      # - sensor.studio_freezer_average
+      # - sensor.studio_freezer_delta
+      # - sensor.garage_freezer_temperature
+      # - sensor.garage_freezer_average
+      # - sensor.garage_freezer_delta
       - sensor.master_bath_multisensor_temperature
       - sensor.master_bath_multisensor_humidity
       - sensor.master_bath_multisensor_humidity_mean

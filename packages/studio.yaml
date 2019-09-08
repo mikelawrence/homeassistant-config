@@ -49,7 +49,7 @@ sensor:
   - platform: history_stats
     name: Studio Cool Hours Yesterday
     entity_id: sensor.studio_thermostat_hvac_state
-    state: 'cooling'
+    state: 'cool'
     type: time
     # all of yesterday
     end: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
@@ -60,7 +60,7 @@ sensor:
   - platform: history_stats
     name: Studio Heat Hours Yesterday
     entity_id: sensor.studio_thermostat_hvac_state
-    state: 'heating'
+    state: 'heat'
     type: time
     # all of yesterday
     end: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'

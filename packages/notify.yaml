@@ -1,0 +1,40 @@
+################################################################
+## Packages / Notifications
+################################################################
+
+################################################################
+## Input Booleans
+################################################################
+input_boolean:
+  test_alerts:
+    name: "Test Alerts"
+
+################################################################
+## Notify Groups
+################################################################
+notify:
+  - name: house_alerts
+    platform: group
+    services:
+      - service: ios_mike_iphone_ios
+      - service: ios_clara_iphone_ios
+  - name: sensor_alerts
+    platform: group
+    services:
+      - service: ios_mike_iphone_ios
+      
+################################################################
+## Automations
+################################################################
+automation:
+  - alias: "Turn Test Alerts off shortly after turning on"
+    trigger:
+      - platform: state
+        entity_id: input_boolean.test_alerts
+        from: 'off'
+        to: 'on'
+        for: "00:00:02"
+    action:
+      - service: homeassistant.turn_off
+        data:
+          entity_id: input_boolean.test_alerts

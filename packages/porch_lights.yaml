@@ -1,0 +1,271 @@
+################################################################
+## Packages / Porch Lights
+################################################################
+
+################################################################
+## Customize
+################################################################
+homeassistant:
+  customize:
+    ################################################
+    ## Switch
+    ################################################
+    switch.house_porch_lights:
+      friendly_name: "House Porch Lights"
+      icon: mdi:lightbulb
+
+################################################################
+## Automation
+################################################################
+automation:
+  # Turn on house back porch light when studio porch light is turned on
+  - alias: "House Back Porch Light On"
+    trigger:
+      # Studio Porch Switch ON
+      - platform: event
+        event_type: isy994_control
+        event_data:
+          entity_id: switch.studio_porch_light
+          control: 'DON'
+      # Studio Porch Switch Fast ON
+      - platform: event
+        event_type: isy994_control
+        event_data:
+          entity_id: switch.studio_porch_light
+          control: 'DFON'
+    action:
+      - service: homeassistant.turn_on
+        entity_id: switch.back_porch_light
+
+  # Turn off house back porch light when studio porch light is turned off
+  - alias: "House Back Porch Light Off"
+    trigger:
+      # Studio Porch Switch Off
+      - platform: event
+        event_type: isy994_control
+        event_data:
+          entity_id: switch.studio_porch_light
+          control: 'DOF'
+      # Studio Porch Switch Fast Off
+      - platform: event
+        event_type: isy994_control
+        event_data:
+          entity_id: switch.studio_porch_light
+          control: 'DFOF'
+    action:
+      - service: homeassistant.turn_off
+        entity_id: switch.back_porch_light
+
+  # Turn on studio porch light when house back porch light is turned on
+  - alias: "Studio Porch Light On"
+    trigger:
+      # Master Bedroom Back Porch Switch On
+      - platform: event
+        event_type: isy994_control
+        event_data:
+          entity_id: switch.back_porch_light_1
+          control: 'DON'
+      # Master Bedroom Back Porch Switch Fast On
+      - platform: event
+        event_type: isy994_control
+        event_data:
+          entity_id: switch.back_porch_light_1
+          control: 'DFON'
+      # Utility Room Back Porch Switch On
+      - platform: event
+        event_type: isy994_control
+        event_data:
+          entity_id: switch.back_porch_light_2
+          control: 'DON'
+      # Utility Room Back Porch Switch Fast On
+      - platform: event
+        event_type: isy994_control
+        event_data:
+          entity_id: switch.back_porch_light_2
+          control: 'DFON'
+      # Garage Back Porch Button On
+      - platform: event
+        event_type: isy994_control
+        event_data:
+          entity_id: switch.back_porch_light_3
+          control: 'DON'
+      # Garage Back Porch Button Fast On
+      - platform: event
+        event_type: isy994_control
+        event_data:
+          entity_id: switch.back_porch_light_3
+          control: 'DFON'
+      # Family Room Front Porch Switch Fast On
+      - platform: event
+        event_type: isy994_control
+        event_data:
+          entity_id: switch.front_porch_light
+          control: 'DFON'
+    action:
+      - service: homeassistant.turn_on
+        entity_id: switch.studio_porch_lights
+
+  # Turn off studio porch light when house back porch light is turned off
+  - alias: "Studio Porch Light Off"
+    trigger:
+      # Master Bedroom Back Porch Switch Off
+      - platform: event
+        event_type: isy994_control
+        event_data:
+          entity_id: switch.back_porch_light_1
+          control: 'DOF'
+      # Master Bedroom Back Porch Switch Fast Off
+      - platform: event
+        event_type: isy994_control
+        event_data:
+          entity_id: switch.back_porch_light_1
+          control: 'DFOF'
+      # Utility Room Back Porch Switch Off
+      - platform: event
+        event_type: isy994_control
+        event_data:
+          entity_id: switch.back_porch_light_2
+          control: 'DOF'
+      # Utility Room Back Porch Switch Fast Off
+      - platform: event
+        event_type: isy994_control
+        event_data:
+          entity_id: switch.back_porch_light_2
+          control: 'DFOF'
+      # Garage Back Porch Button Off
+      - platform: event
+        event_type: isy994_control
+        event_data:
+          entity_id: switch.back_porch_light_3
+          control: 'DOF'
+      # Garage Back Porch Button Fast Off
+      - platform: event
+        event_type: isy994_control
+        event_data:
+          entity_id: switch.back_porch_light_3
+          control: 'DFOF'
+      # Family Room Front Porch Switch Fast Off
+      - platform: event
+        event_type: isy994_control
+        event_data:
+          entity_id: switch.front_porch_light
+          control: 'DFOF'
+    action:
+      - service: homeassistant.turn_off
+        entity_id: switch.studio_porch_lights
+
+  # Turn on house flood lights when studio flood lights are turned on
+  - alias: "House Flood Lights On"
+    trigger:
+      # Studio Flood Light Switch near front door
+      - platform: event
+        event_type: isy994_control
+        event_data:
+          entity_id: switch.flood_light_studio_front
+          control: 'DON'
+      - platform: event
+        event_type: isy994_control
+        event_data:
+          entity_id: switch.flood_light_studio_front
+          control: 'DFON'
+      # Studio Kitchen Flood Light Button
+      - platform: event
+        event_type: isy994_control
+        event_data:
+          entity_id: switch.flood_light_studio_back
+          control: 'DON'
+      - platform: event
+        event_type: isy994_control
+        event_data:
+          entity_id: switch.flood_light_studio_back
+          control: 'DFON'
+    action:
+      - service: homeassistant.turn_on
+        entity_id: switch.house_flood_lights
+
+  # Turn off house flood lights when studio flood lights are turned off or house porch lights are turned fast off
+  - alias: "House Flood Lights Off"
+    trigger:
+      # Studio Flood Light Switch near front door
+      - platform: event
+        event_type: isy994_control
+        event_data:
+          entity_id: switch.flood_light_studio_front
+          control: 'DOF'
+      - platform: event
+        event_type: isy994_control
+        event_data:
+          entity_id: switch.flood_light_studio_front
+          control: 'DFOF'
+      # Studio Kitchen Flood Light Button
+      - platform: event
+        event_type: isy994_control
+        event_data:
+          entity_id: switch.flood_light_studio_back
+          control: 'DOF'
+      - platform: event
+        event_type: isy994_control
+        event_data:
+          entity_id: switch.flood_light_studio_back
+          control: 'DFOF'
+    action:
+      - service: homeassistant.turn_off
+        entity_id: switch.house_flood_lights
+
+  # Turn on studio flood lights when house flood lights are turned on
+  - alias: "Studio Flood Lights On"
+    trigger:
+      # Family Room House Flood Lights Button
+      - platform: event
+        event_type: isy994_control
+        event_data:
+          entity_id: switch.house_flood_lights_1
+          control: 'DON'
+      - platform: event
+        event_type: isy994_control
+        event_data:
+          entity_id: switch.house_flood_lights_1
+          control: 'DFON'
+      # Utility Room Flood Lights Button
+      - platform: event
+        event_type: isy994_control
+        event_data:
+          entity_id: switch.house_flood_lights_2
+          control: 'DON'
+      - platform: event
+        event_type: isy994_control
+        event_data:
+          entity_id: switch.house_flood_lights_2
+          control: 'DFON'
+    action:
+      - service: homeassistant.turn_on
+        entity_id: switch.studio_flood_lights
+
+  # Turn off studio flood light when house flood light are turned off
+  - alias: "Studio Flood Lights Off"
+    trigger:
+      # Family Room House Flood Lights Button
+      - platform: event
+        event_type: isy994_control
+        event_data:
+          entity_id: switch.house_flood_lights_1
+          control: 'DOF'
+      - platform: event
+        event_type: isy994_control
+        event_data:
+          entity_id: switch.house_flood_lights_1
+          control: 'DFOF'
+      # Utility Room Flood Lights Button
+      - platform: event
+        event_type: isy994_control
+        event_data:
+          entity_id: switch.house_flood_lights_2
+          control: 'DOF'
+      - platform: event
+        event_type: isy994_control
+        event_data:
+          entity_id: switch.house_flood_lights_2
+          control: 'DFOF'
+    action:
+      - service: homeassistant.turn_off
+        entity_id: switch.studio_flood_lights

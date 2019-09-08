@@ -144,6 +144,10 @@ script:
   sonos_studio_all_say:
     alias: "Sonos Studio All TTS script"
     sequence:
+        # only speak in Studio if Art Mode is disabled
+      - condition: state
+        entity_id: input_boolean.art_mode
+        state: 'off'
       - service: sonos.snapshot
         data:
           entity_id:

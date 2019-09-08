@@ -1,0 +1,307 @@
+################################################################
+## Packages / Septic Controller
+################################################################
+
+################################################################
+## Sensors
+################################################################
+sensor:
+  # accumulates the time the effluent pump is on in hours
+  # time is offset to better match the pumping schedule
+  - platform: history_stats
+    name: "Septic Pump Hours Yesterday"
+    entity_id: binary_sensor.septic_pump
+    state: 'on'
+    type: time
+    # 3AM yesterday to 3AM this morning.
+    end: '{{ now().replace(hour=3).replace(minute=0).replace(second=0) }}'
+    duration:
+      hours: 24
+
+  - platform: template
+    sensors:
+      # converts the Septic Hours Yesterday minutes
+      septic_minutes_yesterday:
+        friendly_name: "Septic Pump Time Yesterday"
+        entity_id: sensor.septic_pump_hours_yesterday
+        unit_of_measurement: "m"
+        value_template: '{{ states.sensor.septic_pump_hours_yesterday.state | multiply(60.0) | round(2) }}'
+
+      # Given that it takes 27 minutes to pump out a full tank this sensor
+      # provides an idea of septic usage in percent of maximum pump time
+      septic_usage_yesterday:
+        friendly_name: "Septic Usage Yesterday"
+        entity_id: sensor.septic_pump_hours_yesterday
+        unit_of_measurement: "%"
+        # multiply by 60 * 100.0 / 27.0
+        value_template: '{{ states.sensor.septic_pump_hours_yesterday.state | multiply(222.222222222) | round(0) }}'
+
+################################################################
+## Binary Sensors
+################################################################
+binary_sensor:
+  - platform: template
+    sensors:
+      # Turns on when Septic Controller is Offline for too long
+      septic_controller_offline:
+        friendly_name: "Septic Controller Offline"
+        delay_on: '00:05:00'
+        value_template: "{{ is_state('sensor.septic_status', 'unavailable') }}"
+        
+      # Turns on when Septic Controller has not been 'Idle' for too long
+      septic_controller_not_idle:
+        friendly_name: "Septic Controller Not Idle"
+        delay_on: '01:00:00'
+        value_template: "{{ not is_state('sensor.septic_status', 'Idle') }}"
+
+################################################################
+## Automation
+################################################################
+automation:
+  # Alert when Septic Controller goes offline
+  - alias: "Septic Controller Offline"
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.septic_controller_offline
+        from: 'off'
+        to: 'on'
+      # - platform: state
+      #   entity_id: input_boolean.test_alerts
+      #   from: 'off'
+      #   to: 'on'
+    action:
+      - service: notify.sensor_alerts
+        data_template:
+          title: "Septic Alarm"
+          message: "Septic controller is offline!"
+      - service: persistent_notification.create
+        data_template:
+          title: "Septic Alarm"
+          message: "Septic controller is offline!"
+
+  # Alert when Septic Controller is back online
+  - alias: "Septic Controller Online"
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.septic_controller_offline
+        from: 'on'
+        to: 'off'
+      # - platform: state
+      #   entity_id: input_boolean.test_alerts
+      #   from: 'on'
+      #   to: 'off'
+    action:
+      - service: notify.sensor_alerts
+        data_template:
+          title: "Septic Status Good"
+          message: "Septic controller is back online."
+      - service: persistent_notification.create
+        data_template:
+          title: "Septic Status Good"
+          message: "Septic controller is back online."
+
+  # Alert when Septic Controller has not been Idle for too long
+  - alias: "Septic Controller not Idle"
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.septic_controller_not_idle
+        from: 'off'
+        to: 'on'
+      # - platform: state
+      #   entity_id: input_boolean.test_alerts
+      #   from: 'off'
+      #   to: 'on'
+    action:
+      - service: notify.sensor_alerts
+        data_template:
+          title: "Septic Alarm"
+          message: "Septic controller has not been Idle for more than an hour!"
+      - service: persistent_notification.create
+        data_template:
+          title: "Septic Alarm"
+          message: "Septic controller has not been Idle for more than an hour!"
+
+
+  # Alert when Septic Controller is back to Idle
+  - alias: "Septic Controller Idle"
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.septic_controller_not_idle
+        from: 'on'
+        to: 'off'
+      # - platform: state
+      #   entity_id: input_boolean.test_alerts
+      #   from: 'on'
+      #   to: 'off'
+    action:
+      - service: notify.sensor_alerts
+        data_template:
+          title: "Septic Status Good"
+          message: "Septic controller is back to Idle."
+      - service: persistent_notification.create
+        data_template:
+          title: "Septic Status Good"
+          message: "Septic controller is back to Idle."
+
+  # Alert when septic override pump turned on
+  - alias: "Septic override pump turned on"
+    trigger:
+      - platform: state
+        entity_id: sensor.septic_status
+        to: 'Override Pump On'
+      # - platform: state
+      #   entity_id: input_boolean.test_alerts
+      #   from: 'off'
+      #   to: 'on'
+    action:
+      - service: notify.sensor_alerts
+        data_template:
+          title: "Septic Alarm"
+          message: "Septic override pump turned on!"
+      - service: persistent_notification.create
+        data_template:
+          title: "Septic Alarm"
+          message: "Septic override pump turned on!"
+
+  # Alert when septic override pump turned off
+  - alias: "Septic override pump turned off"
+    trigger:
+      - platform: state
+        entity_id: sensor.septic_status
+        from: 'Override Pump On'
+      # - platform: state
+      #   entity_id: input_boolean.test_alerts
+      #   from: 'on'
+      #   to: 'off'
+    action:
+      - service: notify.sensor_alerts
+        data_template:
+          title: "Septic Status Good"
+          message: "Septic override pump turned off."
+      - service: persistent_notification.create
+        data_template:
+          title: "Septic Status Good"
+          message: "Septic override pump turned off."
+
+  # Alert when septic tank high alarm turned on
+  - alias: "Septic tank high alarm turned on"
+    trigger:
+      - platform: state
+        entity_id: sensor.septic_status
+        to: 'Tank High Alarm On'
+      # - platform: state
+      #   entity_id: input_boolean.test_alerts
+      #   from: 'off'
+      #   to: 'on'
+    action:
+      - service: notify.sensor_alerts
+        data_template:
+          title: "Septic Alarm"
+          message: "Septic tank overfull alarm turned on!"
+      - service: persistent_notification.create
+        data_template:
+          title: "Septic Alarm"
+          message: "Septic tank overfull alarm turned on!"
+
+
+  # Alert when septic tank overfull alarm turned off
+  - alias: "Septic tank overfull alarm turned off"
+    trigger:
+      - platform: state
+        entity_id: sensor.septic_status
+        from: 'Tank High Alarm On'
+      # - platform: state
+      #   entity_id: input_boolean.test_alerts
+      #   from: 'on'
+      #   to: 'off'
+    action:
+      - service: notify.sensor_alerts
+        data_template:
+          title: "Septic Status Good"
+          message: "Septic tank overfull alarm turned off."
+      - service: persistent_notification.create
+        data_template:
+          title: "Septic Status Good"
+          message: "Septic tank overfull alarm turned off"
+
+  # Alert when septic over temp alarm turned on
+  - alias: "Septic over temp alarm turned on"
+    trigger:
+      - platform: state
+        entity_id: sensor.septic_status
+        to: 'Overtemp Alarm On'
+      # - platform: state
+      #   entity_id: input_boolean.test_alerts
+      #   from: 'off'
+      #   to: 'on'
+    action:
+      - service: notify.sensor_alerts
+        data_template:
+          title: "Septic Alarm"
+          message: "Septic over temp alarm turned on!"
+      - service: persistent_notification.create
+        data_template:
+          title: "Septic Alarm"
+          message: "Septic over temp alarm turned on!"
+
+
+  # Alert when septic over temp alarm turned off
+  - alias: "Septic over temp alarm turned off"
+    trigger:
+      - platform: state
+        entity_id: sensor.septic_status
+        from: 'Overtemp Alarm On'
+      # - platform: state
+      #   entity_id: input_boolean.test_alerts
+      #   from: 'on'
+      #   to: 'off'
+    action:
+      - service: notify.sensor_alerts
+        data_template:
+          title: "Septic Status Good"
+          message: "Septic over temp alarm turned off."
+      - service: persistent_notification.create
+        data_template:
+          title: "Septic Status Good"
+          message: "Septic over temp alarm turned off"
+
+  # Alert when septic bleach level alarm turned on
+  - alias: "Septic bleach level alarm turned on"
+    trigger:
+      - platform: state
+        entity_id: sensor.septic_status
+        to: 'Bleach Alarm On'
+      # - platform: state
+      #   entity_id: input_boolean.test_alerts
+      #   from: 'off'
+      #   to: 'on'
+    action:
+      - service: notify.sensor_alerts
+        data_template:
+          title: "Septic Alarm"
+          message: "Septic bleach level alarm turned on!"
+      - service: persistent_notification.create
+        data_template:
+          title: "Septic Alarm"
+          message: "Septic bleach level alarm turned on!"
+
+
+  # Alert when septic bleach level alarm turned off
+  - alias: "Septic bleach level alarm turned off"
+    trigger:
+      - platform: state
+        entity_id: sensor.septic_status
+        from: 'Bleach Alarm On'
+      # - platform: state
+      #   entity_id: input_boolean.test_alerts
+      #   from: 'on'
+      #   to: 'off'
+    action:
+      - service: notify.sensor_alerts
+        data_template:
+          title: "Septic Status Good"
+          message: "Septic bleach level alarm turned off."
+      - service: persistent_notification.create
+        data_template:
+          title: "Septic Status Good"
+          message: "Septic bleach level alarm turned off"

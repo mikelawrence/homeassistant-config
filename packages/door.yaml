@@ -29,39 +29,6 @@ homeassistant:
       device_class: battery
 
 ################################################################
-## Alert
-################################################################
-alert:
-  house_front_door_sensor_low_battery:
-    name: "House Front Door Sensor Low Battery!"
-    entity_id: binary_sensor.house_front_door_sensor_hb
-    repeat:
-      - 1440
-    notifiers:
-      - ios_mike_iphone_ios
-  house_back_door_sensor_low_battery:
-    name: "House Back Door Sensor Low Battery!"
-    entity_id: binary_sensor.house_back_door_sensor_hb
-    repeat:
-      - 1440
-    notifiers:
-      - ios_mike_iphone_ios
-  studio_front_door_sensor_low_battery:
-    name: "Studio Front Door Sensor Low Battery!"
-    entity_id: binary_sensor.studio_front_door_sensor_hb
-    repeat:
-      - 1440
-    notifiers:
-      - ios_mike_iphone_ios
-  garage_door_sensor_low_battery:
-    name: "Garage Door Sensor Low Battery!"
-    entity_id: binary_sensor.garage_door_sensor_hb
-    repeat:
-      - 1440
-    notifiers:
-      - ios_mike_iphone_ios
-
-################################################################
 ## Automation
 ################################################################
 automation:
@@ -72,10 +39,14 @@ automation:
         entity_id: binary_sensor.house_front_door_sensor_hb
         to: 'on'
     action:
+      - service: notify.sensor_alerts
+        data_template:
+          title: "Low Battery Detected"
+          message: "Time to replace battery in House Front Door Sensor."
       - service: persistent_notification.create
         data_template:
-          message: 'Time to replace battery in House Front Door Sensor.'
           title: "Low Battery Detected"
+          message: "Time to replace battery in House Front Door Sensor."
 
   - alias: "House Back Door Sensor Low Battery"
     initial_state: 'on'
@@ -84,10 +55,14 @@ automation:
         entity_id: binary_sensor.house_back_door_sensor_hb
         to: 'on'
     action:
+      - service: notify.sensor_alerts
+        data_template:
+          title: "Low Battery Detected"
+          message: "Time to replace battery in House Back Door Sensor."
       - service: persistent_notification.create
         data_template:
-          message: 'Time to replace battery in House Back Door Sensor.'
           title: "Low Battery Detected"
+          message: "Time to replace battery in House Back Door Sensor."
 
   - alias: "Studio Front Door Sensor Low Battery"
     initial_state: 'on'
@@ -96,10 +71,14 @@ automation:
         entity_id: binary_sensor.studio_front_door_sensor_hb
         to: 'on'
     action:
+      - service: notify.sensor_alerts
+        data_template:
+          title: "Low Battery Detected"
+          message: "Time to replace battery in Studio Front Door Sensor."
       - service: persistent_notification.create
         data_template:
-          message: 'Time to replace battery in Studio Front Door Sensor.'
           title: "Low Battery Detected"
+          message: "Time to replace battery in Studio Front Door Sensor."
 
   - alias: "Garage Door Sensor Low Battery"
     initial_state: 'on'
@@ -108,7 +87,11 @@ automation:
         entity_id: binary_sensor.garage_door_sensor_hb
         to: 'on'
     action:
+      - service: notify.sensor_alerts
+        data_template:
+          title: "Low Battery Detected"
+          message: "Time to replace battery in Garage Door Sensor."
       - service: persistent_notification.create
         data_template:
-          message: 'Time to replace battery in Garage Door Sensor.'
           title: "Low Battery Detected"
+          message: "Time to replace battery in Garage Door Sensor."

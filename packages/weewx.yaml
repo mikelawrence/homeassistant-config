@@ -75,6 +75,9 @@ homeassistant:
       friendly_name: "Yearly Rain"
       icon: mdi:water
 
+    binary_sensor.weewx_tx_battery:
+      friendly_name: "Davis ISS Battery"
+
 ################################################
 #  Sensor
 ################################################
@@ -222,3 +225,40 @@ sensor:
       {% if value_json.yearRain %}
         {{ value_json.yearRain | round(2) }}
       {% endif %}
+
+################################################
+#  Binary Sensor
+################################################
+binary_sensor:
+  - platform: mqtt
+    name: weewx_tx_battery
+    state_topic: "weather/loop"
+    device_class: 'battery'
+    value_template: >
+      {%- if value_json.txBatteryStatus | default("0.0") | float == 0.0 -%}
+        OFF
+      {%- else -%}
+        ON
+      {%- endif -%}
+
+################################################################
+## Automation
+################################################################
+automation:
+  # Septic Controller Offline for too long
+  - alias: "Weather Station Battery Low"
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.weewx_tx_battery
+        to: 'on'
+    action:
+      - service: notify.sensor_alerts
+        data_template:
+          title: "Low Battery Detected"
+          message: "Time to replace battery in Weather Station ISS."
+      - service: persistent_notification.create
+        data_template:
+          title: "Low Battery Detected"
+          message: "Time to replace battery in Weather Station ISS."
+

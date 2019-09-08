@@ -15,6 +15,14 @@ homeassistant:
       friendly_name: "Studio Mode"
 
 ################################################################
+## Input Boolean
+################################################################
+input_boolean:
+  art_mode:
+    name: "Art Mode"
+    icon: mdi:ninja
+
+################################################################
 ## Sensor
 ################################################################
 sensor:
@@ -28,20 +36,20 @@ sensor:
         value_template: >-
           {% if is_state('input_boolean.guest_mode', 'on') %}
             Guest
-          {% elif is_state('switch.studio_state', 'on') %}
-            Home
           {% elif is_state('binary_sensor.vacation_active', 'on') %}
             Vacation
+          {% elif is_state('switch.studio_state', 'on') %}
+            Home
           {% else %}
             Away
           {% endif %}
         icon_template: >-
           {% if is_state('input_boolean.guest_mode', 'on') %}
             mdi:account
-          {% elif is_state('switch.studio_state', 'on') %}
-            mdi:home
           {% elif is_state('binary_sensor.vacation_active', 'on') %}
             mdi:beach
+          {% elif is_state('switch.studio_state', 'on') %}
+            mdi:home
           {% else %}
             mdi:home-outline
           {% endif %}
@@ -96,10 +104,10 @@ automation:
           delay: '00:00:02'
           message: 'Goodbye.'
       # turn off Studio TV
-      - service: remote.turn_off
-        data:
-          entity_id: remote.studio
-          activity: PowerOff
+      # - service: remote.turn_off
+      #   data:
+      #     entity_id: remote.studio
+      #     activity: PowerOff
 
   # Studio manually switched to Home Mode
   #   Either by HASS switch or KeypadLinc switch

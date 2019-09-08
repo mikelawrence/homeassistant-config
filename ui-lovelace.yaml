@@ -12,19 +12,23 @@ views:
       - person.jim
       - person.kasey
     cards:
-      # - type: entities
-      #   title: Sonos Speak
-      #   show_header_toggle: false
-      #   entities:
-      #     - input_boolean.talk_family_room
+      - type: entities
+        title: Sonos Speak
+        show_header_toggle: false
+        entities:
+          - input_boolean.talk_studio
+        #   - input_boolean.test_alerts
       - type: entities
         title: House Mode
         show_header_toggle: false
         entities:
           - switch.house_state
+          - input_boolean.boys_home
           - input_boolean.guest_mode
-          - input_boolean.party_mode
           - input_boolean.vacation_mode
+          - binary_sensor.boys_active
+          - binary_sensor.guest_active
+          - binary_sensor.vacation_active
           - sensor.house_mode
           - binary_sensor.house_back_door_sensor
           - binary_sensor.house_front_door_sensor
@@ -99,6 +103,8 @@ views:
         title: House Climate
         show_header_toggle: false
         entities:
+          - binary_sensor.downstairs_thermostat_eco
+          - binary_sensor.upstairs_thermostat_eco
           - sensor.downstairs_cool_hours_yesterday
           - sensor.upstairs_cool_hours_yesterday
           - sensor.downstairs_heat_hours_yesterday
@@ -118,8 +124,7 @@ views:
         entities:
           - switch.studio_state
           - input_boolean.guest_mode
-          - input_boolean.party_mode
-          - input_boolean.vacation_mode
+          - input_boolean.art_mode
           - sensor.studio_mode
           - binary_sensor.studio_front_door_sensor
           - binary_sensor.people_home
@@ -163,9 +168,10 @@ views:
       # - type: media-control
       #   entity: media_player.studio
       - type: entities
-        title: House Climate
+        title: Studio Climate
         show_header_toggle: false
         entities:
+          - binary_sensor.studio_thermostat_eco
           - sensor.studio_cool_hours_yesterday
           - sensor.studio_heat_hours_yesterday
       - type: thermostat
@@ -245,6 +251,7 @@ views:
           - entity: sensor.weewx_rain_storm
           - entity: sensor.weewx_rain_month
           - entity: sensor.weewx_rain_year
+          - entity: binary_sensor.weewx_tx_battery
       - type: entities
         title: Septic
         show_header_toggle: false
@@ -259,10 +266,38 @@ views:
             name: Pump Time Yesterday
           - entity: sensor.septic_usage_yesterday
             name: Usage Yesterday
-          - entity: binary_sensor.septic_controller_not_idle
-            name: "Not Idle too Long"
-          - entity: binary_sensor.septic_controller_not_on_network
-            name: "Not on Network"
+          - entity: sensor.septic_temperature
+            name: "Temperature"
+          - entity: sensor.septic_rssi
+            name: "RSSI"
+      - type: entities
+        title: House Refridgerator
+        show_header_toggle: false
+        entities:
+          - entity: switch.house_fridge_monitor_alarm_disable
+            name: Alarm Disable
+          - entity: binary_sensor.house_fridge_monitor_alarm
+            name: Over Temp Alarm
+          - entity: binary_sensor.house_fridge_door
+            name: Fridge Door
+          - entity: sensor.house_fridge_temperature
+            name: Fridge Temp
+          - entity: sensor.house_fridge_average
+            name: Fridge Avg Temp
+          - entity: sensor.house_fridge_delta
+            name: Fridge Delta Temp
+          - entity: binary_sensor.house_freezer_door
+            name: Freezer Door
+          - entity: sensor.house_freezer_temperature
+            name: Freezer Temp
+          - entity: sensor.house_freezer_average
+            name: Freezer Avg Temp
+          - entity: sensor.house_freezer_delta
+            name: Freezer Delta Temp
+          - entity: sensor.house_fridge_monitor_temperature
+            name: Board Temp
+          - entity: sensor.house_fridge_monitor_rssi
+            name: RSSI
       - type: entities
         title: Studio Refridgerator
         show_header_toggle: false
@@ -271,12 +306,46 @@ views:
             name: Alarm Disable
           - entity: binary_sensor.studio_fridge_monitor_alarm
             name: Over Temp Alarm
-          - entity: sensor.studio_fridge_monitor_temperature
-            name: Board Temp
+          - entity: binary_sensor.studio_fridge_door
+            name: Fridge Door
           - entity: sensor.studio_fridge_temperature
             name: Fridge Temp
+          - entity: sensor.studio_fridge_average
+            name: Fridge Avg Temp
+          - entity: sensor.studio_fridge_delta
+            name: Fridge Delta Temp
+          - entity: binary_sensor.studio_freezer_door
+            name: Freezer Door
           - entity: sensor.studio_freezer_temperature
             name: Freezer Temp
+          - entity: sensor.studio_freezer_average
+            name: Freezer Avg Temp
+          - entity: sensor.studio_freezer_delta
+            name: Freezer Delta Temp
+          - entity: sensor.studio_fridge_monitor_temperature
+            name: Board Temp
+          - entity: sensor.studio_fridge_monitor_rssi
+            name: RSSI
+      - type: entities
+        title: Garage Freezer
+        show_header_toggle: false
+        entities:
+          - entity: switch.garage_freezer_monitor_alarm_disable
+            name: Alarm Disable
+          - entity: binary_sensor.garage_freezer_monitor_alarm
+            name: Over Temp Alarm
+          - entity: binary_sensor.garage_freezer_door
+            name: Freezer Door
+          - entity: sensor.garage_freezer_temperature
+            name: Freezer Temp
+          - entity: sensor.garage_freezer_average
+            name: Freezer Avg Temp
+          - entity: sensor.garage_freezer_delta
+            name: Freezer Delta
+          - entity: sensor.garage_freezer_monitor_temperature
+            name: Board Temp
+          - entity: sensor.garage_freezer_monitor_rssi
+            name: RSSI
   - title: Cameras
     icon: mdi:cctv
     badges:
@@ -301,8 +370,6 @@ views:
         entity: camera.garage_inside_right
       - type: picture-entity
         entity: camera.studio_back
-      # - type: picture-entity
-      #   entity: camera.weather
   - title: Devices
     icon: mdi:lightbulb
     badges:
