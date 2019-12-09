@@ -16,12 +16,12 @@ notify:
   - name: house_alerts
     platform: group
     services:
-      - service: ios_mike_iphone_ios
-      - service: ios_clara_iphone_ios
+      - service: mobile_app_mikes_iphone
+      # - service: ios_clara_iphone_ios
   - name: sensor_alerts
     platform: group
     services:
-      - service: ios_mike_iphone_ios
+      - service: mobile_app_mikes_iphone
       
 ################################################################
 ## Automations

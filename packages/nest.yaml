@@ -163,7 +163,7 @@ automation:
       # Upstairs Nest Thermostat switched from Eco Mode
       - platform: state
         entity_id: sensor.upstairs_thermostat_eco
-        from: 'on'
+        to: 'off'
       # ISY-994 House State was switched to Away
       - platform: state
         entity_id: switch.house_state
@@ -361,16 +361,16 @@ script:
           entity_id: script.nest_studio_thermostat_set_eco
       - delay: "00:01:00"
       # set temperature service was also override preset_mode (away/eco)
-      # - service: climate.set_temperature
-      #   data_template:
-      #     entity_id: climate.studio
-      #     target_temp_high: 75
-      #     target_temp_low: 68
-      #     hvac_mode: 'auto'
-      - service: climate.set_preset_mode
+      - service: climate.set_temperature
         data_template:
           entity_id: climate.studio
-          preset_mode: 'none'
+          target_temp_high: 75
+          target_temp_low: 68
+          hvac_mode: 'auto'
+      # - service: climate.set_preset_mode
+      #   data_template:
+      #     entity_id: climate.studio
+      #     preset_mode: 'none'
       - service: logbook.log
         data_template:
           name: "Studio Thermostat"

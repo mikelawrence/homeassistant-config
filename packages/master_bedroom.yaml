@@ -85,9 +85,7 @@ sensor:
   #   Used to get the average over the last 2 hours
   - platform: statistics
     entity_id: sensor.master_bath_multisensor_humidity
-    # this sensor adds '_mean' to the end for entity_id so
-    # entity_id: sensor.master_bath_multisensor_humidity_mean
-    name: "Master Bath Multisensor Humidity"
+    name: "Master Bath Multisensor Humidity Mean"
     # this supports up to 1 minute sampling for 4 hours
     sampling_size: 250
     max_age:

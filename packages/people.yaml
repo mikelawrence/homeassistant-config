@@ -24,46 +24,6 @@ homeassistant:
       entity_picture: '/local/kasey.jpg'
 
     ################################################
-    ## Customize Device Tracker
-    ################################################
-    # device_tracker.mike_iphone:
-    #   friendly_name: 'Mike iPhone (WiFi)'
-    #   icon: mdi:wifi
-    # device_tracker.mike_iphone_ios:
-    #   friendly_name: 'Mike iPhone (iOS)'
-    #   icon: mdi:apple-ios
-    # device_tracker.mike_laptop:
-    #   friendly_name: 'Mike Laptop (WiFi)'
-    #   icon: mdi:wifi
-    # device_tracker.clara_iphone:
-    #   friendly_name: 'Clara iPhone (WiFi)'
-    #   icon: mdi:wifi
-    # device_tracker.clara_iphone_ios:
-    #   friendly_name: 'Clara iPhone (iOS)'
-    #   icon: mdi:apple-ios
-    # device_tracker.mikey_iphone:
-    #   friendly_name: 'Mikey iPhone (WiFi)'
-    #   icon: mdi:wifi
-    # device_tracker.mikey_iphone_ios:
-    #   friendly_name: 'Mikey iPhone (iOS)'
-    #   icon: mdi:apple-ios
-    # device_tracker.bryan_iphone:
-    #   friendly_name: 'Bryan iPhone (WiFi)'
-    #   icon: mdi:wifi
-    # device_tracker.bryan_iphone_ios:
-    #   friendly_name: 'Bryan iPhone (iOS)'
-    #   icon: mdi:apple-ios
-    # device_tracker.dan_iphone:
-    #   friendly_name: 'Dan iPhone (WiFi)'
-    #   icon: mdi:wifi
-    # device_tracker.jim_phone:
-    #   friendly_name: 'Jim Android (WiFi)'
-    #   icon: mdi:wifi
-    # device_tracker.kasey_phone:
-    #   friendly_name: 'Kasey Android (WiFi)'
-    #   icon: mdi:wifi
-
-    ################################################
     ## Customize Group
     ################################################
     group.household:
@@ -107,17 +67,3 @@ binary_sensor:
         entity_id:
           - binary_sensor.people_home
         value_template: "{{ is_state('binary_sensor.people_home', 'off') }}"
-
-################################################################
-## Script
-################################################################
-script:
-  request_location_update:
-    alias: "Request Location Update"
-    sequence:
-      - service: notify.ios_mike_iphone_ios
-        data:
-          message: "request_location_update"
-      - service: notify.ios_clara_iphone_ios
-        data:
-          message: "request_location_update"

@@ -17,6 +17,7 @@ views:
         show_header_toggle: false
         entities:
           - input_boolean.talk_studio
+          - input_boolean.talk_studio_all
         #   - input_boolean.test_alerts
       - type: entities
         title: House Mode

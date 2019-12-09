@@ -24,7 +24,6 @@ history:
       # - timer.master_bath_light_timer
       # - timer.master_bath_vent_fan_timer
       # - binary_sensor.master_bath_humidity_rising
-      - input_boolean.studio_presence
       # - binary_sensor.studio_multisensor_motion
       - binary_sensor.studio_bath_presence
       # - binary_sensor.studio_bath_multisensor_motion
@@ -69,9 +68,12 @@ history:
       - binary_sensor.upstairs_thermostat_eco
       - sensor.upstairs_thermostat_operation_mode
       - sensor.upstairs_thermostat_hvac_state
-      - binary_sensor.studio_thermostat_eco
-      - sensor.studio_thermostat_operation_mode
-      - sensor.studio_thermostat_hvac_state
+      - sensor.studio_mode
+      - input_boolean.guest_mode
+      - binary_sensor.studio_presence
+      - binary_sensor.studio_multisensor_motion
+      - binary_sensor.studio_bath_multisensor_motion
+      - binary_sensor.studio_thermostat_away
       # - sensor.front_gate_rssi
       # - sensor.septic_rssi
       # - sensor.house_roof_light_rssi

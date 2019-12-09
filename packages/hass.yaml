@@ -12,8 +12,15 @@ automation:
     alias: HASS update notifications
     trigger:
       - platform: state
-        entity_id: updater.updater
+        entity_id: binary_sensor.updater
+        from: 'off'
+        to: 'on'
     action:
-      - service: notify.ios_mike_iphone_ios
-        data:
-          message: 'There is a new Home Assistant release available.'
+      - service: notify.sensor_alerts
+        data_template:
+          title: "Home Assistant"
+          message: "There is a new Home Assistant release available."
+      - service: persistent_notification.create
+        data_template:
+          title: "Home Assistant"
+          message: "There is a new Home Assistant release available."

@@ -84,6 +84,9 @@ updater:
   # Optional, allows Home Assistant developers to focus on popular components.
   include_used_components: true
 
+# Enable new Home Assistant Companion iOS app
+mobile_app:
+
 # Prevent discovery of some devices
 discovery:
   ignore:
@@ -196,6 +199,7 @@ recorder:
 
 input_boolean:
   talk_studio:
+  talk_studio_all:
 
 automation:
   - id: talk_studio_changed
@@ -209,3 +213,15 @@ automation:
           volume: 0.5
           delay: '00:00:02'
           message: 'Talk Studio'
+
+  - id: talk_studio_all_changed
+    alias: Talk Studio All Changed
+    trigger:
+      platform: state
+      entity_id: input_boolean.talk_studio_all
+    action:
+      - service: script.sonos_studio_all_say
+        data:
+          volume: 0.5
+          delay: '00:00:02'
+          message: 'Talk All Studio'

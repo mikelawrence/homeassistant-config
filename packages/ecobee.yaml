@@ -1,0 +1,159 @@
+################################################################
+## Packages / Ecobee
+## Ecobee Thermostat Control
+################################################################
+
+################################################################
+## Customize
+################################################################
+homeassistant:
+  customize:
+    ################################################
+    ## Climate
+    ################################################
+    climate.studio:
+      friendly_name: "Studio Thermostat"
+
+################################################################
+## Binary Sensor
+################################################################
+binary_sensor:
+  - platform: template
+    sensors:
+      studio_thermostat_away:
+        friendly_name: "Studio Thermostat Away"
+        value_template: "{{ state_attr('climate.studio', 'preset_mode') | lower == 'away' or state_attr('climate.studio', 'climate_mode') | lower == 'away' }}"
+        
+################################################################
+## Automation
+################################################################
+automation:
+  # Studio thermostat is kept in Away mode when the following is true
+  #   1. Vacation Active is on (binary_sensor.vacation_active == 'on')
+  #   2. Studio is Away (switch.studio_state = off) and
+  #      Guest Mode is off (input_boolean.guest_mode = 'off')
+  - id: switch_studio_thermostat_away
+    alias: "Switch Studio thermostat to Away"
+    initial_state: 'on'
+    trigger:
+      # Home Assistant started
+      - platform: homeassistant
+        event: start
+      # Studio Thermostat switched from Away
+      - platform: state
+        entity_id: sensor.studio_thermostat_away
+        from: 'on'
+      # ISY-994 Studio State was switched to Away
+      - platform: state
+        entity_id: switch.studio_state
+        to: 'off'
+      # Vacation Active switched to on
+      - platform: state
+        entity_id: binary_sensor.vacation_active
+        to: 'on'
+      # Guest Active switched to off
+      - platform: state
+        entity_id: binary_sensor.guest_active
+        to: 'off'
+    condition:
+      condition: or
+      conditions:
+        - condition: state
+          entity_id: binary_sensor.vacation_active
+          state: 'on'
+        - condition: and
+          conditions:
+            - condition: state
+              entity_id: binary_sensor.guest_active
+              state: 'off'
+            - condition: state
+              entity_id: switch.studio_state
+              state: 'off'
+    action:
+      - service: script.studio_thermostat_set_away
+
+  # Studio thermostat is switched to Home when the following is true
+  #   1. House Assistant Started
+  #   2. Studio State turned on (ISY-994i Home button pushed)(switch.studio_state == on)
+  #   3. Guest Active turned on (binary_sensor.guest_active == on)
+  #   4. Vacation Active turned off (input_boolean.boys_home == 'on')
+  - id: switch_nest_studio_home
+    alias: "Switch Studio Nest thermostat to Home"
+    initial_state: 'on'
+    trigger:
+      # Home Assistant started
+      - platform: homeassistant
+        event: start
+      # ISY-994 Studio State was switched to Home
+      - platform: state
+        entity_id: switch.studio_state
+        to: 'on'
+      # Guest Active switched to on
+      - platform: state
+        entity_id: binary_sensor.guest_active
+        to: 'on'
+      # Vacation Active switched to off
+      - platform: state
+        entity_id: binary_sensor.vacation_active
+        to: 'off'
+    condition:
+      condition: or
+      conditions:
+        - condition: state
+          entity_id: binary_sensor.guest_active
+          state: 'on'
+        - condition: and
+          conditions:
+            - condition: state
+              entity_id: binary_sensor.vacation_active
+              state: 'off'
+            - condition: state
+              entity_id: switch.house_state
+              state: 'on'
+    action:
+      - service: script.studio_thermostat_set_home
+
+################################################################
+## Script
+################################################################
+script:
+  # Set Studio Ecobee Thermostat to Away
+  studio_thermostat_set_away:
+    alias: "Set Studio Nest Thermostat to Away"
+    sequence:
+      - service: script.turn_off
+        data:
+          entity_id: script.studio_thermostat_set_home
+      - delay: "00:05:00"
+      - service: climate.set_preset_mode
+        data_template:
+          entity_id: climate.studio
+          preset_mode: 'Away'
+      - service: logbook.log
+        data_template:
+          name: "Studio Thermostat"
+          message: "set to Away"
+
+  # Set Studio Ecobee thermostat to Home
+  studio_thermostat_set_home:
+    alias: "Set Studio Ecobee Thermostat to Home"
+    sequence:
+      - service: script.turn_off
+        data:
+          entity_id: script.studio_thermostat_set_away
+      - delay: "00:01:00"
+      # # set temperature service was also override preset_mode (away/eco)
+      # - service: climate.set_temperature
+      #   data_template:
+      #     entity_id: climate.studio
+      #     target_temp_high: 75
+      #     target_temp_low: 68
+      #     hvac_mode: 'auto'
+      - service: climate.set_preset_mode
+        data_template:
+          entity_id: climate.studio
+          preset_mode: 'Home'
+      - service: logbook.log
+        data_template:
+          name: "Studio Thermostat"
+          message: "set to Home"
