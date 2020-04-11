@@ -1,5 +1,11 @@
 {
     "files.associations": {
         "*.yaml": "home-assistant"
-    }
+    },
+    "editor.tabSize": 2,
+    "editor.formatOnSave": true,
+    "vscode-home-assistant.hostUrl": "https://hass.bigmike.name",
+    "vscode-home-assistant.longLivedAccessToken": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJmYzc0MGY3ZGEyZDI0YmEzYTA3ZjVhYjhmZWExYzUyYiIsImlhdCI6MTU4MTI2NzkzNiwiZXhwIjoxODk2NjI3OTM2fQ.Z5aT231VTtnW0HzLpxSsoAWa8S_oO8lpoiHzvVy5CYM",
+    "python.formatting.provider": "black",
+    "python.pythonPath": "C:\\Users\\Mike\\AppData\\Local\\Programs\\Python\\Python38-32\\python.exe"
 }

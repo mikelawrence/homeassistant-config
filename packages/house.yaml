@@ -1,7 +1,6 @@
 ################################################################
 ## Packages / House
 ##   House ISY-994 lights, switches, and scenes
-##   House Media Players
 ##   House Groups
 ################################################################
 
@@ -53,14 +52,6 @@ homeassistant:
       friendly_name: "Mikey Bedroom Fan"
 
     ################################################
-    ## Media Player
-    ################################################
-    media_player.family_room_apple_tv:
-      friendly_name: "Apple TV Family Room"
-    media_player.family_room:
-      friendly_name: "Sonos Family Room"
-
-    ################################################
     ## Remote
     ################################################
     remote.family_room:
@@ -74,10 +65,10 @@ sensor:
   - platform: history_stats
     name: Downstairs Cool Hours Yesterday
     entity_id: sensor.downstairs_thermostat_hvac_state
-    state: 'cool'
+    state: "cool"
     type: time
     # all of yesterday
-    end: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    end: "{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}"
     duration:
       hours: 24
 
@@ -85,10 +76,10 @@ sensor:
   - platform: history_stats
     name: Downstairs Heat Hours Yesterday
     entity_id: sensor.downstairs_thermostat_hvac_state
-    state: 'heat'
+    state: "heat"
     type: time
     # all of yesterday
-    end: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    end: "{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}"
     duration:
       hours: 24
 
@@ -96,10 +87,10 @@ sensor:
   - platform: history_stats
     name: Upstairs Cool Hours Yesterday
     entity_id: sensor.upstairs_thermostat_hvac_state
-    state: 'cool'
+    state: "cool"
     type: time
     # all of yesterday
-    end: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    end: "{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}"
     duration:
       hours: 24
 
@@ -107,10 +98,10 @@ sensor:
   - platform: history_stats
     name: Upstairs Heat Hours Yesterday
     entity_id: sensor.upstairs_thermostat_hvac_state
-    state: 'heat'
+    state: "heat"
     type: time
     # all of yesterday
-    end: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    end: "{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}"
     duration:
       hours: 24
 
@@ -120,4 +111,4 @@ sensor:
 scene:
   - name: "Movie Mode"
     entities:
-      switch.family_room_movie: on    # ISY-994 scene
+      switch.family_room_movie: on # ISY-994 scene

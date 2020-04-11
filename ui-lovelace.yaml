@@ -18,7 +18,7 @@ views:
         entities:
           - input_boolean.talk_studio
           - input_boolean.talk_studio_all
-        #   - input_boolean.test_alerts
+          - input_boolean.test_alerts
       - type: entities
         title: House Mode
         show_header_toggle: false
@@ -91,25 +91,15 @@ views:
         entities:
           - light.utility_room_light
       # - type: media-control
-      #   entity: media_player.family_room
-      # - type: media-control
-      #   entity: media_player.family_room
+      #   entity: media_player.sonos_family_room
+      - type: media-control
+        entity: media_player.directv_family_room
       # - type: media-control
       #   entity: media_player.apple_tv_family_room
       - type: thermostat
         entity: climate.downstairs
       - type: thermostat
         entity: climate.upstairs
-      - type: entities
-        title: House Climate
-        show_header_toggle: false
-        entities:
-          - binary_sensor.downstairs_thermostat_eco
-          - binary_sensor.upstairs_thermostat_eco
-          - sensor.downstairs_cool_hours_yesterday
-          - sensor.upstairs_cool_hours_yesterday
-          - sensor.downstairs_heat_hours_yesterday
-          - sensor.upstairs_heat_hours_yesterday
   - title: Studio
     badges:
       - person.mike
@@ -163,18 +153,11 @@ views:
           - light.studio_loft_light
           - fan.studio_loft_fan
       # - type: media-control
-      #   entity: media_player.studio
+      #   entity: media_player.sonos_studio
       # - type: media-control
       #   entity: media_player.apple_tv_studio
       # - type: media-control
-      #   entity: media_player.studio
-      - type: entities
-        title: Studio Climate
-        show_header_toggle: false
-        entities:
-          - binary_sensor.studio_thermostat_eco
-          - sensor.studio_cool_hours_yesterday
-          - sensor.studio_heat_hours_yesterday
+      #   entity: media_player.sonos_studio
       - type: thermostat
         entity: climate.studio
   - title: Outside
@@ -202,11 +185,11 @@ views:
         title: Garage
         show_header_toggle: false
         entities:
-        - switch.garage_light
-        - binary_sensor.garage_door_sensor
-        - cover.garage_door_1
-        - cover.garage_door_2
-        - cover.garage_door_3
+          - switch.garage_light
+          - binary_sensor.garage_door_sensor
+          - cover.garage_door_1
+          - cover.garage_door_2
+          - cover.garage_door_3
       - type: entities
         title: Roof Floodlights
         show_header_toggle: false
@@ -347,6 +330,23 @@ views:
             name: Board Temp
           - entity: sensor.garage_freezer_monitor_rssi
             name: RSSI
+      - type: entities
+        title: House Climate
+        show_header_toggle: false
+        entities:
+          - sensor.downstairs_thermostat_temperature
+          - sensor.upstairs_thermostat_temperature
+          - sensor.downstairs_cool_hours_yesterday
+          - sensor.upstairs_cool_hours_yesterday
+          - sensor.downstairs_heat_hours_yesterday
+          - sensor.upstairs_heat_hours_yesterday
+      - type: entities
+        title: Studio Climate
+        show_header_toggle: false
+        entities:
+          - sensor.studio_temperature
+          - sensor.studio_cool_hours_yesterday
+          - sensor.studio_heat_hours_yesterday
   - title: Cameras
     icon: mdi:cctv
     badges:

@@ -11,16 +11,6 @@
 homeassistant:
   customize:
     ################################################
-    ## Media Player
-    ################################################
-    media_player.studio_apple_tv:
-      friendly_name: "Apple TV Studio"
-    media_player.studio:
-      friendly_name: "Sonos Studio"
-    media_player.studio_bathroom:
-      friendly_name: "Sonos Studio Bathroom"
-
-    ################################################
     ## Remote
     ################################################
     remote.studio:
@@ -47,31 +37,38 @@ binary_sensor:
 ################################################################
 timer:
   studio_presence:
-    duration: '02:00:00'
-    
+    duration: "02:00:00"
+
 ################################################################
 ## Sensor
 ################################################################
 sensor:
+  - platform: template
+    sensors:
+      # extracts the HVAC State attribute from climate device
+      studio_hvac_state:
+        friendly_name: "Studio HVAC State"
+        value_template: "{{ state_attr('climate.studio', 'hvac_action') }}"
+
   # accumulates the time the Studio AC was cooling yesterday
   - platform: history_stats
     name: Studio Cool Hours Yesterday
-    entity_id: sensor.studio_thermostat_hvac_state
-    state: 'cool'
+    entity_id: sensor.studio_hvac_state
+    state: "cool"
     type: time
     # all of yesterday
-    end: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    end: "{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}"
     duration:
       hours: 24
 
   # accumulates the time the Studio AC was heating yesterday
   - platform: history_stats
     name: Studio Heat Hours Yesterday
-    entity_id: sensor.studio_thermostat_hvac_state
-    state: 'heat'
+    entity_id: sensor.studio_hvac_state
+    state: "heat"
     type: time
     # all of yesterday
-    end: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    end: "{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}"
     duration:
       hours: 24
 
@@ -79,18 +76,18 @@ sensor:
 ## Automation
 ################################################################
 automation:
-  - alias: 'Studio Away turn off Art Mode'
+  - alias: "Studio Away turn off Art Mode"
     trigger:
-    - platform: state
-      entity_id: binary_sensor.studio_multisensor_motion
-      to: 'off'
+      - platform: state
+        entity_id: binary_sensor.studio_multisensor_motion
+        to: "off"
     action:
-    - service: timer.start
-      data:
-        entity_id: timer.hallway
-  
+      - service: timer.start
+        data:
+          entity_id: timer.studio_presence
+
   # Studio Motion Detector Low Battery Alert
-  - alias: 'Studio Multisensor Low Battery'
+  - alias: "Studio Multisensor Low Battery"
     trigger:
       - platform: numeric_state
         entity_id: sensor.studio_multisensor_battery
@@ -109,7 +106,7 @@ automation:
           message: "Studio Multisensor is at {{ states('sensor.studio_multisensor_battery') }}% battery, it uses two CR123A batteries."
 
   # Studio Attic Motion Detector Low Battery Alert
-  - alias: 'Studio Attic Multisensor Low Battery'
+  - alias: "Studio Attic Multisensor Low Battery"
     trigger:
       - platform: numeric_state
         entity_id: sensor.studio_attic_multisensor_battery

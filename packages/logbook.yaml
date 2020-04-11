@@ -22,7 +22,7 @@ logbook:
       - automation.studio_bath_light_daytime_motion_on
       - automation.studio_bath_light_manual_input
       - automation.studio_bath_light_motion_off
-      - automation.studio_bath_light_stay_on      
+      - automation.studio_bath_light_stay_on
       - automation.studio_bath_light_timer_cancel
       - automation.studio_bath_light_timer_start
       - automation.studio_bathroom_presence_motion_on
@@ -45,7 +45,6 @@ logbook:
       - timer.studio_bath_light_timer
       - timer.studio_bath_vent_fan_timer
       - binary_sensor.studio_bath_humidity_rising
-
 ##################################################
 ##  logbook
 ##################################################
@@ -106,10 +105,10 @@ logbook:
 #       - binary_sensor.up_lg_bed_motion_sensor_dsk
 #       - binary_sensor.up_sm_bed_motion_sensor_dsk
 #       - binary_sensor.garage_motion_sensor_dsk
-#       - media_player.family_room
-#       - media_player.studio
-#       - media_player.studio_bathroom
-#       - media_player.studio_apple_tv
+#       - media_player.sonos_family_room
+#       - media_player.sonos_studio
+#       - media_player.sonos_studio_bathroom
+#       - media_player.sonos_studio_apple_tv
 #       - script.sonos_say
 #       - script.sonos_studio_say
 #       - script.sonos_family_room_say

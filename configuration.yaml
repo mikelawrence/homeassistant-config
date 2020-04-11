@@ -3,56 +3,8 @@
 ################################################################
 
 homeassistant:
-  # # Name of the location where Home Assistant is running
-  # name: House
-  # # Location required to calculate the time the sun rises and sets
-  # latitude: !secret latitude
-  # longitude: !secret longitude
-  # # Impacts weather/sunrise data (altitude above sea level in meters)
-  # elevation: 175.87
-  # # metric for Metric, imperial for Imperial
-  # unit_system: imperial
-  # # Pick yours from here: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
-  # time_zone: America/Chicago
-
   # Packages directory
   packages: !include_dir_named packages
-
-  customize:
-    ################################################
-    #  unhide the all_* groups
-    ################################################
-    group.all_scripts:
-      control: hidden
-      hidden: false
-
-    group.all_automations:
-      control: hidden
-      hidden: false
-
-    group.all_scenes:
-      control: hidden
-      hidden: false
-
-    group.all_lights:
-      control: hidden
-      hidden: false
-
-    group.all_switches:
-      control: hidden
-      hidden: false
-
-    group.all_fans:
-      control: hidden
-      hidden: false
-
-    group.all_covers:
-      control: hidden
-      hidden: false
-
-    group.all_devices:
-      control: hidden
-      hidden: false
 
 # Enable person tracking
 person:
@@ -70,12 +22,6 @@ config:
 lovelace:
   mode: yaml
 
-# Setup html access
-# http:
-#   base_url: !secret ha_url
-#   ssl_certificate: /ssl/fullchain.pem
-#   ssl_key: /ssl/privkey.pem
-
 # enable system health
 system_health:
 
@@ -87,16 +33,10 @@ updater:
 # Enable new Home Assistant Companion iOS app
 mobile_app:
 
-# Prevent discovery of some devices
-discovery:
-  ignore:
-   - samsung_tv
-   - apple_tv
-   - directv
-   - plex_mediaserver
-   - google_cast
-   - roku
-   - igd
+# Enable discovery
+# discovery:
+# ignore:
+#   - igd
 
 # Live streams
 stream:
@@ -107,31 +47,20 @@ conversation:
 # Track the sun
 sun:
 
-# enable Haiku with SenseMe ceiling fans
-senseme:
-  max_number_fans: 2
-  include:
-    - name: "Studio Vault Fan"
-      friendly_name: "Studio Fan"
-      has_light: true
-#exclude:
-  #  - "Studio Beam Fan"
-
 # Enable nest
 nest:
   client_id: !secret nest_client_id
   client_secret: !secret nest_client_secret
 
-# House ISY-994i integration
-isy994:
-  host: http://192.168.1.203:80
-  username: !secret isy_username
-  password: !secret isy_password
-  enable_climate: false
+# # House ISY-994i integration
+# isy994:
+#   host: http://172.20.1.26:80
+#   username: !secret isy_username
+#   password: !secret isy_password
 
 # Enable influx configuration
 influxdb:
-  host: 192.168.1.200
+  host: influx-server.home
   port: 8086
   database: homeassistant
   username: homeassistant
@@ -141,7 +70,7 @@ influxdb:
 
 # Enable MQTT Sharing between Hassio instances.
 # This is a client to the hosting instance.
-mqtt_shareclient:
+mqtt_share:
   base_topic: hass_share
 
 # Google Text to Speech
@@ -149,23 +78,13 @@ tts:
   - platform: google_translate
     service_name: google_say
 
-# device_tracker:
-#   # Unifi device tracker configuration
-#   - platform: unifi
-#     host: 192.168.1.2
-#     username: !secret unifi_username
-#     password: !secret unifi_password
-#     verify_ssl: false
-#     interval_seconds: 10
-#     consider_home: 300
-#     track_new_devices: no
-
 # Log Severities: notset, debug, info, warn, warning, error, fatal, critical
-logger:
-  default: error
-  logs:
-    homeassistant.components.mqtt: warning
-    custom_components.senseme: error
+# logger:
+#   default: warning
+#   logs:
+#     custom_components.senseme: debug
+#     aiosenseme: debug
+#     aiosenseme.discovery: debug
 
 # recorder configuration
 recorder:
@@ -186,17 +105,6 @@ recorder:
 #   usb_path: /dev/ttyACM0
 #   network_key: "0xD2, 0x7D, 0x39, 0xC0, 0xD0, 0xE4, 0xA5, 0x81, 0xEF, 0x91, 0x76, 0x67, 0x37, 0xB5, 0xF0, 0xE0"
 
-# sensor:
-#   - platform: yr
-#   # temperature of Hassio Raspberri Pi
-#   - platform: command_line
-#     name: Hassio House Temperature
-#     command: "cat /sys/class/thermal/thermal_zone0/temp"
-#     # If errors occur, remove degree symbol below
-#     unit_of_measurement: "°C"
-#     scan_interval: 60
-#     value_template: '{{ value | multiply(0.001) | round(1) }}'
-
 input_boolean:
   talk_studio:
   talk_studio_all:
@@ -211,8 +119,8 @@ automation:
       - service: script.sonos_studio_say
         data:
           volume: 0.5
-          delay: '00:00:02'
-          message: 'Talk Studio'
+          delay: "00:00:02"
+          message: "Talk Studio"
 
   - id: talk_studio_all_changed
     alias: Talk Studio All Changed
@@ -223,5 +131,5 @@ automation:
       - service: script.sonos_studio_all_say
         data:
           volume: 0.5
-          delay: '00:00:02'
-          message: 'Talk All Studio'
+          delay: "00:00:02"
+          message: "Talk All Studio"

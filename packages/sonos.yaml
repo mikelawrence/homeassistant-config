@@ -13,7 +13,7 @@ script:
       - service: sonos.snapshot
         data_template:
           entity_id: "{{ sonos_entity }}"
-          with_group: 'true'
+          with_group: "true"
       - service: sonos.unjoin
         data:
           entity_id: "{{ sonos_entity }}"
@@ -29,7 +29,7 @@ script:
       - service: sonos.restore
         data_template:
           entity_id: "{{ sonos_entity }}"
-          with_group: 'true'
+          with_group: "true"
 
   # Sonos All TTS
   sonos_all_say:
@@ -38,47 +38,50 @@ script:
       - service: sonos.snapshot
         data:
           entity_id:
-            - media_player.family_room
-            - media_player.studio
-            - media_player.studio_bathroom
-          with_group: 'true'
+            - media_player.sonos_family_room
+            - media_player.sonos_studio
+            - media_player.sonos_studio_bathroom
+            - media_player.sonos_boombox
+          with_group: "true"
       - service: sonos.unjoin
         data:
           entity_id:
-            - media_player.family_room
-            - media_player.studio
-            - media_player.studio_bathroom
+            - media_player.sonos_family_room
+            - media_player.sonos_studio
+            - media_player.sonos_studio_bathroom
+            - media_player.sonos_boombox
       - service: sonos.join
         data:
-          master: media_player.studio
+          master: media_player.sonos_studio
           entity_id:
-            - media_player.family_room
-            - media_player.studio
-            - media_player.studio_bathroom
+            - media_player.sonos_family_room
+            - media_player.sonos_studio
+            - media_player.sonos_studio_bathroom
+            - media_player.sonos_boombox
+      # - service: media_player.volume_set
+      #   data_template:
+      #     entity_id:
+      #       - media_player.sonos_family_room
+      #       - media_player.sonos_studio_bathroom
       - service: media_player.volume_set
         data_template:
           entity_id:
-            - media_player.family_room
-            - media_player.studio_bathroom
-      - service: media_player.volume_set
-        data_template:
-          entity_id:
-            - media_player.studio
+            - media_player.sonos_studio
           volume_level: "{{ volume|default(0.5) * 0.8 }}"
       - service: tts.google_say
         data_template:
           entity_id:
-            - media_player.studio
+            - media_player.sonos_studio
           message: "{{ message }}"
       - delay: "{{ delay|default('00:00:05') }}"
       - service: sonos.restore
         data:
           entity_id:
-            - media_player.family_room
-            - media_player.studio
-            - media_player.studio_bathroom
-          with_group: 'true'
-
+            - media_player.sonos_family_room
+            - media_player.sonos_studio
+            - media_player.sonos_studio_bathroom
+            - media_player.sonos_boombox
+          with_group: "true"
 
   # Sonos House All TTS
   sonos_house_all_say:
@@ -87,33 +90,33 @@ script:
       - service: sonos.snapshot
         data:
           entity_id:
-            - media_player.family_room
-          with_group: 'true'
+            - media_player.sonos_family_room
+          with_group: "true"
       - service: sonos.unjoin
         data:
           entity_id:
-            - media_player.family_room
+            - media_player.sonos_family_room
       # - service: sonos.join
       #   data:
-      #     master: media_player.family_room
+      #     master: media_player.sonos_family_room
       #     entity_id:
-      #       - media_player.family_room
+      #       - media_player.sonos_family_room
       - service: media_player.volume_set
         data_template:
           entity_id:
-            - media_player.family_room
+            - media_player.sonos_family_room
           volume_level: "{{ volume|default(0.5) }}"
       - service: tts.google_say
         data_template:
           entity_id:
-            - media_player.family_room
+            - media_player.sonos_family_room
           message: "{{ message }}"
       - delay: "{{ delay|default('00:00:05') }}"
       - service: sonos.restore
         data:
           entity_id:
-            - media_player.family_room
-          with_group: 'true'
+            - media_player.sonos_family_room
+          with_group: "true"
 
   # Sonos Family Room TTS
   sonos_family_room_say:
@@ -121,72 +124,76 @@ script:
     sequence:
       - service: sonos.snapshot
         data:
-          entity_id: media_player.family_room
-          with_group: 'true'
+          entity_id: media_player.sonos_family_room
+          with_group: "true"
       - service: sonos.unjoin
         data:
-          entity_id: media_player.family_room
+          entity_id: media_player.sonos_family_room
       - service: media_player.volume_set
         data_template:
-          entity_id: media_player.family_room
+          entity_id: media_player.sonos_family_room
           volume_level: "{{ volume|default(0.5) }}"
       - service: tts.google_say
         data_template:
-          entity_id: media_player.family_room
+          entity_id: media_player.sonos_family_room
           message: "{{ message }}"
       - delay: "{{ delay|default('00:00:05') }}"
       - service: sonos.restore
         data:
-          entity_id: media_player.family_room
-          with_group: 'true'
+          entity_id: media_player.sonos_family_room
+          with_group: "true"
 
   # Sonos Studio All TTS
   sonos_studio_all_say:
     alias: "Sonos Studio All TTS script"
     sequence:
-        # only speak in Studio if Art Mode is disabled
+      # only speak in Studio if Art Mode is disabled
       - condition: state
         entity_id: input_boolean.art_mode
-        state: 'off'
+        state: "off"
       - service: sonos.snapshot
         data:
           entity_id:
-            - media_player.studio
-            - media_player.studio_bathroom
-          with_group: 'true'
+            - media_player.sonos_studio
+            - media_player.sonos_studio_bathroom
+            - media_player.sonos_boombox
+          with_group: "true"
       - service: sonos.unjoin
         data:
           entity_id:
-            - media_player.studio
-            - media_player.studio_bathroom
+            - media_player.sonos_studio
+            - media_player.sonos_studio_bathroom
+            - media_player.sonos_boombox
       - service: sonos.join
         data:
-          master: media_player.studio
+          master: media_player.sonos_studio
           entity_id:
-            - media_player.studio
-            - media_player.studio_bathroom
+            - media_player.sonos_studio
+            - media_player.sonos_studio_bathroom
+            - media_player.sonos_boombox
       - service: media_player.volume_set
         data_template:
           entity_id:
-            - media_player.studio
+            - media_player.sonos_studio
           volume_level: "{{ volume|default(0.5) * 0.8 }}"
       - service: media_player.volume_set
         data_template:
           entity_id:
-            - media_player.studio_bathroom
+            - media_player.sonos_studio_bathroom
           volume_level: "{{ volume|default(0.5) }}"
       - service: tts.google_say
         data_template:
           entity_id:
-            - media_player.studio
+            - media_player.sonos_studio
           message: "{{ message }}"
       - delay: "{{ delay|default('00:00:05') }}"
       - service: sonos.restore
         data:
           entity_id:
-            - media_player.studio
-            - media_player.studio_bathroom
-          with_group: 'true'
+            - media_player.sonos_studio
+            - media_player.sonos_studio_bathroom
+            - media_player.sonos_boombox
+          with_group: "true"
 
   # Sonos Studio TTS
   sonos_studio_say:
@@ -194,23 +201,23 @@ script:
     sequence:
       - service: sonos.snapshot
         data:
-          entity_id: media_player.studio
+          entity_id: media_player.sonos_studio
           with_group: yes
       - service: sonos.unjoin
         data:
-          entity_id: media_player.studio
+          entity_id: media_player.sonos_studio
       - service: media_player.volume_set
         data_template:
-          entity_id: media_player.studio
+          entity_id: media_player.sonos_studio
           volume_level: "{{ volume|default(0.5) }}"
       - service: tts.google_say
         data_template:
-          entity_id: media_player.studio
+          entity_id: media_player.sonos_studio
           message: "{{ message }}"
       - delay: "{{ delay|default('00:00:05') }}"
       - service: sonos.restore
         data:
-          entity_id: media_player.studio
+          entity_id: media_player.sonos_studio
           with_group: yes
 
   # Sonos Studio Bathroom TTS
@@ -219,21 +226,21 @@ script:
     sequence:
       - service: sonos.snapshot
         data:
-          entity_id: media_player.studio_bathroom
+          entity_id: media_player.sonos_studio_bathroom
           with_group: yes
       - service: sonos.unjoin
         data:
-          entity_id: media_player.studio_bathroom
+          entity_id: media_player.sonos_studio_bathroom
       - service: media_player.volume_set
         data_template:
-          entity_id: media_player.studio_bathroom
+          entity_id: media_player.sonos_studio_bathroom
           volume_level: "{{ volume|default(0.5) }}"
       - service: tts.google_say
         data_template:
-          entity_id: media_player.studio_bathroom
+          entity_id: media_player.sonos_studio_bathroom
           message: "{{ message }}"
       - delay: "{{ delay|default('00:00:05') }}"
       - service: sonos.restore
         data:
-          entity_id: media_player.studio_bathroom
+          entity_id: media_player.sonos_studio_bathroom
           with_group: yes

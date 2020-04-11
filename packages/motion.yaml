@@ -115,7 +115,6 @@ binary_sensor:
 group:
   house_motion:
     name: House Motion
-    control: hidden
     entities:
       - binary_sensor.comp_room_motion
       - binary_sensor.master_bath_multisensor_motion

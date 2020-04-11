@@ -5,39 +5,39 @@
 ################################################################
 ## IOS
 ################################################################
-ios:
-  push:
-    categories:
-      - name: "Fridge Alarm"
-        identifier: 'fridge_alarm'
-        actions:
-          - identifier: 'SILENCE_ALARM'
-            title: "Silence Alarm"
-            activationMode: 'background'
-            authenticationRequired: true
-            destructive: true
-            behavior: 'default'
+# ios:
+#   push:
+#     categories:
+#       - name: "Fridge Alarm"
+#         identifier: 'fridge_alarm'
+#         actions:
+#           - identifier: 'SILENCE_ALARM'
+#             title: "Silence Alarm"
+#             activationMode: 'background'
+#             authenticationRequired: true
+#             destructive: true
+#             behavior: 'default'
   
 ################################################################
 ## Automations
 ################################################################
 automation:
-  # when IOS user selects Silence Alarm in response to an overtemp alarm
-  #   this automation will silence the appropriate alarm
-  - alias: "Refridgerator/Freezer Disable Alarm IOS Notification Action"         
-    trigger:
-      - platform: event
-        event_type: ios.notification_action_fired
-        event_data:
-          actionName: SILENCE_ALARM
-    action:
-      - service: homeassistant.turn_on
-        data_template:
-          entity_id: "{{ trigger.event.data.action_data.silence_entity_id }}"
-      - service: persistent_notification.create
-        data_template:
-          title: "{{ trigger.event.data.action_data.device_name }} Alarm"
-          message: "Audible alarm disabled by {{ trigger.event.data.sourceDeviceName }}."
+  # # when IOS user selects Silence Alarm in response to an overtemp alarm
+  # #   this automation will silence the appropriate alarm
+  # - alias: "Refridgerator/Freezer Disable Alarm IOS Notification Action"         
+  #   trigger:
+  #     - platform: event
+  #       event_type: ios.notification_action_fired
+  #       event_data:
+  #         actionName: SILENCE_ALARM
+  #   action:
+  #     - service: homeassistant.turn_on
+  #       data_template:
+  #         entity_id: "{{ trigger.event.data.action_data.silence_entity_id }}"
+  #     - service: persistent_notification.create
+  #       data_template:
+  #         title: "{{ trigger.event.data.action_data.device_name }} Alarm"
+  #         message: "Audible alarm disabled by {{ trigger.event.data.sourceDeviceName }}."
 
   # Alert when House Refidgerator or Freezer is too hot
   - alias: "House Refridgerator too Hot!"
@@ -46,10 +46,10 @@ automation:
         entity_id: binary_sensor.house_fridge_monitor_alarm
         from: 'off'
         to: 'on'
-      # - platform: state
-      #   entity_id: input_boolean.test_alerts
-      #   from: 'off'
-      #   to: 'on'
+      - platform: state
+        entity_id: input_boolean.test_alerts
+        from: 'off'
+        to: 'on'
     action:
       - service: notify.house_alerts
         data_template:
