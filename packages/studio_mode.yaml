@@ -66,17 +66,17 @@ automation:
       # Nobody home
       - platform: state
         entity_id: binary_sensor.people_away
-        to: 'on'
-        for: '00:15:00'
+        to: "on"
+        for: "00:15:00"
       # Switched to Vacation Mode
       - platform: state
         entity_id: input_boolean.vacation_mode
-        to: 'on'
+        to: "on"
     # Auto Away Mode does not happen in Guest Mode
     condition:
       condition: state
       entity_id: input_boolean.guest_mode
-      state: 'off'
+      state: "off"
     action:
       - service: switch.turn_off
         entity_id: switch.studio_state
@@ -92,7 +92,7 @@ automation:
     trigger:
       platform: state
       entity_id: switch.studio_state
-      to: 'off'
+      to: "off"
     action:
       - service: logbook.log
         data_template:
@@ -101,8 +101,8 @@ automation:
       - service: script.sonos_studio_all_say
         data:
           volume: 0.5
-          delay: '00:00:02'
-          message: 'Goodbye.'
+          delay: "00:00:02"
+          message: "Goodbye."
       # turn off Studio TV
       # - service: remote.turn_off
       #   data:
@@ -116,7 +116,7 @@ automation:
     trigger:
       platform: state
       entity_id: switch.studio_state
-      to: 'on'
+      to: "on"
     action:
       - service: logbook.log
         data_template:
@@ -125,5 +125,5 @@ automation:
       - service: script.sonos_studio_all_say
         data:
           volume: 0.5
-          delay: '00:00:02'
-          message: 'Hello.'
+          delay: "00:00:02"
+          message: "Hello."

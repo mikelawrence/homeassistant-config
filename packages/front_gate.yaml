@@ -23,7 +23,7 @@ binary_sensor:
       # Turns on when Septic Controller is Offline for too long
       front_gate_offline:
         friendly_name: "Front Gate Offline"
-        delay_on: '00:05:00'
+        delay_on: "00:05:00"
         value_template: "{{ is_state('cover.front_gate', 'unavailable') }}"
 
 ################################################################
@@ -36,13 +36,13 @@ automation:
     trigger:
       platform: state
       entity_id: cover.front_gate
-      to: 'open'
+      to: "open"
     action:
       - service: script.sonos_house_all_say
         data:
           volume: 0.5
-          delay: '00:00:02'
-          message: 'Front Gate Open.'
+          delay: "00:00:02"
+          message: "Front Gate Open."
 
   # Front Gate Opened Say in Studio
   - id: front_gate_opened_studio
@@ -50,39 +50,39 @@ automation:
     trigger:
       platform: state
       entity_id: cover.front_gate
-      to: 'open'
+      to: "open"
     condition:
       condition: and
       conditions:
         # Art Mode must be off to say anything
         - condition: state
           entity_id: input_boolean.art_mode
-          state: 'off'
+          state: "off"
         - condition: or
           conditions:
-              # if guest mode is disabled always speak
+            # if guest mode is disabled always speak
             - condition: state
               entity_id: input_boolean.guest_mode
-              state: 'off'
+              state: "off"
               # if guest mode is enabled don't speak when guests might be sleeping
             - condition: and
               conditions:
                 # guest mode enabled
                 - condition: state
                   entity_id: input_boolean.guest_mode
-                  state: 'on'
+                  state: "on"
                 # before 9PM
                 - condition: time
-                  before: '21:00:00'
+                  before: "21:00:00"
                 # after 9AM
                 - condition: time
-                  after: '9:00:00'
+                  after: "9:00:00"
     action:
       - service: script.sonos_studio_all_say
         data:
           volume: 0.5
-          delay: '00:00:02'
-          message: 'Front Gate Open.'
+          delay: "00:00:02"
+          message: "Front Gate Open."
 
   # Front Gate Open too long
   - id: front_gate_open_too_long
@@ -90,8 +90,8 @@ automation:
     trigger:
       - platform: state
         entity_id: binary_sensor.front_gate_open_too_long
-        from: 'off'
-        to: 'on'
+        from: "off"
+        to: "on"
       # - platform: state
       #   entity_id: input_boolean.test_alerts
       #   from: 'on'
@@ -100,8 +100,8 @@ automation:
       - service: script.sonos_all_say
         data:
           volume: 0.8
-          delay: '00:00:03'
-          message: 'Front Gate Open Too Long.'
+          delay: "00:00:03"
+          message: "Front Gate Open Too Long."
       - service: notify.sensor_alerts
         data_template:
           title: "Front Gate Alarm"
@@ -116,8 +116,8 @@ automation:
     trigger:
       - platform: state
         entity_id: binary_sensor.front_gate_open_too_long
-        from: 'on'
-        to: 'off'
+        from: "on"
+        to: "off"
       # - platform: state
       #   entity_id: input_boolean.test_alerts
       #   from: 'on'
@@ -126,8 +126,8 @@ automation:
       - service: script.sonos_all_say
         data:
           volume: 0.8
-          delay: '00:00:03'
-          message: 'Front Gate Closed.'
+          delay: "00:00:03"
+          message: "Front Gate Closed."
       - service: notify.sensor_alerts
         data_template:
           title: "Front Gate Status Good"
@@ -142,8 +142,8 @@ automation:
     trigger:
       - platform: state
         entity_id: binary_sensor.front_gate_offline
-        from: 'off'
-        to: 'on'
+        from: "off"
+        to: "on"
       # - platform: state
       #   entity_id: input_boolean.test_alerts
       #   from: 'off'
@@ -163,8 +163,8 @@ automation:
     trigger:
       - platform: state
         entity_id: binary_sensor.front_gate_offline
-        from: 'on'
-        to: 'off'
+        from: "on"
+        to: "off"
       # - platform: state
       #   entity_id: input_boolean.test_alerts
       #   from: 'on'

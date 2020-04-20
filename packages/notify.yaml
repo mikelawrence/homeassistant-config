@@ -17,12 +17,12 @@ notify:
     platform: group
     services:
       - service: mobile_app_mikes_iphone
-      # - service: ios_clara_iphone_ios
+      # - service: mobile_app_clara_iphone
   - name: sensor_alerts
     platform: group
     services:
       - service: mobile_app_mikes_iphone
-      
+
 ################################################################
 ## Automations
 ################################################################
@@ -31,8 +31,8 @@ automation:
     trigger:
       - platform: state
         entity_id: input_boolean.test_alerts
-        from: 'off'
-        to: 'on'
+        from: "off"
+        to: "on"
         for: "00:00:02"
     action:
       - service: homeassistant.turn_off

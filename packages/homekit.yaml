@@ -6,7 +6,7 @@ homekit:
   filter:
     include_entities:
       # House
-      - switch.house_state              # Home/Away for House
+      - switch.house_state # Home/Away for House
       # Kitchen
       - switch.kitchen_lights_scene
       - fan.kitchen_fan_front
@@ -25,7 +25,7 @@ homekit:
       - light.master_bed_light
       - fan.master_bed_fan
       # Studio
-      - switch.studio_state             # Home/Away for Studio
+      - switch.studio_state # Home/Away for Studio
       - light.studio_chandeliers
       - switch.studio_shoplights
       - fan.studio_fan

@@ -85,7 +85,7 @@ sensor:
   - platform: mqtt
     name: weewx_temperature
     state_topic: "weather/loop"
-    unit_of_measurement: '°F'
+    unit_of_measurement: "°F"
     value_template: >
       {% if value_json.outTemp %}
         {{ value_json.outTemp | round(1) }}
@@ -94,7 +94,7 @@ sensor:
   - platform: mqtt
     name: weewx_dewpoint
     state_topic: "weather/loop"
-    unit_of_measurement: '°F'
+    unit_of_measurement: "°F"
     value_template: >
       {% if value_json.dewpoint %}
         {{ value_json.dewpoint | round(1) }}
@@ -103,7 +103,7 @@ sensor:
   - platform: mqtt
     name: weewx_heat_index
     state_topic: "weather/loop"
-    unit_of_measurement: '°F'
+    unit_of_measurement: "°F"
     value_template: >
       {% if value_json.heatindex %}
         {{ value_json.heatindex | round(1) }}
@@ -112,7 +112,7 @@ sensor:
   - platform: mqtt
     name: weewx_humidex
     state_topic: "weather/loop"
-    unit_of_measurement: '°F'
+    unit_of_measurement: "°F"
     value_template: >
       {% if value_json.humidex %}
         {{ value_json.humidex | round(1) }}
@@ -121,7 +121,7 @@ sensor:
   - platform: mqtt
     name: weewx_windchill
     state_topic: "weather/loop"
-    unit_of_measurement: '°F'
+    unit_of_measurement: "°F"
     value_template: >
       {% if value_json.windchill %}
         {{ value_json.windchill | round(1) }}
@@ -130,7 +130,7 @@ sensor:
   - platform: mqtt
     name: weewx_humidity
     state_topic: "weather/loop"
-    unit_of_measurement: '%'
+    unit_of_measurement: "%"
     value_template: >
       {% if value_json.outHumidity %}
         {{ value_json.outHumidity | round(1) }}
@@ -139,7 +139,7 @@ sensor:
   - platform: mqtt
     name: weewx_barometer
     state_topic: "weather/loop"
-    unit_of_measurement: 'in'
+    unit_of_measurement: "in"
     value_template: >
       {% if value_json.barometer %}
         {{ value_json.barometer | round(2) }}
@@ -148,7 +148,7 @@ sensor:
   - platform: mqtt
     name: weewx_wind
     state_topic: "weather/loop"
-    unit_of_measurement: 'mph'
+    unit_of_measurement: "mph"
     value_template: >
       {% if value_json.windSpeed %}
         {{ value_json.windSpeed | round(0) }}
@@ -157,7 +157,7 @@ sensor:
   - platform: mqtt
     name: weewx_wind_dir
     state_topic: "weather/loop"
-    unit_of_measurement: '°'
+    unit_of_measurement: "°"
     value_template: >
       {% if value_json.windDir %}
         {{ value_json.windDir | round(0) }}
@@ -166,7 +166,7 @@ sensor:
   - platform: mqtt
     name: weewx_gust
     state_topic: "weather/loop"
-    unit_of_measurement: 'mph'
+    unit_of_measurement: "mph"
     value_template: >
       {% if value_json.windGust %}
         {{ value_json.windGust | round(0) }}
@@ -175,7 +175,7 @@ sensor:
   - platform: mqtt
     name: weewx_gust_dir
     state_topic: "weather/loop"
-    unit_of_measurement: '°'
+    unit_of_measurement: "°"
     value_template: >
       {% if value_json.windGustDir %}
         {{ value_json.windGustDir | round(0) }}
@@ -184,7 +184,7 @@ sensor:
   - platform: mqtt
     name: weewx_rain
     state_topic: "weather/loop"
-    unit_of_measurement: 'in'
+    unit_of_measurement: "in"
     value_template: >
       {% if value_json.dayRain %}
         {{ value_json.dayRain | round(2) }}
@@ -193,7 +193,7 @@ sensor:
   - platform: mqtt
     name: weewx_rain_rate
     state_topic: "weather/loop"
-    unit_of_measurement: 'in/hr'
+    unit_of_measurement: "in/hr"
     value_template: >
       {% if value_json.rainRate %}
         {{ value_json.rainRate | round(2) }}
@@ -202,7 +202,7 @@ sensor:
   - platform: mqtt
     name: weewx_rain_storm
     state_topic: "weather/loop"
-    unit_of_measurement: 'in'
+    unit_of_measurement: "in"
     value_template: >
       {% if value_json.stormRain %}
         {{ value_json.stormRain | round(2) }}
@@ -211,7 +211,7 @@ sensor:
   - platform: mqtt
     name: weewx_rain_month
     state_topic: "weather/loop"
-    unit_of_measurement: 'in'
+    unit_of_measurement: "in"
     value_template: >
       {% if value_json.monthRain %}
         {{ value_json.monthRain | round(2) }}
@@ -220,7 +220,7 @@ sensor:
   - platform: mqtt
     name: weewx_rain_year
     state_topic: "weather/loop"
-    unit_of_measurement: 'in'
+    unit_of_measurement: "in"
     value_template: >
       {% if value_json.yearRain %}
         {{ value_json.yearRain | round(2) }}
@@ -233,7 +233,7 @@ binary_sensor:
   - platform: mqtt
     name: weewx_tx_battery
     state_topic: "weather/loop"
-    device_class: 'battery'
+    device_class: "battery"
     value_template: >
       {%- if value_json.txBatteryStatus | default("0.0") | float == 0.0 -%}
         OFF
@@ -247,11 +247,11 @@ binary_sensor:
 automation:
   # Septic Controller Offline for too long
   - alias: "Weather Station Battery Low"
-    initial_state: 'on'
+    initial_state: "on"
     trigger:
       - platform: state
         entity_id: binary_sensor.weewx_tx_battery
-        to: 'on'
+        to: "on"
     action:
       - service: notify.sensor_alerts
         data_template:
@@ -261,4 +261,3 @@ automation:
         data_template:
           title: "Low Battery Detected"
           message: "Time to replace battery in Weather Station ISS."
-

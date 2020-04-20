@@ -6,17 +6,8 @@ homeassistant:
   # Packages directory
   packages: !include_dir_named packages
 
-# Enable person tracking
-person:
-
-# Enables the cloud
-cloud:
-
-# Enables the frontend
-frontend:
-
-# Enables configuration UI
-config:
+# enable defqault configurations
+default_config:
 
 # Enables Lovelace YAML
 lovelace:
@@ -30,13 +21,8 @@ updater:
   # Optional, allows Home Assistant developers to focus on popular components.
   include_used_components: true
 
-# Enable new Home Assistant Companion iOS app
-mobile_app:
-
-# Enable discovery
-# discovery:
-# ignore:
-#   - igd
+# Enable iOS advanced notifications
+ios:
 
 # Live streams
 stream:
@@ -51,12 +37,6 @@ sun:
 nest:
   client_id: !secret nest_client_id
   client_secret: !secret nest_client_secret
-
-# # House ISY-994i integration
-# isy994:
-#   host: http://172.20.1.26:80
-#   username: !secret isy_username
-#   password: !secret isy_password
 
 # Enable influx configuration
 influxdb:

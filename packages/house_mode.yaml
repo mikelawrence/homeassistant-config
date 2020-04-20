@@ -12,7 +12,7 @@ homeassistant:
     ## Switch
     ################################################
     # ISY-994 HA.switch "Program Switches"
-    switch.house_state:                     # 'on' = Home, 'off' = Away
+    switch.house_state: # 'on' = Home, 'off' = Away
       friendly_name: "House Home"
       icon: mdi:home
 
@@ -45,7 +45,7 @@ binary_sensor:
           {{ is_state('input_boolean.vacation_mode', 'on') }}
   - platform: template
     sensors:
-      # this sensor is on when guest mode is active but 
+      # this sensor is on when guest mode is active but
       #   only if vacation mode is not active
       guest_active:
         friendly_name: "Guest Active"
@@ -108,13 +108,13 @@ automation:
       # Somebody home switched on
       - platform: state
         entity_id: binary_sensor.people_home
-        from: 'off'
-        to: 'on'
+        from: "off"
+        to: "on"
       # Switched out of Vacation Mode
       - platform: state
         entity_id: input_boolean.vacation_mode
-        from: 'on'
-        to: 'off'
+        from: "on"
+        to: "off"
     # Auto Away Mode does not happen in Guest Mode
     condition:
       - condition: template
@@ -135,19 +135,19 @@ automation:
       # Nobody home
       - platform: state
         entity_id: binary_sensor.people_away
-        from: 'off'
-        to: 'on'
-        for: '00:10:00'
+        from: "off"
+        to: "on"
+        for: "00:10:00"
       # Switched to Vacation Mode
       - platform: state
         entity_id: input_boolean.vacation_mode
-        from: 'off'
-        to: 'on'
+        from: "off"
+        to: "on"
     # Auto Away Mode does not happen in Guest Mode
     condition:
       condition: state
       entity_id: input_boolean.guest_mode
-      state: 'off'
+      state: "off"
     action:
       # Set ISY-994 House to Away
       - service: switch.turn_off
@@ -169,8 +169,8 @@ automation:
     trigger:
       platform: state
       entity_id: switch.house_state
-      from: 'on'
-      to: 'off'
+      from: "on"
+      to: "off"
     action:
       - service: logbook.log
         data_template:
@@ -179,8 +179,8 @@ automation:
       - service: script.sonos_house_all_say
         data:
           volume: 0.5
-          delay: '00:00:02'
-          message: 'Goodbye.'
+          delay: "00:00:02"
+          message: "Goodbye."
 
   # House manually switched to Home Mode
   #   Either by HASS switch or KeypadLinc switch
@@ -189,8 +189,8 @@ automation:
     trigger:
       platform: state
       entity_id: switch.house_state
-      from: 'off'
-      to: 'on'
+      from: "off"
+      to: "on"
     action:
       - service: logbook.log
         data_template:
@@ -199,5 +199,5 @@ automation:
       - service: script.sonos_house_all_say
         data:
           volume: 0.5
-          delay: '00:00:02'
-          message: 'Hello.'
+          delay: "00:00:02"
+          message: "Hello."

@@ -23,7 +23,7 @@ binary_sensor:
       studio_thermostat_away:
         friendly_name: "Studio Thermostat Away"
         value_template: "{{ state_attr('climate.studio', 'preset_mode') | lower == 'away' or state_attr('climate.studio', 'climate_mode') | lower == 'away' }}"
-        
+
 ################################################################
 ## Automation
 ################################################################
@@ -34,7 +34,7 @@ automation:
   #      Guest Mode is off (input_boolean.guest_mode = 'off')
   - id: switch_studio_thermostat_away
     alias: "Switch Studio thermostat to Away"
-    initial_state: 'on'
+    initial_state: "on"
     trigger:
       # Home Assistant started
       - platform: homeassistant
@@ -42,33 +42,33 @@ automation:
       # Studio Thermostat switched from Away
       - platform: state
         entity_id: sensor.studio_thermostat_away
-        from: 'on'
+        from: "on"
       # ISY-994 Studio State was switched to Away
       - platform: state
         entity_id: switch.studio_state
-        to: 'off'
+        to: "off"
       # Vacation Active switched to on
       - platform: state
         entity_id: binary_sensor.vacation_active
-        to: 'on'
+        to: "on"
       # Guest Active switched to off
       - platform: state
         entity_id: binary_sensor.guest_active
-        to: 'off'
+        to: "off"
     condition:
       condition: or
       conditions:
         - condition: state
           entity_id: binary_sensor.vacation_active
-          state: 'on'
+          state: "on"
         - condition: and
           conditions:
             - condition: state
               entity_id: binary_sensor.guest_active
-              state: 'off'
+              state: "off"
             - condition: state
               entity_id: switch.studio_state
-              state: 'off'
+              state: "off"
     action:
       - service: script.studio_thermostat_set_away
 
@@ -79,7 +79,7 @@ automation:
   #   4. Vacation Active turned off (input_boolean.boys_home == 'on')
   - id: switch_nest_studio_home
     alias: "Switch Studio Nest thermostat to Home"
-    initial_state: 'on'
+    initial_state: "on"
     trigger:
       # Home Assistant started
       - platform: homeassistant
@@ -87,29 +87,29 @@ automation:
       # ISY-994 Studio State was switched to Home
       - platform: state
         entity_id: switch.studio_state
-        to: 'on'
+        to: "on"
       # Guest Active switched to on
       - platform: state
         entity_id: binary_sensor.guest_active
-        to: 'on'
+        to: "on"
       # Vacation Active switched to off
       - platform: state
         entity_id: binary_sensor.vacation_active
-        to: 'off'
+        to: "off"
     condition:
       condition: or
       conditions:
         - condition: state
           entity_id: binary_sensor.guest_active
-          state: 'on'
+          state: "on"
         - condition: and
           conditions:
             - condition: state
               entity_id: binary_sensor.vacation_active
-              state: 'off'
+              state: "off"
             - condition: state
               entity_id: switch.house_state
-              state: 'on'
+              state: "on"
     action:
       - service: script.studio_thermostat_set_home
 
@@ -128,7 +128,7 @@ script:
       - service: climate.set_preset_mode
         data_template:
           entity_id: climate.studio
-          preset_mode: 'Away'
+          preset_mode: "Away"
       - service: logbook.log
         data_template:
           name: "Studio Thermostat"
@@ -152,7 +152,7 @@ script:
       - service: climate.set_preset_mode
         data_template:
           entity_id: climate.studio
-          preset_mode: 'Home'
+          preset_mode: "Home"
       - service: logbook.log
         data_template:
           name: "Studio Thermostat"

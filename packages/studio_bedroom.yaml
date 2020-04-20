@@ -38,8 +38,8 @@ binary_sensor:
         entity_id: sensor.studio_bath_multisensor_humidity
         device_class: moisture
         max_samples: 20
-        sample_duration: 2100   # 35 minutes
-        min_gradient: 0.01000   # rising 6% in 10 minutes
+        sample_duration: 2100 # 35 minutes
+        min_gradient: 0.01000 # rising 6% in 10 minutes
 
 ################################################################
 ## Sensor
@@ -62,11 +62,11 @@ timer:
   # timer to turn off Studio Bath Light
   studio_bath_light_timer:
     name: "Studio Bath Light Timer"
-    duration: '00:30:00'
+    duration: "00:30:00"
   # timer to turn off Studio Bath Vent Fan
   studio_bath_vent_fan_timer:
     name: "Studio Bath Vent Fan Timer"
-    duration: '00:30:00'
+    duration: "00:30:00"
 
 ################################################################
 ## Automation
@@ -82,11 +82,11 @@ automation:
         event_type: isy994_control
         event_data:
           entity_id: light.studio_bath_light
-          control: 'DFON'
+          control: "DFON"
       # Studio Bath Light turned off
       - platform: state
         entity_id: light.studio_bath_light
-        to: 'off'
+        to: "off"
     action:
       # Change Studio Bath Light Keep On input boolean
       service_template: >
@@ -108,17 +108,17 @@ automation:
         event_type: isy994_control
         event_data:
           entity_id: light.studio_bath_light
-          control: 'DON'
+          control: "DON"
       # Fade Stop event occurred on Studio Bath Light Door
       - platform: event
         event_type: isy994_control
         event_data:
           entity_id: light.studio_bath_light
-          control: 'FDSTOP'
+          control: "FDSTOP"
       # Studio Bath Light turned off
       - platform: state
         entity_id: light.studio_bath_light
-        to: 'off'
+        to: "off"
     action:
       # Change Studio Bath Light Keep On input boolean
       service_template: >
@@ -136,19 +136,19 @@ automation:
     trigger:
       platform: state
       entity_id: binary_sensor.studio_bath_multisensor_motion
-      to: 'on'
+      to: "on"
     condition:
       condition: and
       conditions:
         # Studio Bath Light is off
         - condition: state
           entity_id: light.studio_bath_light
-          state: 'off'
+          state: "off"
         # It must be bedtime
         - condition: or
           conditions:
             - condition: time
-              after: '20:30:00'
+              after: "20:30:00"
             - condition: sun
               before: sunrise
     action:
@@ -162,24 +162,24 @@ automation:
     trigger:
       platform: state
       entity_id: binary_sensor.studio_bath_multisensor_motion
-      to: 'on'
+      to: "on"
     condition:
       condition: and
       conditions:
         # Studio Bath Light must be off
         - condition: state
           entity_id: light.studio_bath_light
-          state: 'off'
+          state: "off"
         # It must be daytime
         - condition: and
           conditions:
             - condition: time
-              before: '20:30:00'
+              before: "20:30:00"
             - condition: sun
               after: sunrise
     action:
       # turn on ISY994 Studio Bath Light Daytime Scene
-      service: 'homeassistant.turn_on'
+      service: "homeassistant.turn_on"
       entity_id: switch.studio_bath_light_scene
 
   # Turn Studio Bath Light off when motion has not been detected long enough
@@ -188,7 +188,7 @@ automation:
     trigger:
       platform: state
       entity_id: binary_sensor.studio_bath_multisensor_motion
-      to: 'off'
+      to: "off"
       for:
         # 26 minutes + 4 minutes for motion on time = 30 minutes minumum
         minutes: 26
@@ -198,15 +198,15 @@ automation:
         # Studio Bath Light was not turned on Manually
         - condition: state
           entity_id: input_boolean.studio_bath_light_manual_input
-          state: 'off'
+          state: "off"
         # Studio Bath Light Stay On must be off
         - condition: state
           entity_id: input_boolean.studio_bath_light_stay_on
-          state: 'off'
+          state: "off"
         # Studio Bath Light must be on
         - condition: state
           entity_id: light.studio_bath_light
-          state: 'on'
+          state: "on"
     action:
       # turn off ISY994 Studio Bath Light Scene
       service: homeassistant.turn_off
@@ -217,10 +217,10 @@ automation:
     trigger:
       platform: state
       entity_id: binary_sensor.studio_bath_multisensor_motion
-      to: 'on'
+      to: "on"
     action:
-      # turn on Studio Bath Presence 
-      service: 'homeassistant.turn_on'
+      # turn on Studio Bath Presence
+      service: "homeassistant.turn_on"
       entity_id: input_boolean.studio_bath_presence
 
   # Turn Studio Bath Presence off when motion has not been detected long enough
@@ -228,12 +228,12 @@ automation:
     trigger:
       platform: state
       entity_id: binary_sensor.studio_bath_multisensor_motion
-      to: 'off'
+      to: "off"
       for:
         # 26 minutes + 4 minutes for motion on time = 30 minutes minumum
         minutes: 26
     action:
-      # turn off Studio Bath Presence 
+      # turn off Studio Bath Presence
       service: homeassistant.turn_off
       entity_id: input_boolean.studio_bath_presence
 
@@ -245,18 +245,18 @@ automation:
         event_type: isy994_control
         event_data:
           entity_id: light.studio_bath_light
-          control: 'DON'
+          control: "DON"
       # Fade Stop event occurred on Studio Bath Light Door
       - platform: event
         event_type: isy994_control
         event_data:
           entity_id: light.studio_bath_light
-          control: 'FDSTOP'
+          control: "FDSTOP"
     condition:
       # Studio Bath Light Stay On must be ff
       condition: state
       entity_id: input_boolean.studio_bath_light_stay_on
-      state: 'off'
+      state: "off"
     action:
       # start/restart Studio Bath Light timer to turn the light off
       service: timer.start
@@ -268,11 +268,11 @@ automation:
       # Master Bed Light turned off
       - platform: state
         entity_id: light.studio_bath_light
-        to: 'off'
+        to: "off"
       # Studio Bath Light Stay On turned on
       - platform: state
         entity_id: input_boolean.studio_bath_light_stay_on
-        to: 'on'
+        to: "on"
     action:
       # kill the running Studio Bath Light timer because the light is off
       service: timer.cancel
@@ -292,11 +292,11 @@ automation:
         # Master Bed Bath must be on
         - condition: state
           entity_id: light.studio_bath_light
-          state: 'on'
+          state: "on"
         # Studio Bath Light Stay On must be off
         - condition: state
           entity_id: input_boolean.studio_bath_light_stay_on
-          state: 'off'
+          state: "off"
     action:
       # turn off ISY994 Studio Bath Light scene
       service: homeassistant.turn_off
@@ -308,7 +308,7 @@ automation:
       # humidity is deemed rising fast enough
       - platform: state
         entity_id: binary_sensor.studio_bath_humidity_rising
-        to: 'on'
+        to: "on"
       # humidity is above threshold
       - platform: numeric_state
         entity_id: sensor.studio_bath_multisensor_humidity
@@ -336,7 +336,7 @@ automation:
       # Studio Bath Humidity High must be on
       condition: state
       entity_id: input_boolean.studio_bath_humidity_high
-      state: 'on'
+      state: "on"
     action:
       # turn of ISY994 Studio Bath Vent Fan switch
       service: homeassistant.turn_off
@@ -348,7 +348,7 @@ automation:
       # Humidity is deemed too high
       platform: state
       entity_id: input_boolean.studio_bath_humidity_high
-      to: 'on'
+      to: "on"
     action:
       # Turn off ISY994 Studio Bath Vent Fan switch
       service: homeassistant.turn_on
@@ -365,18 +365,18 @@ automation:
       # Studio Bath Humidity High just turned off
       - platform: state
         entity_id: input_boolean.studio_bath_humidity_high
-        to: 'off'
+        to: "off"
     condition:
       condition: and
       conditions:
         # Studio Bath Vent Fan must be on
         - condition: state
           entity_id: switch.studio_bath_vent_fan
-          state: 'on'
+          state: "on"
         # Studio Bath Humidity High must be off
         - condition: state
           entity_id: input_boolean.studio_bath_humidity_high
-          state: 'off'
+          state: "off"
     action:
       # turn off ISY994 Studio Bath Vent Fan switch
       service: homeassistant.turn_off
@@ -390,18 +390,18 @@ automation:
         event_type: isy994_control
         event_data:
           entity_id: switch.studio_bath_vent_fan
-          control: 'DON'
+          control: "DON"
       # Vent Fan turned Fast On manually
       - platform: event
         event_type: isy994_control
         event_data:
           entity_id: switch.studio_bath_vent_fan
-          control: 'DFON'
+          control: "DFON"
     condition:
       # Studio Bath Humidity High must be off
       condition: state
       entity_id: input_boolean.studio_bath_humidity_high
-      state: 'off'
+      state: "off"
     action:
       # start/restart Studio Bath Vent Fan timer
       service: timer.start
@@ -412,15 +412,15 @@ automation:
     trigger:
       platform: state
       entity_id: switch.studio_bath_vent_fan
-      to: 'off'
+      to: "off"
     action:
       # Cancel Studio Bath Vent Fan Timer because the vent fan turned off
       service: timer.cancel
       entity_id: timer.studio_bath_vent_fan_timer
 
   # Studio Bath Motion Detector Low Battery Alert
-  - initial_state: 'on'
-    alias: 'Studio Bath Multisensor Low Battery'
+  - initial_state: "on"
+    alias: "Studio Bath Multisensor Low Battery"
     trigger:
       - platform: numeric_state
         entity_id: sensor.studio_bath_multisensor_battery

@@ -30,7 +30,6 @@ homeassistant:
       friendly_name: "Computer Room Multisensor Motion"
       device_class: motion
 
-
 ################################################################
 ## Input Boolean
 ################################################################
@@ -53,7 +52,7 @@ input_boolean:
 ## Binary Sensor
 ################################################################
 binary_sensor:
-  - platform: 'template'
+  - platform: "template"
     sensors:
       # Any motion
       any_motion:
@@ -146,64 +145,64 @@ automation:
     trigger:
       - platform: state
         entity_id: binary_sensor.comp_room_motion_sensor_lb
-        to: 'on'
+        to: "on"
     action:
       - service: persistent_notification.create
         data_template:
-          message: 'Time to replace battery in Computer Room Motion Sensor.'
+          message: "Time to replace battery in Computer Room Motion Sensor."
           title: "Low Battery Detected"
-          
+
   - alias: "Upstairs Bath Motion Sensor Low Battery"
     #initial_state: 'on'
     trigger:
       - platform: state
         entity_id: binary_sensor.up_bath_motion_sensor_lb
-        to: 'on'
+        to: "on"
     action:
       - service: persistent_notification.create
         data_template:
-          message: 'Time to replace battery in Upstairs Bath Motion Sensor.'
+          message: "Time to replace battery in Upstairs Bath Motion Sensor."
           title: "Low Battery Detected"
-          
+
   - alias: "Upstairs Small Bedroom Motion Sensor Low Battery"
     #initial_state: 'on'
     trigger:
       - platform: state
         entity_id: binary_sensor.up_sm_bed_motion_sensor_lb
-        to: 'on'
+        to: "on"
     action:
       - service: persistent_notification.create
         data_template:
-          message: 'Time to replace battery in Upstairs Small Bedroom Motion Sensor.'
+          message: "Time to replace battery in Upstairs Small Bedroom Motion Sensor."
           title: "Low Battery Detected"
-          
+
   - alias: "Upstairs Large Bedroom Motion Sensor Low Battery"
     #initial_state: 'on'
     trigger:
       - platform: state
         entity_id: binary_sensor.up_lg_bed_motion_sensor_lb
-        to: 'on'
+        to: "on"
     action:
       - service: persistent_notification.create
         data_template:
-          message: 'Time to replace battery in Upstairs Large Bedroom Motion Sensor.'
+          message: "Time to replace battery in Upstairs Large Bedroom Motion Sensor."
           title: "Low Battery Detected"
-          
+
   - alias: "Garage Motion Sensor Low Battery"
     #initial_state: 'on'
     trigger:
       - platform: state
         entity_id: binary_sensor.garage_motion_sensor_lb
-        to: 'on'
+        to: "on"
     action:
       - service: persistent_notification.create
         data_template:
-          message: 'Time to replace battery in Garage Motion Sensor.'
+          message: "Time to replace battery in Garage Motion Sensor."
           title: "Low Battery Detected"
 
   # Computer Room Motion Detector Low Battery Alert
-  - initial_state: 'on'
-    alias: 'Computer Room Multisensor Low Battery'
+  - initial_state: "on"
+    alias: "Computer Room Multisensor Low Battery"
     trigger:
       - platform: numeric_state
         entity_id: sensor.computer_room_multisensor_battery
@@ -227,118 +226,118 @@ automation:
       event_type: isy994_control
       event_data:
         entity_id: binary_sensor.comp_room_motion_sensor
-        control: 'DON'
+        control: "DON"
     action:
       service: input_boolean.turn_on
       data:
         entity_id: input_boolean.comp_room_motion_state
-        
+
   - alias: "Computer Room Motion Detect OFF"
     trigger:
       platform: state
       entity_id: input_boolean.comp_room_motion_state
-      from: 'off'
-      to: 'on'
+      from: "off"
+      to: "on"
       for:
         minutes: 15
     action:
       service: input_boolean.turn_off
       data:
         entity_id: input_boolean.comp_room_motion_state
-        
+
   - alias: "Upstairs Bath Motion Detect ON"
     trigger:
       platform: event
       event_type: isy994_control
       event_data:
         entity_id: binary_sensor.up_bath_motion_sensor
-        control: 'DON'
+        control: "DON"
     action:
       service: input_boolean.turn_on
       data:
         entity_id: input_boolean.up_bath_motion_state
-        
+
   - alias: "Upstairs Bath Motion Detect OFF"
     trigger:
       platform: state
       entity_id: input_boolean.up_bath_motion_state
-      from: 'off'
-      to: 'on'
+      from: "off"
+      to: "on"
       for:
         minutes: 15
     action:
       service: input_boolean.turn_off
       data:
         entity_id: input_boolean.up_bath_motion_state
-        
+
   - alias: "Upstairs Small Bedroom Motion Detect ON"
     trigger:
       platform: event
       event_type: isy994_control
       event_data:
         entity_id: binary_sensor.up_sm_bed_motion_sensor
-        control: 'DON'
+        control: "DON"
     action:
       service: input_boolean.turn_on
       data:
         entity_id: input_boolean.up_sm_bed_motion_state
-        
+
   - alias: "Upstairs Small Bedroom Motion Detect OFF"
     trigger:
       platform: state
       entity_id: input_boolean.up_sm_bed_motion_state
-      from: 'off'
-      to: 'on'
+      from: "off"
+      to: "on"
       for:
         minutes: 15
     action:
       service: input_boolean.turn_off
       data:
         entity_id: input_boolean.up_sm_bed_motion_state
-        
+
   - alias: "Upstairs Large Bedroom Motion Detect ON"
     trigger:
       platform: event
       event_type: isy994_control
       event_data:
         entity_id: binary_sensor.up_lg_bed_motion_sensor
-        control: 'DON'
+        control: "DON"
     action:
       service: input_boolean.turn_on
       data:
         entity_id: input_boolean.up_lg_bed_motion_state
-        
+
   - alias: "Upstairs Large Bedroom Motion Detect OFF"
     trigger:
       platform: state
       entity_id: input_boolean.up_lg_bed_motion_state
-      from: 'off'
-      to: 'on'
+      from: "off"
+      to: "on"
       for:
         minutes: 15
     action:
       service: input_boolean.turn_off
       data:
         entity_id: input_boolean.up_lg_bed_motion_stat
-        
+
   - alias: "Garage Motion Detect ON"
     trigger:
       platform: event
       event_type: isy994_control
       event_data:
         entity_id: binary_sensor.garage_motion_sensor
-        control: 'DON'
+        control: "DON"
     action:
       service: input_boolean.turn_on
       data:
         entity_id: input_boolean.garage_motion_state
-        
+
   - alias: "Garage Motion Detect OFF"
     trigger:
       platform: state
       entity_id: input_boolean.garage_motion_state
-      from: 'off'
-      to: 'on'
+      from: "off"
+      to: "on"
       for:
         minutes: 15
     action:

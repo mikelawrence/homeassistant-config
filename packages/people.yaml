@@ -11,32 +11,32 @@ homeassistant:
     ## Customize Person
     ################################################
     person.mike:
-      entity_picture: '/local/mike.jpg'
+      entity_picture: "/local/mike.jpg"
     person.clara:
-      entity_picture: '/local/clara.jpg'
+      entity_picture: "/local/clara.jpg"
     person.mikey:
-      entity_picture: '/local/mikey.jpg'
+      entity_picture: "/local/mikey.jpg"
     person.bryan:
-      entity_picture: '/local/bryan.jpg'
+      entity_picture: "/local/bryan.jpg"
     person.jim:
-      entity_picture: '/local/jim.jpg'
+      entity_picture: "/local/jim.jpg"
     person.kasey:
-      entity_picture: '/local/kasey.jpg'
+      entity_picture: "/local/kasey.jpg"
 
     ################################################
     ## Customize Group
     ################################################
     group.household:
-      friendly_name: 'Household'
+      friendly_name: "Household"
       icon: mdi:home
 
     ################################################
     ## Customize Binary sensors
     ################################################
     binary_sensor.people_home:
-      friendly_name: 'Somebody Home'
+      friendly_name: "Somebody Home"
     binary_sensor.people_away:
-      friendly_name: 'Everybody Away'
+      friendly_name: "Everybody Away"
 
 ################################################################
 ## Group (Persons or Device Trackers only)
@@ -57,7 +57,7 @@ group:
 ## Binary Sensor
 ################################################################
 binary_sensor:
-  - platform: 'template'
+  - platform: "template"
     sensors:
       people_home:
         entity_id:

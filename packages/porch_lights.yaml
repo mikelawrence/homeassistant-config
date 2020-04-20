@@ -26,13 +26,13 @@ automation:
         event_type: isy994_control
         event_data:
           entity_id: switch.studio_porch_light
-          control: 'DON'
+          control: "DON"
       # Studio Porch Switch Fast ON
       - platform: event
         event_type: isy994_control
         event_data:
           entity_id: switch.studio_porch_light
-          control: 'DFON'
+          control: "DFON"
     action:
       - service: homeassistant.turn_on
         entity_id: switch.back_porch_light
@@ -45,13 +45,13 @@ automation:
         event_type: isy994_control
         event_data:
           entity_id: switch.studio_porch_light
-          control: 'DOF'
+          control: "DOF"
       # Studio Porch Switch Fast Off
       - platform: event
         event_type: isy994_control
         event_data:
           entity_id: switch.studio_porch_light
-          control: 'DFOF'
+          control: "DFOF"
     action:
       - service: homeassistant.turn_off
         entity_id: switch.back_porch_light
@@ -64,43 +64,43 @@ automation:
         event_type: isy994_control
         event_data:
           entity_id: switch.back_porch_light_1
-          control: 'DON'
+          control: "DON"
       # Master Bedroom Back Porch Switch Fast On
       - platform: event
         event_type: isy994_control
         event_data:
           entity_id: switch.back_porch_light_1
-          control: 'DFON'
+          control: "DFON"
       # Utility Room Back Porch Switch On
       - platform: event
         event_type: isy994_control
         event_data:
           entity_id: switch.back_porch_light_2
-          control: 'DON'
+          control: "DON"
       # Utility Room Back Porch Switch Fast On
       - platform: event
         event_type: isy994_control
         event_data:
           entity_id: switch.back_porch_light_2
-          control: 'DFON'
+          control: "DFON"
       # Garage Back Porch Button On
       - platform: event
         event_type: isy994_control
         event_data:
           entity_id: switch.back_porch_light_3
-          control: 'DON'
+          control: "DON"
       # Garage Back Porch Button Fast On
       - platform: event
         event_type: isy994_control
         event_data:
           entity_id: switch.back_porch_light_3
-          control: 'DFON'
+          control: "DFON"
       # Family Room Front Porch Switch Fast On
       - platform: event
         event_type: isy994_control
         event_data:
           entity_id: switch.front_porch_light
-          control: 'DFON'
+          control: "DFON"
     action:
       - service: homeassistant.turn_on
         entity_id: switch.studio_porch_lights
@@ -113,43 +113,43 @@ automation:
         event_type: isy994_control
         event_data:
           entity_id: switch.back_porch_light_1
-          control: 'DOF'
+          control: "DOF"
       # Master Bedroom Back Porch Switch Fast Off
       - platform: event
         event_type: isy994_control
         event_data:
           entity_id: switch.back_porch_light_1
-          control: 'DFOF'
+          control: "DFOF"
       # Utility Room Back Porch Switch Off
       - platform: event
         event_type: isy994_control
         event_data:
           entity_id: switch.back_porch_light_2
-          control: 'DOF'
+          control: "DOF"
       # Utility Room Back Porch Switch Fast Off
       - platform: event
         event_type: isy994_control
         event_data:
           entity_id: switch.back_porch_light_2
-          control: 'DFOF'
+          control: "DFOF"
       # Garage Back Porch Button Off
       - platform: event
         event_type: isy994_control
         event_data:
           entity_id: switch.back_porch_light_3
-          control: 'DOF'
+          control: "DOF"
       # Garage Back Porch Button Fast Off
       - platform: event
         event_type: isy994_control
         event_data:
           entity_id: switch.back_porch_light_3
-          control: 'DFOF'
+          control: "DFOF"
       # Family Room Front Porch Switch Fast Off
       - platform: event
         event_type: isy994_control
         event_data:
           entity_id: switch.front_porch_light
-          control: 'DFOF'
+          control: "DFOF"
     action:
       - service: homeassistant.turn_off
         entity_id: switch.studio_porch_lights
@@ -162,23 +162,23 @@ automation:
         event_type: isy994_control
         event_data:
           entity_id: switch.flood_light_studio_front
-          control: 'DON'
+          control: "DON"
       - platform: event
         event_type: isy994_control
         event_data:
           entity_id: switch.flood_light_studio_front
-          control: 'DFON'
+          control: "DFON"
       # Studio Kitchen Flood Light Button
       - platform: event
         event_type: isy994_control
         event_data:
           entity_id: switch.flood_light_studio_back
-          control: 'DON'
+          control: "DON"
       - platform: event
         event_type: isy994_control
         event_data:
           entity_id: switch.flood_light_studio_back
-          control: 'DFON'
+          control: "DFON"
     action:
       - service: homeassistant.turn_on
         entity_id: switch.house_flood_lights
@@ -191,23 +191,23 @@ automation:
         event_type: isy994_control
         event_data:
           entity_id: switch.flood_light_studio_front
-          control: 'DOF'
+          control: "DOF"
       - platform: event
         event_type: isy994_control
         event_data:
           entity_id: switch.flood_light_studio_front
-          control: 'DFOF'
+          control: "DFOF"
       # Studio Kitchen Flood Light Button
       - platform: event
         event_type: isy994_control
         event_data:
           entity_id: switch.flood_light_studio_back
-          control: 'DOF'
+          control: "DOF"
       - platform: event
         event_type: isy994_control
         event_data:
           entity_id: switch.flood_light_studio_back
-          control: 'DFOF'
+          control: "DFOF"
     action:
       - service: homeassistant.turn_off
         entity_id: switch.house_flood_lights
@@ -220,23 +220,23 @@ automation:
         event_type: isy994_control
         event_data:
           entity_id: switch.house_flood_lights_1
-          control: 'DON'
+          control: "DON"
       - platform: event
         event_type: isy994_control
         event_data:
           entity_id: switch.house_flood_lights_1
-          control: 'DFON'
+          control: "DFON"
       # Utility Room Flood Lights Button
       - platform: event
         event_type: isy994_control
         event_data:
           entity_id: switch.house_flood_lights_2
-          control: 'DON'
+          control: "DON"
       - platform: event
         event_type: isy994_control
         event_data:
           entity_id: switch.house_flood_lights_2
-          control: 'DFON'
+          control: "DFON"
     action:
       - service: homeassistant.turn_on
         entity_id: switch.studio_flood_lights
@@ -249,23 +249,23 @@ automation:
         event_type: isy994_control
         event_data:
           entity_id: switch.house_flood_lights_1
-          control: 'DOF'
+          control: "DOF"
       - platform: event
         event_type: isy994_control
         event_data:
           entity_id: switch.house_flood_lights_1
-          control: 'DFOF'
+          control: "DFOF"
       # Utility Room Flood Lights Button
       - platform: event
         event_type: isy994_control
         event_data:
           entity_id: switch.house_flood_lights_2
-          control: 'DOF'
+          control: "DOF"
       - platform: event
         event_type: isy994_control
         event_data:
           entity_id: switch.house_flood_lights_2
-          control: 'DFOF'
+          control: "DFOF"
     action:
       - service: homeassistant.turn_off
         entity_id: switch.studio_flood_lights

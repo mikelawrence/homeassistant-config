@@ -74,8 +74,8 @@ binary_sensor:
         entity_id: sensor.master_bath_multisensor_humidity
         device_class: moisture
         max_samples: 20
-        sample_duration: 2100   # 35 minutes
-        min_gradient: 0.01000   # rising 6% in 10 minutes
+        sample_duration: 2100 # 35 minutes
+        min_gradient: 0.01000 # rising 6% in 10 minutes
 
 ################################################################
 ## Sensor
@@ -98,11 +98,11 @@ timer:
   # timer to turn off Master Bath Light
   master_bath_light_timer:
     name: "Master Bath Light Timer"
-    duration: '00:30:00'
+    duration: "00:30:00"
   # timer to turn off Master Bath Vent Fan
   master_bath_vent_fan_timer:
     name: "Master Bath Vent Fan Timer"
-    duration: '00:30:00'
+    duration: "00:30:00"
 
 ################################################################
 ## Automation
@@ -118,11 +118,11 @@ automation:
         event_type: isy994_control
         event_data:
           entity_id: light.master_bath_light
-          control: 'DFON'
+          control: "DFON"
       # Master Bath Light turned off
       - platform: state
         entity_id: light.master_bath_light
-        to: 'off'
+        to: "off"
     action:
       # Change Master Bath Light Keep On input boolean
       service_template: >
@@ -144,17 +144,17 @@ automation:
         event_type: isy994_control
         event_data:
           entity_id: light.master_bath_light
-          control: 'DON'
+          control: "DON"
       # Fade Stop event occurred on Master Bath Light
       - platform: event
         event_type: isy994_control
         event_data:
           entity_id: light.master_bath_light
-          control: 'FDSTOP'
+          control: "FDSTOP"
       # Master Bath Light turned off
       - platform: state
         entity_id: light.master_bath_light
-        to: 'off'
+        to: "off"
     action:
       # Change Master Bath Light Keep On input boolean
       service_template: >
@@ -172,19 +172,19 @@ automation:
     trigger:
       platform: state
       entity_id: binary_sensor.master_bath_multisensor_motion
-      to: 'on'
+      to: "on"
     condition:
       condition: and
       conditions:
         # Master Bath Light is off
         - condition: state
           entity_id: light.master_bath_light
-          state: 'off'
+          state: "off"
         # It must be bedtime
         - condition: or
           conditions:
             - condition: time
-              after: '20:30:00'
+              after: "20:30:00"
             - condition: sun
               before: sunrise
     action:
@@ -198,24 +198,24 @@ automation:
     trigger:
       platform: state
       entity_id: binary_sensor.master_bath_multisensor_motion
-      to: 'on'
+      to: "on"
     condition:
       condition: and
       conditions:
         # Master Bath Light must be off
         - condition: state
           entity_id: light.master_bath_light
-          state: 'off'
+          state: "off"
         # It must be daytime
         - condition: and
           conditions:
             - condition: time
-              before: '20:30:00'
+              before: "20:30:00"
             - condition: sun
               after: sunrise
     action:
       # turn on ISY994 Master Bath Light Daytime Scene
-      service_template: 'homeassistant.turn_{{trigger.to_state.state}}'
+      service_template: "homeassistant.turn_{{trigger.to_state.state}}"
       entity_id: switch.master_bath_light_scene
 
   # Turn Master Bath Light off when motion has not been detected long enough
@@ -224,7 +224,7 @@ automation:
     trigger:
       platform: state
       entity_id: binary_sensor.master_bath_multisensor_motion
-      to: 'off'
+      to: "off"
       for:
         # 26 minutes + 4 minutes for motion on time = 30 minutes minumum
         minutes: 26
@@ -234,15 +234,15 @@ automation:
         # Master Bath Light was not turned on Manually
         - condition: state
           entity_id: input_boolean.master_bath_light_manual_input
-          state: 'off'
+          state: "off"
         # Master Bath Light Stay On must be off
         - condition: state
           entity_id: input_boolean.master_bath_light_stay_on
-          state: 'off'
+          state: "off"
         # Master Bath Light must be on
         - condition: state
           entity_id: light.master_bath_light
-          state: 'on'
+          state: "on"
     action:
       # turn off ISY994 Master Bath Light Scene
       service: homeassistant.turn_off
@@ -253,10 +253,10 @@ automation:
     trigger:
       platform: state
       entity_id: binary_sensor.master_bath_multisensor_motion
-      to: 'on'
+      to: "on"
     action:
-      # turn on Master Bath Presence 
-      service: 'homeassistant.turn_on'
+      # turn on Master Bath Presence
+      service: "homeassistant.turn_on"
       entity_id: input_boolean.master_bath_presence
 
   # Turn Master Bath Presence off when motion has not been detected long enough
@@ -264,12 +264,12 @@ automation:
     trigger:
       platform: state
       entity_id: binary_sensor.master_bath_multisensor_motion
-      to: 'off'
+      to: "off"
       for:
         # 26 minutes + 4 minutes for motion on time = 30 minutes minumum
         minutes: 26
     action:
-      # turn off Master Bath Presence 
+      # turn off Master Bath Presence
       service: homeassistant.turn_off
       entity_id: input_boolean.master_bath_presence
 
@@ -281,18 +281,18 @@ automation:
         event_type: isy994_control
         event_data:
           entity_id: light.master_bath_light
-          control: 'DON'
+          control: "DON"
       # Fade Stop event occurred on Master Bath Light Door
       - platform: event
         event_type: isy994_control
         event_data:
           entity_id: light.master_bath_light
-          control: 'FDSTOP'
+          control: "FDSTOP"
     condition:
       # Master Bath Light Stay On must be ff
       condition: state
       entity_id: input_boolean.master_bath_light_stay_on
-      state: 'off'
+      state: "off"
     action:
       # start/restart Master Bath Light timer to turn the light off
       service: timer.start
@@ -304,11 +304,11 @@ automation:
       # Master Bed Light turned off
       - platform: state
         entity_id: light.master_bath_light
-        to: 'off'
+        to: "off"
       # Master Bath Light Stay On turned on
       - platform: state
         entity_id: input_boolean.master_bath_light_stay_on
-        to: 'on'
+        to: "on"
     action:
       # kill the running Master Bath Light timer because the light is off
       service: timer.cancel
@@ -328,11 +328,11 @@ automation:
         # Master Bed Bath must be on
         - condition: state
           entity_id: light.master_bath_light
-          state: 'on'
+          state: "on"
         # Master Bath Light Stay On must be off
         - condition: state
           entity_id: input_boolean.master_bath_light_stay_on
-          state: 'off'
+          state: "off"
     action:
       # turn off ISY994 Master Bath Light scene
       service: homeassistant.turn_off
@@ -344,7 +344,7 @@ automation:
       # humidity is deemed rising fast enough
       - platform: state
         entity_id: binary_sensor.master_bath_humidity_rising
-        to: 'on'
+        to: "on"
       # humidity is above threshold
       - platform: numeric_state
         entity_id: sensor.master_bath_multisensor_humidity
@@ -372,7 +372,7 @@ automation:
       # Master Bath Humidity High must be on
       condition: state
       entity_id: input_boolean.master_bath_humidity_high
-      state: 'on'
+      state: "on"
     action:
       # turn of ISY994 Master Bath Vent Fan switch
       service: homeassistant.turn_off
@@ -384,7 +384,7 @@ automation:
       # Humidity is deemed too high
       platform: state
       entity_id: input_boolean.master_bath_humidity_high
-      to: 'on'
+      to: "on"
     action:
       # Turn off ISY994 Master Bath Vent Fan switch
       service: homeassistant.turn_on
@@ -401,18 +401,18 @@ automation:
       # Master Bath Humidity High just turned off
       - platform: state
         entity_id: input_boolean.master_bath_humidity_high
-        to: 'off'
+        to: "off"
     condition:
       condition: and
       conditions:
         # Master Bath Vent Fan must be on
         - condition: state
           entity_id: switch.master_bath_vent_fan
-          state: 'on'
+          state: "on"
         # Master Bath Humidity High must be off
         - condition: state
           entity_id: input_boolean.master_bath_humidity_high
-          state: 'off'
+          state: "off"
     action:
       # turn off ISY994 Master Bath Vent Fan switch
       service: homeassistant.turn_off
@@ -426,18 +426,18 @@ automation:
         event_type: isy994_control
         event_data:
           entity_id: switch.master_bath_vent_fan
-          control: 'DON'
+          control: "DON"
       # Vent Fan turned Fast On manually
       - platform: event
         event_type: isy994_control
         event_data:
           entity_id: switch.master_bath_vent_fan
-          control: 'DFON'
+          control: "DFON"
     condition:
       # Master Bath Humidity High must be off
       condition: state
       entity_id: input_boolean.master_bath_humidity_high
-      state: 'off'
+      state: "off"
     action:
       # start/restart Master Bath Vent Fan timer
       service: timer.start
@@ -448,7 +448,7 @@ automation:
     trigger:
       platform: state
       entity_id: switch.master_bath_vent_fan
-      to: 'off'
+      to: "off"
     action:
       # Cancel Master Bath Vent Fan Timer because the vent fan turned off
       service: timer.cancel

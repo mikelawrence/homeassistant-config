@@ -33,7 +33,7 @@ automation:
       platform: state
       entity_id: input_boolean.flood_lights
     action:
-      - service_template: 'homeassistant.turn_{{trigger.to_state.state}}'
+      - service_template: "homeassistant.turn_{{trigger.to_state.state}}"
         entity_id: switch.house_flood_lights
-      - service_template: 'homeassistant.turn_{{trigger.to_state.state}}'
+      - service_template: "homeassistant.turn_{{trigger.to_state.state}}"
         entity_id: switch.studio_flood_lights

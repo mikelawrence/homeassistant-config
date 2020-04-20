@@ -33,11 +33,11 @@ homeassistant:
 ################################################################
 automation:
   - alias: "House Front Door Sensor Low Battery"
-    initial_state: 'on'
+    initial_state: "on"
     trigger:
       - platform: state
         entity_id: binary_sensor.house_front_door_sensor_hb
-        to: 'on'
+        to: "on"
     action:
       - service: notify.sensor_alerts
         data_template:
@@ -49,11 +49,11 @@ automation:
           message: "Time to replace battery in House Front Door Sensor."
 
   - alias: "House Back Door Sensor Low Battery"
-    initial_state: 'on'
+    initial_state: "on"
     trigger:
       - platform: state
         entity_id: binary_sensor.house_back_door_sensor_hb
-        to: 'on'
+        to: "on"
     action:
       - service: notify.sensor_alerts
         data_template:
@@ -65,11 +65,11 @@ automation:
           message: "Time to replace battery in House Back Door Sensor."
 
   - alias: "Studio Front Door Sensor Low Battery"
-    initial_state: 'on'
+    initial_state: "on"
     trigger:
       - platform: state
         entity_id: binary_sensor.studio_front_door_sensor_hb
-        to: 'on'
+        to: "on"
     action:
       - service: notify.sensor_alerts
         data_template:
@@ -81,11 +81,11 @@ automation:
           message: "Time to replace battery in Studio Front Door Sensor."
 
   - alias: "Garage Door Sensor Low Battery"
-    initial_state: 'on'
+    initial_state: "on"
     trigger:
       - platform: state
         entity_id: binary_sensor.garage_door_sensor_hb
-        to: 'on'
+        to: "on"
     action:
       - service: notify.sensor_alerts
         data_template:

@@ -26,7 +26,7 @@ homeassistant:
 scene:
   - name: "Kitchen All Off"
     entities:
-      switch.kitchen_all_off: on    # ISY-994 scene
+      switch.kitchen_all_off: on # ISY-994 scene
   - name: "Kitchen Morning"
     entities:
-      switch.kitchen_morning: on    # ISY-994 scene
+      switch.kitchen_morning: on # ISY-994 scene

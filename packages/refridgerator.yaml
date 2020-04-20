@@ -1,78 +1,45 @@
 ################################################################
-## Packages / Refridgerator
+## Packages / Refrigerator
 ################################################################
 
-################################################################
-## IOS
-################################################################
-# ios:
-#   push:
-#     categories:
-#       - name: "Fridge Alarm"
-#         identifier: 'fridge_alarm'
-#         actions:
-#           - identifier: 'SILENCE_ALARM'
-#             title: "Silence Alarm"
-#             activationMode: 'background'
-#             authenticationRequired: true
-#             destructive: true
-#             behavior: 'default'
-  
 ################################################################
 ## Automations
 ################################################################
 automation:
-  # # when IOS user selects Silence Alarm in response to an overtemp alarm
-  # #   this automation will silence the appropriate alarm
-  # - alias: "Refridgerator/Freezer Disable Alarm IOS Notification Action"         
-  #   trigger:
-  #     - platform: event
-  #       event_type: ios.notification_action_fired
-  #       event_data:
-  #         actionName: SILENCE_ALARM
-  #   action:
-  #     - service: homeassistant.turn_on
-  #       data_template:
-  #         entity_id: "{{ trigger.event.data.action_data.silence_entity_id }}"
-  #     - service: persistent_notification.create
-  #       data_template:
-  #         title: "{{ trigger.event.data.action_data.device_name }} Alarm"
-  #         message: "Audible alarm disabled by {{ trigger.event.data.sourceDeviceName }}."
-
-  # Alert when House Refidgerator or Freezer is too hot
-  - alias: "House Refridgerator too Hot!"
+  # Alert when House Refrigerator or Freezer is too hot
+  - alias: "House Refrigerator too Hot!"
     trigger:
       - platform: state
         entity_id: binary_sensor.house_fridge_monitor_alarm
-        from: 'off'
-        to: 'on'
+        from: "off"
+        to: "on"
       - platform: state
         entity_id: input_boolean.test_alerts
-        from: 'off'
-        to: 'on'
+        from: "off"
+        to: "on"
     action:
       - service: notify.house_alerts
         data_template:
-          title: "House Refridgerator Alarm"
+          title: "House Refrigerator Alarm"
           message: "Temperature too high!\nFridge is {{ states('sensor.house_fridge_temperature') | round(1) }}{{ state_attr('sensor.house_fridge_temperature', 'unit_of_measurement') }}, Freezer is {{ states('sensor.house_freezer_temperature') | round(1) }}{{ state_attr('sensor.house_freezer_temperature', 'unit_of_measurement') }}"
           data:
             push:
               category: fridge_alarm
             action_data:
-              device_name: "House Refridgerator"
-              silence_entity_id: 'switch.house_fridge_monitor_alarm_disable'
+              device_name: "House Refrigerator"
+              silence_entity_id: "switch.house_fridge_monitor_alarm_disable"
       - service: persistent_notification.create
         data_template:
-          title: "House Refridgerator Alarm"
+          title: "House Refrigerator Alarm"
           message: "Temperature too high!\nFridge is {{ states('sensor.house_fridge_temperature') | round(1) }}{{ state_attr('sensor.house_fridge_temperature', 'unit_of_measurement') }}, Freezer is {{ states('sensor.house_freezer_temperature') | round(1) }}{{ state_attr('sensor.house_freezer_temperature', 'unit_of_measurement') }}"
-          
-  # Alert when House Refidgerator or Freezer temperature is back to normal
-  - alias: "House Refridgerator back to normal"
+
+  # Alert when House Refrigerator or Freezer temperature is back to normal
+  - alias: "House Refrigerator back to normal"
     trigger:
       - platform: state
         entity_id: binary_sensor.house_fridge_monitor_alarm
-        from: 'on'
-        to: 'off'
+        from: "on"
+        to: "off"
       # - platform: state
       #   entity_id: input_boolean.test_alerts
       #   from: 'on'
@@ -80,20 +47,20 @@ automation:
     action:
       - service: notify.house_alerts
         data_template:
-          title: "House Refridgerator Status Good"
+          title: "House Refrigerator Status Good"
           message: "Temperature back to normal.\nFridge is {{ states('sensor.house_fridge_temperature') | round(1) }}{{ state_attr('sensor.house_fridge_temperature', 'unit_of_measurement') }}, Freezer is {{ states('sensor.house_freezer_temperature') | round(1) }}{{ state_attr('sensor.house_freezer_temperature', 'unit_of_measurement') }}"
       - service: persistent_notification.create
         data_template:
-          title: "House Refridgerator Status Good"
+          title: "House Refrigerator Status Good"
           message: "Temperature back to normal.\nFridge is {{ states('sensor.house_fridge_temperature') | round(1) }}{{ state_attr('sensor.house_fridge_temperature', 'unit_of_measurement') }}, Freezer is {{ states('sensor.house_freezer_temperature') | round(1) }}{{ state_attr('sensor.house_freezer_temperature', 'unit_of_measurement') }}"
 
-  # Alert when Studio Refidgerator or Freezer is too hot
-  - alias: "Studio Refridgerator too Hot!"
+  # Alert when Studio Refrigerator or Freezer is too hot
+  - alias: "Studio Refrigerator too Hot!"
     trigger:
       - platform: state
         entity_id: binary_sensor.studio_fridge_monitor_alarm
-        from: 'off'
-        to: 'on'
+        from: "off"
+        to: "on"
       # - platform: state
       #   entity_id: input_boolean.test_alerts
       #   from: 'off'
@@ -101,26 +68,26 @@ automation:
     action:
       - service: notify.house_alerts
         data_template:
-          title: "Studio Refridgerator Alarm"
+          title: "Studio Refrigerator Alarm"
           message: "Temperature too high!\nFridge is {{ states('sensor.studio_fridge_temperature') | round(1) }}{{ state_attr('sensor.studio_fridge_temperature', 'unit_of_measurement') }}, Freezer is {{ states('sensor.studio_freezer_temperature') | round(1) }}{{ state_attr('sensor.studio_freezer_temperature', 'unit_of_measurement') }}"
           data:
             push:
               category: fridge_alarm
             action_data:
-              device_name: "Studio Refridgerator"
-              silence_entity_id: 'switch.studio_fridge_monitor_alarm_disable'
+              device_name: "Studio Refrigerator"
+              silence_entity_id: "switch.studio_fridge_monitor_alarm_disable"
       - service: persistent_notification.create
         data_template:
-          title: "Studio Refridgerator Alarm"
+          title: "Studio Refrigerator Alarm"
           message: "Temperature too high!\nFridge is {{ states('sensor.studio_fridge_temperature') | round(1) }}{{ state_attr('sensor.studio_fridge_temperature', 'unit_of_measurement') }}, Freezer is {{ states('sensor.studio_freezer_temperature') | round(1) }}{{ state_attr('sensor.studio_freezer_temperature', 'unit_of_measurement') }}"
-          
-  # Alert when Studio Refidgerator or Freezer temperature is back to normal
-  - alias: "Studio Refridgerator back to normal"
+
+  # Alert when Studio Refrigerator or Freezer temperature is back to normal
+  - alias: "Studio Refrigerator back to normal"
     trigger:
       - platform: state
         entity_id: binary_sensor.studio_fridge_monitor_alarm
-        from: 'on'
-        to: 'off'
+        from: "on"
+        to: "off"
       # - platform: state
       #   entity_id: input_boolean.test_alerts
       #   from: 'on'
@@ -128,11 +95,11 @@ automation:
     action:
       - service: notify.house_alerts
         data_template:
-          title: "Studio Refridgerator Status Good"
+          title: "Studio Refrigerator Status Good"
           message: "Temperature back to normal.\nFridge is {{ states('sensor.studio_fridge_temperature') | round(1) }}{{ state_attr('sensor.studio_fridge_temperature', 'unit_of_measurement') }}, Freezer is {{ states('sensor.studio_freezer_temperature') | round(1) }}{{ state_attr('sensor.studio_freezer_temperature', 'unit_of_measurement') }}"
       - service: persistent_notification.create
         data_template:
-          title: "Studio Refridgerator Status Good"
+          title: "Studio Refrigerator Status Good"
           message: "Temperature back to normal.\nFridge is {{ states('sensor.house_fridge_temperature') | round(1) }}{{ state_attr('sensor.house_fridge_temperature', 'unit_of_measurement') }}, Freezer is {{ states('sensor.house_freezer_temperature') | round(1) }}{{ state_attr('sensor.house_freezer_temperature', 'unit_of_measurement') }}"
 
   # Alert when Garage Freezer is too hot
@@ -140,8 +107,8 @@ automation:
     trigger:
       - platform: state
         entity_id: binary_sensor.garage_freezer_monitor_alarm
-        from: 'off'
-        to: 'on'
+        from: "off"
+        to: "on"
       # - platform: state
       #   entity_id: input_boolean.test_alerts
       #   from: 'off'
@@ -156,19 +123,19 @@ automation:
               category: fridge_alarm
             action_data:
               device_name: "Garage Freezer"
-              silence_entity_id: 'switch.garage_freezer_monitor_alarm_disable'
+              silence_entity_id: "switch.garage_freezer_monitor_alarm_disable"
       - service: persistent_notification.create
         data_template:
-          title: "Garage Refridgerator Alarm"
+          title: "Garage Refrigerator Alarm"
           message: "Temperature too high!\nFreezer is {{ states('sensor.garage_freezer_temperature') | round(1) }}{{ state_attr('sensor.garage_freezer_temperature', 'unit_of_measurement') }}"
-          
+
   # Alert when Garage Freezer temperature is back to normal
   - alias: "Garage Freezer back to normal"
     trigger:
       - platform: state
         entity_id: binary_sensor.garage_freezer_monitor_alarm
-        from: 'on'
-        to: 'off'
+        from: "on"
+        to: "off"
       # - platform: state
       #   entity_id: input_boolean.test_alerts
       #   from: 'on'
@@ -182,4 +149,3 @@ automation:
         data_template:
           title: "Garage Freezer Status Good"
           message: "Temperature back to normal.\nFreezer is {{ states('sensor.garage_freezer_temperature') | round(1) }}{{ state_attr('sensor.garage_freezer_temperature', 'unit_of_measurement') }}"
-
