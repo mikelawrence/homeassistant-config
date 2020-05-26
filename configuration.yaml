@@ -6,7 +6,7 @@ homeassistant:
   # Packages directory
   packages: !include_dir_named packages
 
-# enable defqault configurations
+# enable default configurations
 default_config:
 
 # Enables Lovelace YAML
@@ -33,6 +33,18 @@ conversation:
 # Track the sun
 sun:
 
+# Unifi Protect cameras
+unifiprotect:
+  host: 172.20.0.1
+  username: !secret unifiprotect_username
+  password: !secret unifiprotect_password
+  port: 443
+  image_width: 640
+
+# motion sensors on Unifi Protect cameras
+binary_sensor:
+  - platform: unifiprotect
+
 # Enable nest
 nest:
   client_id: !secret nest_client_id
@@ -49,7 +61,7 @@ influxdb:
   default_measurement: state
 
 # Enable MQTT Sharing between Hassio instances.
-# This is a client to the hosting instance.
+# From HACS
 mqtt_share:
   base_topic: hass_share
 
@@ -58,7 +70,7 @@ tts:
   - platform: google_translate
     service_name: google_say
 
-# Log Severities: notset, debug, info, warn, warning, error, fatal, critical
+# # Log Severities: notset, debug, info, warn, warning, error, fatal, critical
 # logger:
 #   default: warning
 #   logs:
@@ -70,7 +82,6 @@ tts:
 recorder:
   # db_url:  mysql://hass:hasspassword@192.168.1.200/homeassistant
   purge_keep_days: 2
-  purge_interval: 1
   exclude:
     domains:
       - automation

@@ -45,7 +45,7 @@ binary_sensor:
       # Turns on when Septic Controller is Offline for too long
       septic_controller_offline:
         friendly_name: "Septic Controller Offline"
-        delay_on: "00:05:00"
+        delay_on: "00:15:00"
         value_template: "{{ is_state('sensor.septic_status', 'unavailable') }}"
 
       # Turns on when Septic Controller has not been 'Idle' for too long

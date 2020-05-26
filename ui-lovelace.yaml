@@ -347,6 +347,15 @@ views:
           - sensor.studio_temperature
           - sensor.studio_cool_hours_yesterday
           - sensor.studio_heat_hours_yesterday
+      - type: entities
+        title: Sam Printer
+        show_header_toggle: false
+        entities:
+          - sensor.hp_color_laserjet_mfp_m476dw
+          - sensor.hp_color_laserjet_mfp_m476dw_black_cartridge_hp_cf380x
+          - sensor.hp_color_laserjet_mfp_m476dw_cyan_cartridge_hp_cf381a
+          - sensor.hp_color_laserjet_mfp_m476dw_yellow_cartridge_hp_cf382a
+          - sensor.hp_color_laserjet_mfp_m476dw_magenta_cartridge_hp_cf383a
   - title: Cameras
     icon: mdi:cctv
     badges:
@@ -366,9 +375,9 @@ views:
       - type: picture-entity
         entity: camera.studio_front
       - type: picture-entity
-        entity: camera.garage_inside_left
+        entity: camera.garage_left
       - type: picture-entity
-        entity: camera.garage_inside_right
+        entity: camera.garage_right
       - type: picture-entity
         entity: camera.studio_back
   - title: Devices
